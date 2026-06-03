@@ -1,0 +1,1424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Oasis Medical Clinic – Afienya, Ghana</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap" rel="stylesheet" />
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        teal:   { 50:'#f0fafa', 100:'#ccf0ef', 200:'#99e0de', 300:'#5bc9c7', 400:'#2db0ae', 500:'#1a9593', 600:'#14807e', 700:'#0f6563', 800:'#0b4f4e', 900:'#073a39' },
+        slate:  { 50:'#f8fafc', 100:'#f1f5f9', 200:'#e2e8f0', 300:'#cbd5e1', 400:'#94a3b8', 500:'#64748b', 600:'#475569', 700:'#334155', 800:'#1e293b', 900:'#0f172a' },
+        sand:   { 50:'#fdfaf5', 100:'#f9f2e3', 200:'#f1e2c0', 300:'#e4c98a', 400:'#d4a857', 500:'#c08d3a', 600:'#a37330', 700:'#835b26', 800:'#65461e', 900:'#4a3316' },
+      },
+      fontFamily: {
+        display: ['Cormorant Garamond', 'Georgia', 'serif'],
+        body:    ['DM Sans', 'system-ui', 'sans-serif'],
+      },
+      backgroundImage: {
+        'hero-gradient': 'linear-gradient(135deg, rgba(10,50,60,0.82) 0%, rgba(15,101,99,0.65) 50%, rgba(10,30,50,0.80) 100%)',
+      },
+      animation: {
+        'fade-in':      'fadeIn 0.6s ease forwards',
+        'slide-up':     'slideUp 0.5s ease forwards',
+        'pulse-slow':   'pulse 3s cubic-bezier(0.4,0,0.6,1) infinite',
+        'float':        'float 6s ease-in-out infinite',
+        'toast-in':     'toastIn 0.4s ease forwards',
+        'toast-out':    'toastOut 0.4s ease forwards',
+      },
+      keyframes: {
+        fadeIn:  { '0%':{ opacity:'0' }, '100%':{ opacity:'1' } },
+        slideUp: { '0%':{ opacity:'0', transform:'translateY(20px)' }, '100%':{ opacity:'1', transform:'translateY(0)' } },
+        float:   { '0%,100%':{ transform:'translateY(0px)' }, '50%':{ transform:'translateY(-12px)' } },
+        toastIn: { '0%':{ opacity:'0', transform:'translateY(20px) scale(0.95)' }, '100%':{ opacity:'1', transform:'translateY(0) scale(1)' } },
+        toastOut:{ '0%':{ opacity:'1', transform:'translateY(0) scale(1)' }, '100%':{ opacity:'0', transform:'translateY(20px) scale(0.95)' } },
+      },
+    }
+  }
+}
+</script>
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
+  body{font-family:'DM Sans',sans-serif;background:#f8fafc;color:#1e293b;overflow-x:hidden}
+  ::-webkit-scrollbar{width:5px}
+  ::-webkit-scrollbar-track{background:#f1f5f9}
+  ::-webkit-scrollbar-thumb{background:#2db0ae;border-radius:99px}
+
+  /* Glassmorphism */
+  .glass{backdrop-filter:blur(18px) saturate(160%);-webkit-backdrop-filter:blur(18px) saturate(160%);background:rgba(255,255,255,0.88);border-bottom:1px solid rgba(255,255,255,0.6)}
+  .glass-card{backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);background:rgba(255,255,255,0.72);border:1px solid rgba(255,255,255,0.55)}
+
+  /* Hero video placeholder */
+  .hero-bg{position:absolute;inset:0;background:
+    linear-gradient(135deg,rgba(7,58,57,0.88) 0%,rgba(15,101,99,0.72) 45%,rgba(10,28,50,0.85) 100%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='600'%3E%3Crect fill='%230b4f4e' width='800' height='600'/%3E%3Ccircle cx='200' cy='300' r='260' fill='%2314807e' opacity='.18'/%3E%3Ccircle cx='600' cy='200' r='180' fill='%232db0ae' opacity='.12'/%3E%3Ccircle cx='700' cy='500' r='220' fill='%230f6563' opacity='.15'/%3E%3C/svg%3E");
+    background-size:cover;background-position:center}
+
+  /* Animated orbs in hero */
+  .orb{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;opacity:.18}
+
+  /* Floating card */
+  .stat-badge{background:rgba(255,255,255,0.14);border:1px solid rgba(255,255,255,0.22);backdrop-filter:blur(10px)}
+
+  /* Section reveal */
+  .reveal{opacity:0;transform:translateY(28px);transition:opacity 0.7s ease,transform 0.7s ease}
+  .reveal.visible{opacity:1;transform:none}
+
+  /* Form fields */
+  .form-field{width:100%;padding:0.75rem 1rem;border:1.5px solid #e2e8f0;border-radius:12px;font-family:'DM Sans',sans-serif;font-size:0.9rem;color:#1e293b;background:#fff;transition:border-color 0.2s,box-shadow 0.2s;outline:none}
+  .form-field:focus{border-color:#2db0ae;box-shadow:0 0 0 3px rgba(45,176,174,0.15)}
+  .form-field::placeholder{color:#94a3b8}
+  select.form-field{cursor:pointer}
+
+  /* Event card gradient border */
+  .event-card{background:#fff;border-radius:20px;border:1px solid #e2e8f0;overflow:hidden;transition:transform 0.3s ease,box-shadow 0.3s ease}
+  .event-card:hover{transform:translateY(-6px);box-shadow:0 20px 48px rgba(15,101,99,0.14)}
+
+  /* CTA buttons */
+  .btn-primary{background:linear-gradient(135deg,#2db0ae,#1a9593);color:#fff;font-weight:500;border-radius:99px;padding:0.75rem 2rem;transition:all 0.3s ease;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;display:inline-flex;align-items:center;gap:0.5rem}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(45,176,174,0.38)}
+  .btn-outline{background:transparent;color:#2db0ae;font-weight:500;border-radius:99px;padding:0.7rem 1.8rem;border:1.5px solid #2db0ae;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.3s ease;display:inline-flex;align-items:center;gap:0.5rem}
+  .btn-outline:hover{background:#2db0ae;color:#fff;transform:translateY(-2px)}
+  .btn-gold{background:linear-gradient(135deg,#d4a857,#c08d3a);color:#fff;font-weight:500;border-radius:99px;padding:0.65rem 1.5rem;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.25s ease;font-size:0.88rem}
+  .btn-gold:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(192,141,58,0.35)}
+
+  /* Nav link hover */
+  .nav-link{position:relative;color:#475569;font-weight:500;font-size:0.9rem;transition:color 0.2s;text-decoration:none}
+  .nav-link::after{content:'';position:absolute;bottom:-3px;left:0;width:0;height:2px;background:#2db0ae;border-radius:2px;transition:width 0.25s ease}
+  .nav-link:hover{color:#2db0ae}
+  .nav-link:hover::after{width:100%}
+  .nav-link.active{color:#2db0ae}
+  .nav-link.active::after{width:100%}
+
+  /* Mobile menu */
+  .mobile-menu{transform:translateY(-8px);opacity:0;pointer-events:none;transition:all 0.3s ease}
+  .mobile-menu.open{transform:translateY(0);opacity:1;pointer-events:all}
+
+  /* Toast */
+  .toast{position:fixed;bottom:2rem;right:2rem;z-index:9999;display:flex;align-items:center;gap:0.75rem;background:#fff;border-radius:16px;padding:1rem 1.5rem;box-shadow:0 8px 32px rgba(15,101,99,0.18);border-left:4px solid #2db0ae;font-family:'DM Sans',sans-serif;max-width:360px}
+
+  /* Portal */
+  .portal-overlay{position:fixed;inset:0;z-index:9000;background:rgba(7,58,57,0.55);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;padding:1rem}
+  .portal-card{background:#fff;border-radius:24px;width:100%;max-width:900px;max-height:90vh;overflow-y:auto;padding:2.5rem;box-shadow:0 32px 80px rgba(7,58,57,0.22)}
+
+  /* Tab active */
+  .tab-btn.active-tab{background:#2db0ae;color:#fff}
+
+  /* Appointment row */
+  .appt-row{background:#f0fafa;border:1px solid #ccf0ef;border-radius:12px;padding:1rem 1.25rem;display:flex;flex-wrap:wrap;gap:0.5rem;align-items:center;justify-content:space-between;animation:slideUp 0.4s ease forwards}
+
+  /* Department badge colors */
+  .badge{display:inline-flex;align-items:center;padding:0.25rem 0.75rem;border-radius:99px;font-size:0.75rem;font-weight:500}
+
+  /* Scrollbar inside portal */
+  .portal-card::-webkit-scrollbar{width:4px}
+  .portal-card::-webkit-scrollbar-thumb{background:#2db0ae;border-radius:4px}
+
+  /* Location card accent */
+  .location-accent{background:linear-gradient(135deg,#f0fafa,#fff);border:1px solid #ccf0ef}
+
+  /* Service icon wrapper */
+  .svc-icon{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#f0fafa,#ccf0ef)}
+
+  /* Pulse ring for phone */
+  .pulse-ring{display:inline-block;position:relative}
+  .pulse-ring::before{content:'';position:absolute;inset:-4px;border-radius:50%;border:2px solid #2db0ae;animation:ping 1.5s ease-out infinite;opacity:0}
+  @keyframes ping{0%{transform:scale(1);opacity:0.6}100%{transform:scale(1.5);opacity:0}}
+
+  /* Horizontal scroll for mobile events */
+  @media(max-width:640px){
+    .events-grid{display:flex;overflow-x:auto;gap:1rem;padding-bottom:1rem;scroll-snap-type:x mandatory}
+    .events-grid>*{min-width:280px;scroll-snap-align:start}
+  }
+
+  /* Hero particles (CSS only) */
+  .particle{position:absolute;border-radius:50%;background:rgba(255,255,255,0.12)}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════
+     TOAST NOTIFICATION
+═══════════════════════════════════════════ -->
+<div id="toast" class="toast hidden">
+  <div style="width:36px;height:36px;background:#f0fafa;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2db0ae" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+  </div>
+  <div>
+    <p id="toast-title" style="font-weight:600;color:#0b4f4e;font-size:0.9rem"></p>
+    <p id="toast-msg" style="color:#475569;font-size:0.82rem;margin-top:2px"></p>
+  </div>
+  <button onclick="closeToast()" style="margin-left:auto;color:#94a3b8;background:none;border:none;cursor:pointer;padding:4px">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+  </button>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     PATIENT PORTAL MODAL
+═══════════════════════════════════════════ -->
+<div id="portal-overlay" class="portal-overlay hidden">
+  <div class="portal-card">
+
+    <!-- Portal Header -->
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;flex-wrap:wrap;gap:1rem">
+      <div>
+        <p style="font-size:0.78rem;letter-spacing:0.08em;text-transform:uppercase;color:#2db0ae;font-weight:600;margin-bottom:4px">Oasis Medical Clinic</p>
+        <h2 style="font-family:'Cormorant Garamond',serif;font-size:1.8rem;color:#0b4f4e;font-weight:600">Patient Portal</h2>
+      </div>
+      <button onclick="closePortal()" style="width:38px;height:38px;border-radius:50%;border:1.5px solid #e2e8f0;background:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#64748b;transition:all 0.2s">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+
+    <!-- Login / Signup Toggle -->
+    <div id="portal-auth" class="">
+      <!-- Tabs -->
+      <div style="display:flex;gap:0.5rem;background:#f1f5f9;border-radius:12px;padding:4px;margin-bottom:1.5rem;width:fit-content">
+        <button onclick="switchAuthTab('login')" id="tab-login" class="tab-btn active-tab" style="padding:0.5rem 1.5rem;border-radius:9px;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:500;font-size:0.9rem;transition:all 0.25s">Sign In</button>
+        <button onclick="switchAuthTab('signup')" id="tab-signup" class="tab-btn" style="padding:0.5rem 1.5rem;border-radius:9px;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:500;font-size:0.9rem;color:#64748b;background:transparent;transition:all 0.25s">Create Account</button>
+      </div>
+
+      <!-- Login Form -->
+      <div id="login-form">
+        <div style="display:grid;gap:1rem;max-width:420px">
+          <div>
+            <label style="font-size:0.82rem;font-weight:500;color:#475569;display:block;margin-bottom:6px">Email Address</label>
+            <input type="email" placeholder="patient@email.com" class="form-field" id="portal-email"/>
+          </div>
+          <div>
+            <label style="font-size:0.82rem;font-weight:500;color:#475569;display:block;margin-bottom:6px">Password</label>
+            <input type="password" placeholder="••••••••" class="form-field" id="portal-pass"/>
+          </div>
+          <p style="font-size:0.8rem;color:#94a3b8">Demo: any email + any password works</p>
+          <button class="btn-primary" onclick="loginPortal()" style="width:fit-content">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+            Sign In to Portal
+          </button>
+        </div>
+      </div>
+
+      <!-- Signup Form -->
+      <div id="signup-form" class="hidden">
+        <div style="display:grid;gap:1rem;max-width:420px">
+          <div>
+            <label style="font-size:0.82rem;font-weight:500;color:#475569;display:block;margin-bottom:6px">Full Name</label>
+            <input type="text" placeholder="Kwame Mensah" class="form-field" id="su-name"/>
+          </div>
+          <div>
+            <label style="font-size:0.82rem;font-weight:500;color:#475569;display:block;margin-bottom:6px">Phone Number</label>
+            <input type="tel" placeholder="+233 XX XXX XXXX" class="form-field" id="su-phone"/>
+          </div>
+          <div>
+            <label style="font-size:0.82rem;font-weight:500;color:#475569;display:block;margin-bottom:6px">Email Address</label>
+            <input type="email" placeholder="you@email.com" class="form-field" id="su-email"/>
+          </div>
+          <div>
+            <label style="font-size:0.82rem;font-weight:500;color:#475569;display:block;margin-bottom:6px">Create Password</label>
+            <input type="password" placeholder="••••••••" class="form-field" id="su-pass"/>
+          </div>
+          <button class="btn-primary" onclick="signupPortal()" style="width:fit-content">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            Create My Account
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dashboard (shown after login) -->
+    <div id="portal-dashboard" class="hidden">
+      <!-- Patient header -->
+      <div style="display:flex;align-items:center;gap:1rem;padding:1.25rem;background:linear-gradient(135deg,#f0fafa,#ccf0ef);border-radius:16px;margin-bottom:1.5rem">
+        <div style="width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#2db0ae,#0b4f4e);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:600;font-size:1.2rem;flex-shrink:0" id="avatar-initials">KM</div>
+        <div>
+          <p id="dash-name" style="font-weight:600;color:#0b4f4e;font-size:1rem">Kwame Mensah</p>
+          <p style="font-size:0.82rem;color:#64748b">Patient ID: OMC-2025-0042</p>
+        </div>
+        <button onclick="logoutPortal()" style="margin-left:auto;background:#fff;border:1.5px solid #e2e8f0;border-radius:99px;padding:0.45rem 1.1rem;font-size:0.82rem;color:#64748b;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s;white-space:nowrap">Sign Out</button>
+      </div>
+
+      <!-- Stats row -->
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:0.75rem;margin-bottom:1.5rem">
+        <div style="background:#f0fafa;border:1px solid #ccf0ef;border-radius:12px;padding:1rem;text-align:center">
+          <p id="stat-total" style="font-size:1.8rem;font-weight:600;color:#2db0ae">0</p>
+          <p style="font-size:0.78rem;color:#64748b;margin-top:2px">Appointments</p>
+        </div>
+        <div style="background:#fdfaf5;border:1px solid #f1e2c0;border-radius:12px;padding:1rem;text-align:center">
+          <p style="font-size:1.8rem;font-weight:600;color:#d4a857">1</p>
+          <p style="font-size:0.78rem;color:#64748b;margin-top:2px">Upcoming</p>
+        </div>
+        <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:1rem;text-align:center">
+          <p style="font-size:1.8rem;font-weight:600;color:#475569">0</p>
+          <p style="font-size:0.78rem;color:#64748b;margin-top:2px">Completed</p>
+        </div>
+      </div>
+
+      <!-- Appointments list -->
+      <div style="margin-bottom:1rem;display:flex;align-items:center;justify-content:space-between">
+        <h3 style="font-weight:600;color:#0b4f4e;font-size:1rem">Your Active Appointments</h3>
+        <span id="appt-count-badge" style="background:#2db0ae;color:#fff;font-size:0.72rem;padding:0.2rem 0.65rem;border-radius:99px;font-weight:600">0</span>
+      </div>
+
+      <div id="appointments-list" style="display:grid;gap:0.75rem">
+        <!-- Default appointment -->
+        <div class="appt-row">
+          <div style="display:flex;align-items:center;gap:0.75rem">
+            <div style="width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#2db0ae,#1a9593);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            </div>
+            <div>
+              <p style="font-weight:600;color:#0b4f4e;font-size:0.9rem">General Consultation</p>
+              <p style="font-size:0.78rem;color:#64748b">Dr. Akwesi Boateng</p>
+            </div>
+          </div>
+          <div style="text-align:right">
+            <p style="font-weight:500;color:#1e293b;font-size:0.85rem">Mon, 14 Jul 2025</p>
+            <p style="font-size:0.78rem;color:#64748b">10:00 AM</p>
+          </div>
+          <span class="badge" style="background:#f0fafa;color:#0f6563;border:1px solid #ccf0ef">Confirmed</span>
+        </div>
+
+        <!-- Empty state -->
+        <div id="empty-state" class="hidden" style="text-align:center;padding:2rem;color:#94a3b8">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin:0 auto 0.75rem"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          <p style="font-size:0.9rem">No appointments yet. Book one below!</p>
+        </div>
+      </div>
+
+      <!-- Quick book from portal -->
+      <div style="margin-top:1.5rem;padding:1rem;background:#fdfaf5;border:1px solid #f1e2c0;border-radius:14px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem">
+        <div>
+          <p style="font-weight:600;color:#0b4f4e;font-size:0.9rem">Need a new appointment?</p>
+          <p style="font-size:0.8rem;color:#64748b">Scroll to our booking section to schedule.</p>
+        </div>
+        <button class="btn-gold" onclick="closePortal();scrollToSection('booking')">Book Appointment →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     NAVIGATION BAR
+═══════════════════════════════════════════ -->
+<header id="navbar" class="glass fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+  <!-- Top strip -->
+  <div style="background:linear-gradient(90deg,#073a39,#0f6563);padding:0.35rem 1.5rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:0.5rem" class="hidden sm:flex">
+    <div style="display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap">
+      <a href="tel:+233243329756" style="color:rgba(255,255,255,0.9);font-size:0.78rem;display:flex;align-items:center;gap:0.4rem;text-decoration:none">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.21h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.86a16 16 0 0 0 6.29 6.29l.96-.96a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        +233 24 332 9756
+      </a>
+      <span style="color:rgba(255,255,255,0.5);font-size:0.78rem">|</span>
+      <span style="color:rgba(255,255,255,0.8);font-size:0.78rem;display:flex;align-items:center;gap:0.4rem">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        Mon–Sat: 8AM–8PM &nbsp;|&nbsp; Sun: 9AM–8PM
+      </span>
+    </div>
+    <span style="color:rgba(255,255,255,0.7);font-size:0.78rem;display:flex;align-items:center;gap:0.35rem">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+      Afienya, Greater Accra
+    </span>
+  </div>
+
+  <!-- Main nav -->
+  <nav style="display:flex;align-items:center;justify-content:space-between;padding:0.85rem 1.5rem;max-width:1200px;margin:0 auto">
+    <!-- Logo -->
+    <a href="#" style="text-decoration:none;display:flex;align-items:center;gap:0.6rem">
+      <div style="width:38px;height:38px;background:linear-gradient(135deg,#2db0ae,#0b4f4e);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+      </div>
+      <div>
+        <p style="font-family:'Cormorant Garamond',serif;font-size:1.15rem;font-weight:600;color:#0b4f4e;line-height:1">Oasis Medical</p>
+        <p style="font-size:0.65rem;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;color:#2db0ae">Clinic, Afienya</p>
+      </div>
+    </a>
+
+    <!-- Desktop links -->
+    <div class="hidden md:flex items-center gap-7">
+      <a href="#hero" class="nav-link" onclick="setActive(this)">Home</a>
+      <a href="#services" class="nav-link" onclick="setActive(this)">Services</a>
+      <a href="#events" class="nav-link" onclick="setActive(this)">Events</a>
+      <a href="#booking" class="nav-link" onclick="setActive(this)">Book Appointment</a>
+    </div>
+
+    <!-- Right actions -->
+    <div class="hidden md:flex items-center gap-3">
+      <a href="tel:+233243329756" style="text-decoration:none">
+        <button class="btn-outline" style="padding:0.5rem 1.2rem;font-size:0.85rem">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.21h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.86a16 16 0 0 0 6.29 6.29l.96-.96a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          Call Now
+        </button>
+      </a>
+      <button class="btn-primary" onclick="openPortal()" style="padding:0.55rem 1.3rem;font-size:0.85rem">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        Patient Portal
+      </button>
+    </div>
+
+    <!-- Hamburger -->
+    <button id="hamburger" onclick="toggleMobileMenu()" class="md:hidden" style="width:38px;height:38px;border-radius:10px;border:1.5px solid #e2e8f0;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#475569">
+      <svg id="ham-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      <svg id="close-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="hidden"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </nav>
+
+  <!-- Mobile Menu -->
+  <div id="mobile-menu" class="mobile-menu md:hidden" style="background:rgba(255,255,255,0.97);border-top:1px solid #e2e8f0;padding:1rem 1.5rem 1.5rem">
+    <div style="display:flex;flex-direction:column;gap:0.25rem;margin-bottom:1rem">
+      <a href="#hero" class="nav-link" onclick="closeMobileMenu()" style="padding:0.65rem 0;border-bottom:1px solid #f1f5f9">Home</a>
+      <a href="#services" class="nav-link" onclick="closeMobileMenu()" style="padding:0.65rem 0;border-bottom:1px solid #f1f5f9">Services</a>
+      <a href="#events" class="nav-link" onclick="closeMobileMenu()" style="padding:0.65rem 0;border-bottom:1px solid #f1f5f9">Events</a>
+      <a href="#booking" class="nav-link" onclick="closeMobileMenu()" style="padding:0.65rem 0;border-bottom:1px solid #f1f5f9">Book Appointment</a>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:0.65rem">
+      <a href="tel:+233243329756" style="text-decoration:none"><button class="btn-outline" style="width:100%;justify-content:center">📞 +233 24 332 9756</button></a>
+      <button class="btn-primary" onclick="openPortal();closeMobileMenu()" style="width:100%;justify-content:center">Patient Portal</button>
+    </div>
+    <!-- Hours on mobile -->
+    <div style="margin-top:1rem;padding:0.85rem;background:#f0fafa;border-radius:12px;font-size:0.82rem;color:#64748b">
+      <span style="font-weight:600;color:#0b4f4e">Hours:</span> Mon–Sat 8AM–8PM &nbsp;|&nbsp; Sun 9AM–8PM
+    </div>
+  </div>
+</header>
+
+<!-- ═══════════════════════════════════════════
+     HERO SECTION
+═══════════════════════════════════════════ -->
+<section id="hero" style="min-height:100vh;position:relative;display:flex;align-items:center;overflow:hidden">
+
+  <!-- BG -->
+  <div class="hero-bg">
+    <!-- animated orbs -->
+    <div class="orb" style="width:600px;height:600px;background:#2db0ae;top:-200px;right:-150px;animation:float 8s ease-in-out infinite"></div>
+    <div class="orb" style="width:400px;height:400px;background:#d4a857;bottom:-100px;left:-100px;animation:float 10s ease-in-out infinite reverse"></div>
+    <div class="orb" style="width:300px;height:300px;background:#073a39;top:40%;left:30%;animation:float 12s ease-in-out infinite 2s"></div>
+
+    <!-- Grid pattern overlay -->
+    <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.035) 1px,transparent 1px);background-size:50px 50px;pointer-events:none"></div>
+
+    <!-- Floating particles -->
+    <div class="particle" style="width:6px;height:6px;top:20%;left:15%;animation:float 7s ease-in-out infinite"></div>
+    <div class="particle" style="width:4px;height:4px;top:60%;left:80%;animation:float 9s ease-in-out infinite 1s"></div>
+    <div class="particle" style="width:8px;height:8px;top:80%;left:40%;animation:float 11s ease-in-out infinite 2s"></div>
+    <div class="particle" style="width:5px;height:5px;top:35%;left:65%;animation:float 6s ease-in-out infinite 0.5s"></div>
+  </div>
+
+  <!-- Hero content -->
+  <div style="position:relative;z-index:10;max-width:1200px;margin:0 auto;padding:8rem 1.5rem 4rem;width:100%">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center" class="hero-grid">
+
+      <!-- Left text -->
+      <div style="animation:slideUp 0.9s ease forwards">
+        <!-- Tag -->
+        <div style="display:inline-flex;align-items:center;gap:0.5rem;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.18);border-radius:99px;padding:0.35rem 1rem;margin-bottom:1.5rem">
+          <div style="width:8px;height:8px;background:#2db0ae;border-radius:50%;animation:pulse 2s infinite"></div>
+          <span style="color:rgba(255,255,255,0.85);font-size:0.8rem;font-weight:500">Now Accepting New Patients</span>
+        </div>
+
+        <h1 style="font-family:'Cormorant Garamond',serif;font-size:clamp(2.4rem,5vw,3.8rem);font-weight:600;color:#fff;line-height:1.12;margin-bottom:1.25rem">
+          Your Sanctuary of<br/>
+          <span style="color:#5bc9c7">Health</span> and<br/>
+          <span style="background:linear-gradient(135deg,#d4a857,#f1e2c0);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Healing</span>
+          <span style="color:#fff"> in Afienya</span>
+        </h1>
+
+        <p style="color:rgba(255,255,255,0.72);font-size:1.05rem;line-height:1.7;margin-bottom:2rem;max-width:480px">
+          Oasis Medical Clinic delivers compassionate, world-class healthcare right in the heart of Afienya — opposite Mataheko MELCOM. Your wellness is our calling.
+        </p>
+
+        <div style="display:flex;flex-wrap:wrap;gap:0.875rem;align-items:center">
+          <button class="btn-primary" onclick="scrollToSection('booking')" style="font-size:1rem;padding:0.875rem 2.2rem">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            Book an Appointment
+          </button>
+          <a href="tel:+233243329756" style="text-decoration:none">
+            <button style="background:rgba(255,255,255,0.1);border:1.5px solid rgba(255,255,255,0.3);color:#fff;border-radius:99px;padding:0.875rem 2rem;font-family:'DM Sans',sans-serif;font-size:1rem;font-weight:500;cursor:pointer;transition:all 0.3s;display:flex;align-items:center;gap:0.5rem" onmouseover="this.style.background='rgba(255,255,255,0.2)'" onmouseout="this.style.background='rgba(255,255,255,0.1)'">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.21h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.86a16 16 0 0 0 6.29 6.29l.96-.96a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+              Call Us Now
+            </button>
+          </a>
+        </div>
+
+        <!-- Trust badges -->
+        <div style="display:flex;flex-wrap:wrap;gap:1.5rem;margin-top:2.5rem">
+          <div style="display:flex;align-items:center;gap:0.5rem">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5bc9c7" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            <span style="color:rgba(255,255,255,0.75);font-size:0.83rem">GHS Certified</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:0.5rem">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5bc9c7" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            <span style="color:rgba(255,255,255,0.75);font-size:0.83rem">NHIA Accredited</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:0.5rem">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5bc9c7" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            <span style="color:rgba(255,255,255,0.75);font-size:0.83rem">Expert Medical Team</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right floating cards -->
+      <div style="position:relative;display:flex;flex-direction:column;gap:1rem;animation:slideUp 1.1s ease 0.2s forwards;opacity:0" class="hidden md:flex">
+        <!-- Main card -->
+        <div class="glass-card" style="border-radius:20px;padding:1.5rem">
+          <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1rem">
+            <div style="width:42px;height:42px;background:linear-gradient(135deg,#2db0ae,#0b4f4e);border-radius:12px;display:flex;align-items:center;justify-content:center">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+            </div>
+            <div>
+              <p style="font-weight:600;color:#0b4f4e;font-size:0.95rem">Emergency & Walk-In</p>
+              <p style="font-size:0.78rem;color:#64748b">Priority care, always ready</p>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.5rem">
+            <div style="background:#f0fafa;border-radius:10px;padding:0.75rem;text-align:center">
+              <p style="font-size:1.4rem;font-weight:600;color:#2db0ae">4.9★</p>
+              <p style="font-size:0.7rem;color:#64748b">Patient Rating</p>
+            </div>
+            <div style="background:#fdfaf5;border-radius:10px;padding:0.75rem;text-align:center">
+              <p style="font-size:1.4rem;font-weight:600;color:#d4a857">12+</p>
+              <p style="font-size:0.7rem;color:#64748b">Yrs Experience</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Availability card -->
+        <div class="glass-card" style="border-radius:16px;padding:1.1rem;display:flex;align-items:center;gap:0.875rem;animation:float 5s ease-in-out infinite">
+          <div style="width:12px;height:12px;background:#22c55e;border-radius:50%;flex-shrink:0;box-shadow:0 0 0 3px rgba(34,197,94,0.25)"></div>
+          <div>
+            <p style="font-weight:600;color:#0b4f4e;font-size:0.9rem">Clinic Open Now</p>
+            <p style="font-size:0.78rem;color:#64748b">Accepting walk-ins & booked patients</p>
+          </div>
+        </div>
+
+        <!-- Quick contact -->
+        <div class="glass-card" style="border-radius:16px;padding:1.1rem;display:flex;align-items:center;gap:0.875rem">
+          <div style="width:40px;height:40px;background:linear-gradient(135deg,#d4a857,#c08d3a);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.21h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.86a16 16 0 0 0 6.29 6.29l.96-.96a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          </div>
+          <div>
+            <p style="font-weight:600;color:#0b4f4e;font-size:0.9rem">+233 24 332 9756</p>
+            <p style="font-size:0.78rem;color:#64748b">Tap to call anytime</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scroll indicator -->
+    <div style="position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:0.4rem;opacity:0.6">
+      <span style="color:#fff;font-size:0.72rem;letter-spacing:0.08em;text-transform:uppercase">Explore</span>
+      <div style="width:1px;height:40px;background:linear-gradient(to bottom,rgba(255,255,255,0.6),transparent)"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     SERVICES SECTION
+═══════════════════════════════════════════ -->
+<section id="services" style="padding:6rem 1.5rem;background:#fff">
+  <div style="max-width:1200px;margin:0 auto">
+    <!-- Header -->
+    <div class="reveal" style="text-align:center;margin-bottom:3.5rem">
+      <span style="display:inline-block;background:#f0fafa;color:#2db0ae;font-size:0.78rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;padding:0.35rem 1.1rem;border-radius:99px;border:1px solid #ccf0ef;margin-bottom:1rem">Our Departments</span>
+      <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,4vw,2.8rem);color:#0b4f4e;font-weight:600;margin-bottom:0.875rem">Comprehensive Care Under One Roof</h2>
+      <p style="color:#64748b;max-width:540px;margin:0 auto;line-height:1.7">From routine checkups to specialized care, our expert team is here for every step of your health journey.</p>
+    </div>
+
+    <div class="reveal" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.25rem">
+
+      <!-- Service cards -->
+      <div style="background:#fff;border:1px solid #e2e8f0;border-radius:18px;padding:1.5rem;transition:all 0.3s ease;cursor:default" onmouseover="this.style.borderColor='#2db0ae';this.style.transform='translateY(-4px)';this.style.boxShadow='0 12px 32px rgba(15,101,99,0.1)'" onmouseout="this.style.borderColor='#e2e8f0';this.style.transform='';this.style.boxShadow=''">
+        <div class="svc-icon" style="margin-bottom:1rem"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2db0ae" stroke-width="1.8"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div>
+        <h3 style="font-weight:600;color:#0b4f4e;margin-bottom:0.4rem">General Consultation</h3>
+        <p style="font-size:0.83rem;color:#64748b;line-height:1.6">Comprehensive health assessments by experienced physicians for all ages.</p>
+      </div>
+
+      <div style="background:#fff;border:1px solid #e2e8f0;border-radius:18px;padding:1.5rem;transition:all 0.3s ease;cursor:default" onmouseover="this.style.borderColor='#2db0ae';this.style.transform='translateY(-4px)';this.style.boxShadow='0 12px 32px rgba(15,101,99,0.1)'" onmouseout="this.style.borderColor='#e2e8f0';this.style.transform='';this.style.boxShadow=''">
+        <div class="svc-icon" style="margin-bottom:1rem"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2db0ae" stroke-width="1.8"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+        <h3 style="font-weight:600;color:#0b4f4e;margin-bottom:0.4rem">Pediatrics</h3>
+        <p style="font-size:0.83rem;color:#64748b;line-height:1.6">Dedicated child health services — immunizations, growth monitoring, and care.</p>
+      </div>
+
+      <div style="background:#fff;border:1px solid #e2e8f0;border-radius:18px;padding:1.5rem;transition:all 0.3s ease;cursor:default" onmouseover="this.style.borderColor='#2db0ae';this.style.transform='translateY(-4px)';this.style.boxShadow='0 12px 32px rgba(15,101,99,0.1)'" onmouseout="this.style.borderColor='#e2e8f0';this.style.transform='';this.style.boxShadow=''">
+        <div class="svc-icon" style="margin-bottom:1rem"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2db0ae" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg></div>
+        <h3 style="font-weight:600;color:#0b4f4e;margin-bottom:0.4rem">O&G / Maternity</h3>
+        <p style="font-size:0.83rem;color:#64748b;line-height:1.6">Full obstetrics & gynaecology care — antenatal, postnatal, and family planning.</p>
+      </div>
+
+      <div style="background:#fff;border:1px solid #e2e8f0;border-radius:18px;padding:1.5rem;transition:all 0.3s ease;cursor:default" onmouseover="this.style.borderColor='#2db0ae';this.style.transform='translateY(-4px)';this.style.boxShadow='0 12px 32px rgba(15,101,99,0.1)'" onmouseout="this.style.borderColor='#e2e8f0';this.style.transform='';this.style.boxShadow=''">
+        <div class="svc-icon" style="margin-bottom:1rem"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2db0ae" stroke-width="1.8"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
+        <h3 style="font-weight:600;color:#0b4f4e;margin-bottom:0.4rem">Diagnostics & Lab</h3>
+        <p style="font-size:0.83rem;color:#64748b;line-height:1.6">On-site lab testing, X-rays, and ultrasound for fast, accurate diagnostics.</p>
+      </div>
+
+      <div style="background:#fff;border:1px solid #e2e8f0;border-radius:18px;padding:1.5rem;transition:all 0.3s ease;cursor:default" onmouseover="this.style.borderColor='#2db0ae';this.style.transform='translateY(-4px)';this.style.boxShadow='0 12px 32px rgba(15,101,99,0.1)'" onmouseout="this.style.borderColor='#e2e8f0';this.style.transform='';this.style.boxShadow=''">
+        <div class="svc-icon" style="margin-bottom:1rem"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2db0ae" stroke-width="1.8"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
+        <h3 style="font-weight:600;color:#0b4f4e;margin-bottom:0.4rem">Chronic Disease Care</h3>
+        <p style="font-size:0.83rem;color:#64748b;line-height:1.6">Management plans for diabetes, hypertension, and other long-term conditions.</p>
+      </div>
+
+      <div style="background:linear-gradient(135deg,#f0fafa,#ccf0ef);border:1px solid #ccf0ef;border-radius:18px;padding:1.5rem;cursor:default">
+        <div style="width:52px;height:52px;border-radius:14px;background:#2db0ae;display:flex;align-items:center;justify-content:center;margin-bottom:1rem">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        </div>
+        <h3 style="font-weight:600;color:#0b4f4e;margin-bottom:0.4rem">NHIA Accepted</h3>
+        <p style="font-size:0.83rem;color:#0f6563;line-height:1.6">We proudly accept National Health Insurance for qualifying services. Quality care made accessible.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     ABOUT & LOCATION SECTION
+═══════════════════════════════════════════ -->
+<section id="about" style="padding:6rem 1.5rem;background:#f8fafc">
+  <div style="max-width:1200px;margin:0 auto">
+    <div class="reveal" style="display:grid;grid-template-columns:1fr 1fr;gap:3.5rem;align-items:center" id="about-grid">
+
+      <!-- Left: About text -->
+      <div>
+        <span style="display:inline-block;background:#fdfaf5;color:#d4a857;font-size:0.78rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;padding:0.35rem 1.1rem;border-radius:99px;border:1px solid #f1e2c0;margin-bottom:1rem">Our Story</span>
+        <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,3.5vw,2.5rem);color:#0b4f4e;font-weight:600;line-height:1.2;margin-bottom:1.25rem">A Landmark of Healthcare in the Afienya Community</h2>
+        <p style="color:#475569;line-height:1.75;margin-bottom:1.25rem;font-size:0.97rem">
+          Founded with a deep commitment to community health, Oasis Medical Clinic has served the Afienya area for over a decade — offering accessible, high-quality medical care to families across the Greater Accra Region.
+        </p>
+        <p style="color:#475569;line-height:1.75;margin-bottom:2rem;font-size:0.97rem">
+          We blend modern medical technology with warm, personalized care — because every patient deserves to feel seen, heard, and healed.
+        </p>
+
+        <!-- Pillars -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+          <div style="display:flex;align-items:flex-start;gap:0.625rem">
+            <div style="width:32px;height:32px;background:#f0fafa;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2db0ae" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <div>
+              <p style="font-weight:600;color:#0b4f4e;font-size:0.9rem">Compassionate Team</p>
+              <p style="font-size:0.78rem;color:#94a3b8">Experienced, caring doctors & nurses</p>
+            </div>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:0.625rem">
+            <div style="width:32px;height:32px;background:#f0fafa;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2db0ae" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <div>
+              <p style="font-weight:600;color:#0b4f4e;font-size:0.9rem">Modern Equipment</p>
+              <p style="font-size:0.78rem;color:#94a3b8">Up-to-date diagnostic tools</p>
+            </div>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:0.625rem">
+            <div style="width:32px;height:32px;background:#f0fafa;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2db0ae" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <div>
+              <p style="font-weight:600;color:#0b4f4e;font-size:0.9rem">Community Rooted</p>
+              <p style="font-size:0.78rem;color:#94a3b8">Built for Afienya, serving all</p>
+            </div>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:0.625rem">
+            <div style="width:32px;height:32px;background:#f0fafa;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2db0ae" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <div>
+              <p style="font-weight:600;color:#0b4f4e;font-size:0.9rem">Affordable Care</p>
+              <p style="font-size:0.78rem;color:#94a3b8">NHIA & self-pay options</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Location card -->
+      <div class="location-accent" style="border-radius:24px;overflow:hidden">
+        <!-- Map embed placeholder -->
+        <div style="position:relative;height:240px;background:linear-gradient(135deg,#073a39,#0f6563);overflow:hidden">
+          <!-- Decorative map-like grid -->
+          <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.06) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.06) 1px,transparent 1px);background-size:30px 30px"></div>
+          <!-- Road lines -->
+          <div style="position:absolute;top:50%;left:0;right:0;height:3px;background:rgba(255,255,255,0.12);transform:translateY(-50%)"></div>
+          <div style="position:absolute;top:0;bottom:0;left:50%;width:3px;background:rgba(255,255,255,0.12);transform:translateX(-50%)"></div>
+          <!-- Location pin -->
+          <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center">
+            <div style="width:48px;height:48px;background:#2db0ae;border-radius:50% 50% 50% 0;transform:rotate(-45deg);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(45,176,174,0.4)">
+              <div style="transform:rotate(45deg)">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+              </div>
+            </div>
+            <div style="width:2px;height:16px;background:rgba(255,255,255,0.4);margin-top:2px"></div>
+          </div>
+          <!-- Label -->
+          <div style="position:absolute;bottom:16px;left:50%;transform:translateX(-50%);background:rgba(255,255,255,0.15);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.2);border-radius:99px;padding:0.35rem 1rem;white-space:nowrap">
+            <span style="color:#fff;font-size:0.78rem;font-weight:500">Afienya, Greater Accra</span>
+          </div>
+          <!-- Open Maps button -->
+          <a href="https://maps.app.goo.gl/uKgLKNRSiEwfm4Re7" target="_blank" style="position:absolute;top:12px;right:12px;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.25);border-radius:99px;padding:0.35rem 0.875rem;text-decoration:none;display:flex;align-items:center;gap:0.4rem">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            <span style="color:#fff;font-size:0.75rem;font-weight:500">Open in Maps</span>
+          </a>
+        </div>
+
+        <!-- Location details -->
+        <div style="padding:1.5rem">
+          <h3 style="font-weight:600;color:#0b4f4e;font-size:1.05rem;margin-bottom:1rem">Find Us Easily</h3>
+          <div style="display:flex;flex-direction:column;gap:0.75rem">
+            <div style="display:flex;align-items:flex-start;gap:0.75rem">
+              <div style="width:34px;height:34px;background:#f0fafa;border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2db0ae" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              </div>
+              <div>
+                <p style="font-weight:600;color:#0b4f4e;font-size:0.88rem">Address</p>
+                <p style="font-size:0.82rem;color:#64748b;line-height:1.5">Opposite Mataheko MELCOM,<br/>Afienya, Greater Accra Region, Ghana</p>
+              </div>
+            </div>
+            <div style="display:flex;align-items:flex-start;gap:0.75rem">
+              <div style="width:34px;height:34px;background:#f0fafa;border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2db0ae" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              </div>
+              <div>
+                <p style="font-weight:600;color:#0b4f4e;font-size:0.88rem">Opening Hours</p>
+                <p style="font-size:0.82rem;color:#64748b;line-height:1.5">Monday – Saturday: 8:00 AM – 8:00 PM<br/>Sunday: 9:00 AM – 8:00 PM</p>
+              </div>
+            </div>
+            <div style="display:flex;align-items:flex-start;gap:0.75rem">
+              <div style="width:34px;height:34px;background:#f0fafa;border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2db0ae" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.21h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.86a16 16 0 0 0 6.29 6.29l.96-.96a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+              </div>
+              <div>
+                <p style="font-weight:600;color:#0b4f4e;font-size:0.88rem">Phone</p>
+                <a href="tel:+233243329756" style="font-size:0.88rem;color:#2db0ae;font-weight:500;text-decoration:none">+233 24 332 9756</a>
+              </div>
+            </div>
+          </div>
+          <a href="https://maps.app.goo.gl/uKgLKNRSiEwfm4Re7" target="_blank" style="text-decoration:none">
+            <button class="btn-primary" style="width:100%;justify-content:center;margin-top:1.25rem">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              Get Directions on Google Maps
+            </button>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     COMMUNITY EVENTS SECTION
+═══════════════════════════════════════════ -->
+<section id="events" style="padding:6rem 1.5rem;background:#fff">
+  <div style="max-width:1200px;margin:0 auto">
+
+    <div class="reveal" style="display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:1.5rem;margin-bottom:3rem">
+      <div>
+        <span style="display:inline-block;background:#f0fafa;color:#2db0ae;font-size:0.78rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;padding:0.35rem 1.1rem;border-radius:99px;border:1px solid #ccf0ef;margin-bottom:1rem">Community Outreach</span>
+        <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,3.5vw,2.5rem);color:#0b4f4e;font-weight:600">Upcoming Community Events</h2>
+        <p style="color:#64748b;margin-top:0.5rem;max-width:480px;line-height:1.6">Bringing health closer to you — free screenings, drives, and wellness programmes for the Afienya community.</p>
+      </div>
+      <button class="btn-outline" onclick="showToast('Events Calendar','Full events schedule coming soon — stay tuned!')">View All Events →</button>
+    </div>
+
+    <div class="events-grid reveal" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.5rem">
+
+      <!-- Event 1 -->
+      <div class="event-card">
+        <div style="height:8px;background:linear-gradient(90deg,#2db0ae,#5bc9c7)"></div>
+        <div style="padding:1.75rem">
+          <!-- Date badge -->
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem">
+            <div style="display:flex;align-items:center;gap:0.875rem">
+              <div style="background:linear-gradient(135deg,#f0fafa,#ccf0ef);border-radius:14px;padding:0.625rem 0.875rem;text-align:center;min-width:56px">
+                <p style="font-size:1.5rem;font-weight:600;color:#2db0ae;line-height:1">19</p>
+                <p style="font-size:0.7rem;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:#64748b">Jul</p>
+              </div>
+              <div>
+                <p style="font-weight:600;color:#0b4f4e;font-size:0.95rem">Saturday, 2025</p>
+                <p style="font-size:0.8rem;color:#64748b">8:00 AM – 4:00 PM</p>
+              </div>
+            </div>
+            <span class="badge" style="background:#f0fafa;color:#0f6563;border:1px solid #ccf0ef;font-size:0.7rem">Free Entry</span>
+          </div>
+
+          <h3 style="font-weight:700;color:#0b4f4e;font-size:1.1rem;margin-bottom:0.625rem">Afienya Community Free Health Screening Weekend</h3>
+          <p style="font-size:0.85rem;color:#64748b;line-height:1.65;margin-bottom:1.25rem">Join us for a full day of complimentary health screenings — blood pressure, blood sugar, BMI, eye tests, and general wellness consultations for all age groups. No appointment needed.</p>
+
+          <div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:1.25rem;background:#f8fafc;border-radius:10px;padding:0.625rem 0.875rem">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2db0ae" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            <span style="font-size:0.8rem;color:#475569">Oasis Medical Clinic Grounds, Afienya</span>
+          </div>
+
+          <div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:1.5rem">
+            <div style="display:flex">
+              <div style="width:24px;height:24px;border-radius:50%;background:#2db0ae;border:2px solid #fff;display:flex;align-items:center;justify-content:center"><span style="color:#fff;font-size:0.6rem;font-weight:600">AK</span></div>
+              <div style="width:24px;height:24px;border-radius:50%;background:#0b4f4e;border:2px solid #fff;margin-left:-6px;display:flex;align-items:center;justify-content:center"><span style="color:#fff;font-size:0.6rem;font-weight:600">NA</span></div>
+              <div style="width:24px;height:24px;border-radius:50%;background:#d4a857;border:2px solid #fff;margin-left:-6px;display:flex;align-items:center;justify-content:center"><span style="color:#fff;font-size:0.6rem;font-weight:600">+8</span></div>
+            </div>
+            <span style="font-size:0.78rem;color:#94a3b8">Attending so far</span>
+          </div>
+
+          <button class="btn-primary" onclick="registerEvent('Afienya Community Free Health Screening')" style="width:100%;justify-content:center">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
+            Register for Free
+          </button>
+        </div>
+      </div>
+
+      <!-- Event 2 -->
+      <div class="event-card">
+        <div style="height:8px;background:linear-gradient(90deg,#c0130e,#e85d57)"></div>
+        <div style="padding:1.75rem">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem">
+            <div style="display:flex;align-items:center;gap:0.875rem">
+              <div style="background:linear-gradient(135deg,#fcebeb,#f7c1c1);border-radius:14px;padding:0.625rem 0.875rem;text-align:center;min-width:56px">
+                <p style="font-size:1.5rem;font-weight:600;color:#c0130e;line-height:1">02</p>
+                <p style="font-size:0.7rem;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:#64748b">Aug</p>
+              </div>
+              <div>
+                <p style="font-weight:600;color:#0b4f4e;font-size:0.95rem">Saturday, 2025</p>
+                <p style="font-size:0.8rem;color:#64748b">9:00 AM – 5:00 PM</p>
+              </div>
+            </div>
+            <span class="badge" style="background:#fcebeb;color:#a32d2d;border:1px solid #f7c1c1;font-size:0.7rem">Annual Drive</span>
+          </div>
+
+          <h3 style="font-weight:700;color:#0b4f4e;font-size:1.1rem;margin-bottom:0.625rem">Oasis Annual Blood Donation Drive</h3>
+          <p style="font-size:0.85rem;color:#64748b;line-height:1.65;margin-bottom:1.25rem">Every donation saves up to three lives. Join us for our annual blood drive in partnership with the National Blood Service Ghana. Donors receive refreshments and a wellness check as a token of our appreciation.</p>
+
+          <div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:1.25rem;background:#fcebeb;border-radius:10px;padding:0.625rem 0.875rem">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#c0130e" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            <span style="font-size:0.8rem;color:#a32d2d;font-weight:500">Oasis Medical Clinic, Afienya (Opp. Mataheko MELCOM)</span>
+          </div>
+
+          <div style="background:#fdfaf5;border:1px solid #f1e2c0;border-radius:10px;padding:0.75rem 1rem;margin-bottom:1.5rem">
+            <p style="font-size:0.8rem;color:#a37330;font-weight:500;display:flex;align-items:center;gap:0.4rem">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+              Eligible donors: 18–65 yrs, weight ≥50 kg, in good health.
+            </p>
+          </div>
+
+          <button style="width:100%;background:linear-gradient(135deg,#c0130e,#a32d2d);color:#fff;font-weight:500;border-radius:99px;padding:0.75rem 2rem;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;align-items:center;justify-content:center;gap:0.5rem;transition:all 0.3s;font-size:0.95rem" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 24px rgba(192,19,14,0.3)'" onmouseout="this.style.transform='';this.style.boxShadow=''" onclick="registerEvent('Oasis Annual Blood Donation Drive')">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            Pledge to Donate Blood
+          </button>
+        </div>
+      </div>
+
+      <!-- Event 3 -->
+      <div class="event-card">
+        <div style="height:8px;background:linear-gradient(90deg,#d4a857,#f1e2c0)"></div>
+        <div style="padding:1.75rem">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem">
+            <div style="display:flex;align-items:center;gap:0.875rem">
+              <div style="background:linear-gradient(135deg,#fdfaf5,#faeeda);border-radius:14px;padding:0.625rem 0.875rem;text-align:center;min-width:56px">
+                <p style="font-size:1.5rem;font-weight:600;color:#d4a857;line-height:1">16</p>
+                <p style="font-size:0.7rem;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:#64748b">Aug</p>
+              </div>
+              <div>
+                <p style="font-weight:600;color:#0b4f4e;font-size:0.95rem">Saturday, 2025</p>
+                <p style="font-size:0.8rem;color:#64748b">10:00 AM – 2:00 PM</p>
+              </div>
+            </div>
+            <span class="badge" style="background:#fdfaf5;color:#a37330;border:1px solid #f1e2c0;font-size:0.7rem">Mothers Only</span>
+          </div>
+
+          <h3 style="font-weight:700;color:#0b4f4e;font-size:1.1rem;margin-bottom:0.625rem">Maternal & Child Health Awareness Day</h3>
+          <p style="font-size:0.85rem;color:#64748b;line-height:1.65;margin-bottom:1.25rem">A special awareness day focused on prenatal care, postnatal support, child immunization, and family nutrition. Free consultations with our O&G specialists and pediatricians.</p>
+
+          <div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:1.25rem;background:#f8fafc;border-radius:10px;padding:0.625rem 0.875rem">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#d4a857" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            <span style="font-size:0.8rem;color:#475569">Oasis Medical Clinic, Afienya</span>
+          </div>
+
+          <div style="margin-bottom:1.5rem;display:flex;flex-wrap:wrap;gap:0.5rem">
+            <span style="background:#f0fafa;color:#0f6563;border:1px solid #ccf0ef;border-radius:99px;padding:0.2rem 0.65rem;font-size:0.75rem;font-weight:500">Free Screening</span>
+            <span style="background:#fdfaf5;color:#a37330;border:1px solid #f1e2c0;border-radius:99px;padding:0.2rem 0.65rem;font-size:0.75rem;font-weight:500">Expert Talks</span>
+            <span style="background:#fcebeb;color:#a32d2d;border:1px solid #f7c1c1;border-radius:99px;padding:0.2rem 0.65rem;font-size:0.75rem;font-weight:500">Refreshments</span>
+          </div>
+
+          <button class="btn-gold" onclick="registerEvent('Maternal & Child Health Awareness Day')" style="width:100%;justify-content:center;display:flex;align-items:center;gap:0.5rem;padding:0.75rem 2rem;font-size:0.95rem">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
+            Register for Event
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     BOOKING SECTION
+═══════════════════════════════════════════ -->
+<section id="booking" style="padding:6rem 1.5rem;background:linear-gradient(135deg,#f8fafc,#f0fafa)">
+  <div style="max-width:1100px;margin:0 auto">
+
+    <div class="reveal" style="display:grid;grid-template-columns:1fr 1.6fr;gap:4rem;align-items:start" id="booking-grid">
+
+      <!-- Left: Info panel -->
+      <div style="position:sticky;top:6rem">
+        <span style="display:inline-block;background:#fff;color:#2db0ae;font-size:0.78rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;padding:0.35rem 1.1rem;border-radius:99px;border:1px solid #ccf0ef;margin-bottom:1rem">Book Online</span>
+        <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,3.5vw,2.6rem);color:#0b4f4e;font-weight:600;line-height:1.2;margin-bottom:1rem">Schedule Your Visit with Ease</h2>
+        <p style="color:#64748b;line-height:1.7;margin-bottom:2rem">Fill in the form and our reception team will confirm your appointment within 30 minutes during working hours.</p>
+
+        <!-- Info items -->
+        <div style="display:flex;flex-direction:column;gap:1rem;margin-bottom:2rem">
+          <div style="display:flex;align-items:center;gap:0.875rem;background:#fff;border-radius:14px;padding:1rem 1.25rem">
+            <div style="width:38px;height:38px;background:#f0fafa;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2db0ae" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </div>
+            <div>
+              <p style="font-weight:600;color:#0b4f4e;font-size:0.88rem">Confirmation in 30 min</p>
+              <p style="font-size:0.78rem;color:#94a3b8">During clinic hours</p>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:0.875rem;background:#fff;border-radius:14px;padding:1rem 1.25rem">
+            <div style="width:38px;height:38px;background:#f0fafa;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2db0ae" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.21h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.86a16 16 0 0 0 6.29 6.29l.96-.96a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            </div>
+            <div>
+              <p style="font-weight:600;color:#0b4f4e;font-size:0.88rem">Or call directly</p>
+              <a href="tel:+233243329756" style="font-size:0.88rem;color:#2db0ae;font-weight:500;text-decoration:none">+233 24 332 9756</a>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:0.875rem;background:#fff;border-radius:14px;padding:1rem 1.25rem">
+            <div style="width:38px;height:38px;background:#fdfaf5;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#d4a857" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </div>
+            <div>
+              <p style="font-weight:600;color:#0b4f4e;font-size:0.88rem">NHIA & Cash Accepted</p>
+              <p style="font-size:0.78rem;color:#94a3b8">Flexible payment options</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Departments legend -->
+        <div style="background:#fff;border-radius:16px;padding:1.25rem;border:1px solid #e2e8f0">
+          <p style="font-weight:600;color:#0b4f4e;font-size:0.88rem;margin-bottom:0.75rem">Available Departments</p>
+          <div style="display:flex;flex-wrap:wrap;gap:0.5rem">
+            <span style="background:#f0fafa;color:#0f6563;border:1px solid #ccf0ef;border-radius:99px;padding:0.2rem 0.65rem;font-size:0.75rem">General</span>
+            <span style="background:#f0fafa;color:#0f6563;border:1px solid #ccf0ef;border-radius:99px;padding:0.2rem 0.65rem;font-size:0.75rem">Pediatrics</span>
+            <span style="background:#f0fafa;color:#0f6563;border:1px solid #ccf0ef;border-radius:99px;padding:0.2rem 0.65rem;font-size:0.75rem">O&G</span>
+            <span style="background:#f0fafa;color:#0f6563;border:1px solid #ccf0ef;border-radius:99px;padding:0.2rem 0.65rem;font-size:0.75rem">Diagnostics</span>
+            <span style="background:#f0fafa;color:#0f6563;border:1px solid #ccf0ef;border-radius:99px;padding:0.2rem 0.65rem;font-size:0.75rem">Chronic Care</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Booking form -->
+      <div style="background:#fff;border-radius:24px;border:1px solid #e2e8f0;padding:2.5rem;box-shadow:0 4px 24px rgba(15,101,99,0.06)">
+        <h3 style="font-weight:700;color:#0b4f4e;font-size:1.2rem;margin-bottom:0.375rem">Appointment Request</h3>
+        <p style="font-size:0.85rem;color:#94a3b8;margin-bottom:2rem">All fields required. We'll confirm via phone or email.</p>
+
+        <div style="display:grid;gap:1.25rem">
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem" id="form-name-phone">
+            <div>
+              <label style="font-size:0.82rem;font-weight:500;color:#475569;display:block;margin-bottom:6px">Full Name *</label>
+              <input type="text" id="f-name" class="form-field" placeholder="Kwame Mensah" />
+            </div>
+            <div>
+              <label style="font-size:0.82rem;font-weight:500;color:#475569;display:block;margin-bottom:6px">Phone Number *</label>
+              <input type="tel" id="f-phone" class="form-field" placeholder="+233 XX XXX XXXX" />
+            </div>
+          </div>
+
+          <div>
+            <label style="font-size:0.82rem;font-weight:500;color:#475569;display:block;margin-bottom:6px">Email Address *</label>
+            <input type="email" id="f-email" class="form-field" placeholder="kwame@example.com" />
+          </div>
+
+          <div>
+            <label style="font-size:0.82rem;font-weight:500;color:#475569;display:block;margin-bottom:6px">Medical Department *</label>
+            <select id="f-dept" class="form-field">
+              <option value="" disabled selected>Select a department…</option>
+              <option>General Consultation</option>
+              <option>Pediatrics</option>
+              <option>Obstetrics & Gynaecology (O&G)</option>
+              <option>Diagnostics & Laboratory</option>
+              <option>Chronic Disease Management</option>
+              <option>Emergency / Walk-In</option>
+            </select>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+            <div>
+              <label style="font-size:0.82rem;font-weight:500;color:#475569;display:block;margin-bottom:6px">Preferred Date *</label>
+              <input type="date" id="f-date" class="form-field" />
+            </div>
+            <div>
+              <label style="font-size:0.82rem;font-weight:500;color:#475569;display:block;margin-bottom:6px">Preferred Time *</label>
+              <select id="f-time" class="form-field">
+                <option value="" disabled selected>Select time…</option>
+                <option>8:00 AM</option>
+                <option>9:00 AM</option>
+                <option>10:00 AM</option>
+                <option>11:00 AM</option>
+                <option>12:00 PM</option>
+                <option>1:00 PM</option>
+                <option>2:00 PM</option>
+                <option>3:00 PM</option>
+                <option>4:00 PM</option>
+                <option>5:00 PM</option>
+                <option>6:00 PM</option>
+                <option>7:00 PM</option>
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label style="font-size:0.82rem;font-weight:500;color:#475569;display:block;margin-bottom:6px">Additional Notes (Optional)</label>
+            <textarea id="f-notes" class="form-field" rows="3" placeholder="Briefly describe your symptoms or any special requests…"></textarea>
+          </div>
+
+          <!-- NHIA toggle -->
+          <div style="display:flex;align-items:center;gap:0.75rem;background:#fdfaf5;border:1px solid #f1e2c0;border-radius:12px;padding:0.875rem 1rem">
+            <input type="checkbox" id="f-nhia" style="width:18px;height:18px;accent-color:#2db0ae;cursor:pointer" />
+            <label for="f-nhia" style="font-size:0.85rem;color:#475569;cursor:pointer;font-weight:500">I am an NHIA (National Health Insurance) subscriber</label>
+          </div>
+
+          <button class="btn-primary" onclick="submitBooking()" id="submit-btn" style="width:100%;justify-content:center;font-size:1rem;padding:0.9rem">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            Confirm My Appointment
+          </button>
+
+          <p style="font-size:0.78rem;color:#94a3b8;text-align:center;line-height:1.5">
+            By submitting, you agree to our Privacy Policy. We never share your data. Your information is confidential and protected.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     TESTIMONIALS STRIP
+═══════════════════════════════════════════ -->
+<section style="padding:5rem 1.5rem;background:#0b4f4e;overflow:hidden">
+  <div style="max-width:1200px;margin:0 auto">
+    <div class="reveal" style="text-align:center;margin-bottom:3rem">
+      <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,3vw,2.4rem);color:#fff;font-weight:600">What Our Patients Say</h2>
+      <p style="color:rgba(255,255,255,0.6);margin-top:0.5rem">Real words from our Afienya community</p>
+    </div>
+    <div class="reveal" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.25rem">
+
+      <div style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);border-radius:18px;padding:1.5rem">
+        <div style="display:flex;gap:2px;margin-bottom:1rem">
+          <span style="color:#d4a857;font-size:1rem">★★★★★</span>
+        </div>
+        <p style="color:rgba(255,255,255,0.82);font-size:0.9rem;line-height:1.7;margin-bottom:1.25rem">"The doctors at Oasis are so thorough and caring. I came in for a routine check and left feeling genuinely cared for. Best clinic in Afienya!"</p>
+        <div style="display:flex;align-items:center;gap:0.625rem">
+          <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#2db0ae,#0b4f4e);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:600;font-size:0.8rem">AB</div>
+          <div>
+            <p style="color:#fff;font-weight:600;font-size:0.85rem">Abena Boateng</p>
+            <p style="color:rgba(255,255,255,0.5);font-size:0.75rem">Afienya Resident</p>
+          </div>
+        </div>
+      </div>
+
+      <div style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);border-radius:18px;padding:1.5rem">
+        <div style="display:flex;gap:2px;margin-bottom:1rem">
+          <span style="color:#d4a857;font-size:1rem">★★★★★</span>
+        </div>
+        <p style="color:rgba(255,255,255,0.82);font-size:0.9rem;line-height:1.7;margin-bottom:1.25rem">"My delivery was handled with so much professionalism and warmth. The O&G team made me feel safe and confident. Thank you Oasis Medical!"</p>
+        <div style="display:flex;align-items:center;gap:0.625rem">
+          <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#d4a857,#c08d3a);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:600;font-size:0.8rem">NA</div>
+          <div>
+            <p style="color:#fff;font-weight:600;font-size:0.85rem">Naomi Asante</p>
+            <p style="color:rgba(255,255,255,0.5);font-size:0.75rem">Patient, Maternity Ward</p>
+          </div>
+        </div>
+      </div>
+
+      <div style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);border-radius:18px;padding:1.5rem">
+        <div style="display:flex;gap:2px;margin-bottom:1rem">
+          <span style="color:#d4a857;font-size:1rem">★★★★★</span>
+        </div>
+        <p style="color:rgba(255,255,255,0.82);font-size:0.9rem;line-height:1.7;margin-bottom:1.25rem">"Convenient location, fast lab results, and a team that actually listens. I manage my diabetes at Oasis and my condition has never been better controlled."</p>
+        <div style="display:flex;align-items:center;gap:0.625rem">
+          <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#5bc9c7,#2db0ae);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:600;font-size:0.8rem">KO</div>
+          <div>
+            <p style="color:#fff;font-weight:600;font-size:0.85rem">Kwabena Ofori</p>
+            <p style="color:rgba(255,255,255,0.5);font-size:0.75rem">Chronic Care Patient</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     FOOTER
+═══════════════════════════════════════════ -->
+<footer style="background:#073a39;padding:4rem 1.5rem 2rem">
+  <div style="max-width:1200px;margin:0 auto">
+    <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1.2fr;gap:2.5rem;margin-bottom:3rem;flex-wrap:wrap" id="footer-grid">
+
+      <!-- Brand -->
+      <div>
+        <div style="display:flex;align-items:center;gap:0.6rem;margin-bottom:1.25rem">
+          <div style="width:38px;height:38px;background:linear-gradient(135deg,#2db0ae,#1a9593);border-radius:10px;display:flex;align-items:center;justify-content:center">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+          </div>
+          <div>
+            <p style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:600;color:#fff">Oasis Medical Clinic</p>
+            <p style="font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;color:#5bc9c7">Afienya, Ghana</p>
+          </div>
+        </div>
+        <p style="color:rgba(255,255,255,0.55);font-size:0.85rem;line-height:1.7;max-width:260px;margin-bottom:1.5rem">Your sanctuary of health — premium, compassionate medical care in the heart of Afienya, opposite Mataheko MELCOM.</p>
+        <a href="tel:+233243329756" style="display:inline-flex;align-items:center;gap:0.5rem;background:#2db0ae;color:#fff;text-decoration:none;padding:0.6rem 1.25rem;border-radius:99px;font-size:0.85rem;font-weight:500">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.21h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.86a16 16 0 0 0 6.29 6.29l.96-.96a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          +233 24 332 9756
+        </a>
+      </div>
+
+      <!-- Quick links -->
+      <div>
+        <p style="color:#fff;font-weight:600;font-size:0.9rem;margin-bottom:1.25rem">Quick Links</p>
+        <div style="display:flex;flex-direction:column;gap:0.65rem">
+          <a href="#hero" style="color:rgba(255,255,255,0.55);font-size:0.85rem;text-decoration:none;transition:color 0.2s" onmouseover="this.style.color='#5bc9c7'" onmouseout="this.style.color='rgba(255,255,255,0.55)'">Home</a>
+          <a href="#services" style="color:rgba(255,255,255,0.55);font-size:0.85rem;text-decoration:none;transition:color 0.2s" onmouseover="this.style.color='#5bc9c7'" onmouseout="this.style.color='rgba(255,255,255,0.55)'">Our Services</a>
+          <a href="#events" style="color:rgba(255,255,255,0.55);font-size:0.85rem;text-decoration:none;transition:color 0.2s" onmouseover="this.style.color='#5bc9c7'" onmouseout="this.style.color='rgba(255,255,255,0.55)'">Community Events</a>
+          <a href="#booking" style="color:rgba(255,255,255,0.55);font-size:0.85rem;text-decoration:none;transition:color 0.2s" onmouseover="this.style.color='#5bc9c7'" onmouseout="this.style.color='rgba(255,255,255,0.55)'">Book Appointment</a>
+          <a href="#about" style="color:rgba(255,255,255,0.55);font-size:0.85rem;text-decoration:none;transition:color 0.2s" onmouseover="this.style.color='#5bc9c7'" onmouseout="this.style.color='rgba(255,255,255,0.55)'">About Us</a>
+        </div>
+      </div>
+
+      <!-- Departments -->
+      <div>
+        <p style="color:#fff;font-weight:600;font-size:0.9rem;margin-bottom:1.25rem">Departments</p>
+        <div style="display:flex;flex-direction:column;gap:0.65rem">
+          <span style="color:rgba(255,255,255,0.55);font-size:0.85rem">General Consultation</span>
+          <span style="color:rgba(255,255,255,0.55);font-size:0.85rem">Pediatrics</span>
+          <span style="color:rgba(255,255,255,0.55);font-size:0.85rem">Obstetrics & G</span>
+          <span style="color:rgba(255,255,255,0.55);font-size:0.85rem">Diagnostics & Lab</span>
+          <span style="color:rgba(255,255,255,0.55);font-size:0.85rem">Chronic Disease</span>
+        </div>
+      </div>
+
+      <!-- Hours & Location -->
+      <div>
+        <p style="color:#fff;font-weight:600;font-size:0.9rem;margin-bottom:1.25rem">Hours & Location</p>
+        <div style="display:flex;flex-direction:column;gap:0.75rem">
+          <div>
+            <p style="color:#5bc9c7;font-size:0.78rem;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:3px">Opening Hours</p>
+            <p style="color:rgba(255,255,255,0.6);font-size:0.82rem;line-height:1.5">Mon–Sat: 8:00 AM – 8:00 PM<br/>Sunday: 9:00 AM – 8:00 PM</p>
+          </div>
+          <div>
+            <p style="color:#5bc9c7;font-size:0.78rem;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:3px">Address</p>
+            <p style="color:rgba(255,255,255,0.6);font-size:0.82rem;line-height:1.5">Opp. Mataheko MELCOM<br/>Afienya, Greater Accra</p>
+          </div>
+          <a href="https://maps.app.goo.gl/uKgLKNRSiEwfm4Re7" target="_blank" style="display:inline-flex;align-items:center;gap:0.4rem;color:#5bc9c7;font-size:0.82rem;text-decoration:none;font-weight:500">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            View on Google Maps
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom bar -->
+    <div style="border-top:1px solid rgba(255,255,255,0.1);padding-top:1.5rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem">
+      <p style="color:rgba(255,255,255,0.35);font-size:0.8rem">© 2025 Oasis Medical Clinic, Afienya. All rights reserved.</p>
+      <div style="display:flex;gap:1.25rem">
+        <a href="#" style="color:rgba(255,255,255,0.35);font-size:0.8rem;text-decoration:none">Privacy Policy</a>
+        <a href="#" style="color:rgba(255,255,255,0.35);font-size:0.8rem;text-decoration:none">Terms of Service</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Scroll to top button -->
+<button id="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" style="position:fixed;bottom:2rem;left:2rem;z-index:500;width:42px;height:42px;background:#2db0ae;border:none;border-radius:50%;display:none;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 4px 16px rgba(45,176,174,0.35);transition:all 0.3s">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg>
+</button>
+
+<!-- ═══════════════════════════════════════════
+     JAVASCRIPT
+═══════════════════════════════════════════ -->
+<script>
+/* ── State ────────────────────────────── */
+let appointments = []; // user-submitted appointments
+let isLoggedIn = false;
+let mobileMenuOpen = false;
+let loggedInName = '';
+
+/* ── Mobile menu ─────────────────────── */
+function toggleMobileMenu() {
+  mobileMenuOpen = !mobileMenuOpen;
+  const menu = document.getElementById('mobile-menu');
+  const ham  = document.getElementById('ham-icon');
+  const cls  = document.getElementById('close-icon');
+  menu.classList.toggle('open', mobileMenuOpen);
+  ham.classList.toggle('hidden', mobileMenuOpen);
+  cls.classList.toggle('hidden', !mobileMenuOpen);
+}
+function closeMobileMenu() {
+  mobileMenuOpen = false;
+  document.getElementById('mobile-menu').classList.remove('open');
+  document.getElementById('ham-icon').classList.remove('hidden');
+  document.getElementById('close-icon').classList.add('hidden');
+}
+
+/* ── Nav active ──────────────────────── */
+function setActive(el){ document.querySelectorAll('.nav-link').forEach(l=>l.classList.remove('active')); el.classList.add('active'); }
+
+/* ── Scroll helpers ──────────────────── */
+function scrollToSection(id) {
+  const el = document.getElementById(id);
+  if(el) el.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+/* ── Toast ───────────────────────────── */
+let toastTimer;
+function showToast(title, msg, type='success') {
+  clearTimeout(toastTimer);
+  const t = document.getElementById('toast');
+  document.getElementById('toast-title').textContent = title;
+  document.getElementById('toast-msg').textContent = msg;
+  t.style.borderLeftColor = type === 'error' ? '#c0130e' : '#2db0ae';
+  t.classList.remove('hidden');
+  t.style.animation = 'toastIn 0.4s ease forwards';
+  toastTimer = setTimeout(closeToast, 4500);
+}
+function closeToast() {
+  const t = document.getElementById('toast');
+  t.style.animation = 'toastOut 0.4s ease forwards';
+  setTimeout(()=>t.classList.add('hidden'), 400);
+}
+
+/* ── Booking form submission ─────────── */
+function submitBooking() {
+  const name  = document.getElementById('f-name').value.trim();
+  const phone = document.getElementById('f-phone').value.trim();
+  const email = document.getElementById('f-email').value.trim();
+  const dept  = document.getElementById('f-dept').value;
+  const date  = document.getElementById('f-date').value;
+  const time  = document.getElementById('f-time').value;
+
+  if (!name || !phone || !email || !dept || !date || !time) {
+    showToast('Missing Information', 'Please fill in all required fields before submitting.', 'error');
+    return;
+  }
+
+  // Format date for display
+  const dateObj = new Date(date + 'T00:00:00');
+  const options = {weekday:'short', day:'numeric', month:'short', year:'numeric'};
+  const dateStr = dateObj.toLocaleDateString('en-GB', options);
+
+  // Create appointment object
+  const appt = { name, phone, email, dept, date: dateStr, time, id: Date.now() };
+  appointments.push(appt);
+
+  // Clear form
+  ['f-name','f-phone','f-email','f-notes'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('f-dept').selectedIndex = 0;
+  document.getElementById('f-date').value = '';
+  document.getElementById('f-time').selectedIndex = 0;
+
+  showToast('Appointment Booked! 🎉', `Thank you, ${name}! We'll confirm your ${dept} appointment via call or email shortly.`);
+
+  // If logged in, update dashboard
+  if (isLoggedIn) updateDashboard();
+}
+
+/* ── Event registration ──────────────── */
+function registerEvent(eventName) {
+  showToast('You\'re Registered!', `Successfully registered for "${eventName}". See you there!`);
+}
+
+/* ── Portal open/close ───────────────── */
+function openPortal() {
+  document.getElementById('portal-overlay').classList.remove('hidden');
+  document.body.style.overflow = 'hidden';
+  if (isLoggedIn) {
+    showPortalDashboard();
+  }
+}
+function closePortal() {
+  document.getElementById('portal-overlay').classList.add('hidden');
+  document.body.style.overflow = '';
+}
+// Close on backdrop click
+document.getElementById('portal-overlay').addEventListener('click', function(e) {
+  if (e.target === this) closePortal();
+});
+
+/* ── Auth tab switch ─────────────────── */
+function switchAuthTab(tab) {
+  const loginBtn  = document.getElementById('tab-login');
+  const signupBtn = document.getElementById('tab-signup');
+  const loginF    = document.getElementById('login-form');
+  const signupF   = document.getElementById('signup-form');
+
+  if (tab === 'login') {
+    loginBtn.classList.add('active-tab');
+    signupBtn.classList.remove('active-tab');
+    signupBtn.style.color = '#64748b'; signupBtn.style.background = 'transparent';
+    loginF.classList.remove('hidden');
+    signupF.classList.add('hidden');
+  } else {
+    signupBtn.classList.add('active-tab');
+    loginBtn.classList.remove('active-tab');
+    loginBtn.style.color = '#64748b'; loginBtn.style.background = 'transparent';
+    signupF.classList.remove('hidden');
+    loginF.classList.add('hidden');
+  }
+}
+
+/* ── Login ───────────────────────────── */
+function loginPortal() {
+  const email = document.getElementById('portal-email').value.trim();
+  const pass  = document.getElementById('portal-pass').value.trim();
+  if (!email || !pass) {
+    showToast('Enter credentials', 'Please enter your email and password.', 'error');
+    return;
+  }
+  // Extract name from email for demo
+  const raw = email.split('@')[0].replace(/[._]/g,' ');
+  loggedInName = raw.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+  isLoggedIn = true;
+  showPortalDashboard();
+}
+
+/* ── Signup ──────────────────────────── */
+function signupPortal() {
+  const name  = document.getElementById('su-name').value.trim();
+  const phone = document.getElementById('su-phone').value.trim();
+  const email = document.getElementById('su-email').value.trim();
+  const pass  = document.getElementById('su-pass').value.trim();
+  if (!name || !phone || !email || !pass) {
+    showToast('Fill all fields', 'Please complete all registration fields.', 'error');
+    return;
+  }
+  loggedInName = name;
+  isLoggedIn = true;
+  showPortalDashboard();
+  showToast('Account Created!', `Welcome to Oasis Medical, ${name.split(' ')[0]}! Your portal is ready.`);
+}
+
+/* ── Show dashboard ──────────────────── */
+function showPortalDashboard() {
+  document.getElementById('portal-auth').classList.add('hidden');
+  document.getElementById('portal-dashboard').classList.remove('hidden');
+
+  // Set name
+  const displayName = loggedInName || 'Patient';
+  document.getElementById('dash-name').textContent = displayName;
+
+  // Initials
+  const parts = displayName.split(' ');
+  const initials = parts.length >= 2 ? parts[0][0]+parts[parts.length-1][0] : parts[0].slice(0,2);
+  document.getElementById('avatar-initials').textContent = initials.toUpperCase();
+
+  updateDashboard();
+}
+
+/* ── Update dashboard appointments ──── */
+function updateDashboard() {
+  const list = document.getElementById('appointments-list');
+  const countBadge = document.getElementById('appt-count-badge');
+  const statTotal  = document.getElementById('stat-total');
+
+  // Clear existing dynamic rows
+  document.querySelectorAll('.dynamic-appt').forEach(el => el.remove());
+
+  const total = 1 + appointments.length; // 1 default + submitted
+  countBadge.textContent = total;
+  statTotal.textContent  = total;
+
+  const deptColors = {
+    'General Consultation': '#2db0ae',
+    'Pediatrics': '#d4a857',
+    'Obstetrics & Gynaecology (O&G)': '#e85d57',
+    'Diagnostics & Laboratory': '#475569',
+    'Chronic Disease Management': '#1a9593',
+    'Emergency / Walk-In': '#c0130e',
+  };
+
+  appointments.forEach(appt => {
+    const color = deptColors[appt.dept] || '#2db0ae';
+    const initials = appt.name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
+
+    const row = document.createElement('div');
+    row.className = 'appt-row dynamic-appt';
+    row.innerHTML = `
+      <div style="display:flex;align-items:center;gap:0.75rem">
+        <div style="width:42px;height:42px;border-radius:12px;background:${color};display:flex;align-items:center;justify-content:center;flex-shrink:0;color:#fff;font-weight:600;font-size:0.85rem">${initials}</div>
+        <div>
+          <p style="font-weight:600;color:#0b4f4e;font-size:0.9rem">${appt.dept}</p>
+          <p style="font-size:0.78rem;color:#64748b">${appt.name} · ${appt.phone}</p>
+        </div>
+      </div>
+      <div style="text-align:right">
+        <p style="font-weight:500;color:#1e293b;font-size:0.85rem">${appt.date}</p>
+        <p style="font-size:0.78rem;color:#64748b">${appt.time}</p>
+      </div>
+      <span class="badge" style="background:#fdfaf5;color:#a37330;border:1px solid #f1e2c0">Pending</span>
+    `;
+    list.appendChild(row);
+  });
+}
+
+/* ── Logout ──────────────────────────── */
+function logoutPortal() {
+  isLoggedIn = false;
+  loggedInName = '';
+  document.getElementById('portal-dashboard').classList.add('hidden');
+  document.getElementById('portal-auth').classList.remove('hidden');
+  document.getElementById('portal-email').value = '';
+  document.getElementById('portal-pass').value  = '';
+  switchAuthTab('login');
+  showToast('Signed Out', 'You have been safely signed out of the Patient Portal.');
+}
+
+/* ── Scroll-triggered reveals ────────── */
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.12 });
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+/* ── Scroll-top button & navbar shadow ── */
+window.addEventListener('scroll', () => {
+  const st = document.getElementById('scroll-top');
+  if (window.scrollY > 400) { st.style.display = 'flex'; }
+  else { st.style.display = 'none'; }
+});
+
+/* ── Responsive: stack hero & about grids on mobile ── */
+function responsiveGrids() {
+  const w = window.innerWidth;
+  const heroGrid = document.querySelector('.hero-grid');
+  const aboutGrid = document.getElementById('about-grid');
+  const bookingGrid = document.getElementById('booking-grid');
+  const footerGrid = document.getElementById('footer-grid');
+
+  if (heroGrid) heroGrid.style.gridTemplateColumns = w < 768 ? '1fr' : '1fr 1fr';
+  if (aboutGrid) aboutGrid.style.gridTemplateColumns = w < 768 ? '1fr' : '1fr 1fr';
+  if (bookingGrid) bookingGrid.style.gridTemplateColumns = w < 900 ? '1fr' : '1fr 1.6fr';
+  if (footerGrid) footerGrid.style.gridTemplateColumns = w < 768 ? '1fr 1fr' : w < 1024 ? '1fr 1fr 1fr 1fr' : '2fr 1fr 1fr 1.2fr';
+
+  // Name/phone row
+  const np = document.getElementById('form-name-phone');
+  if (np) np.style.gridTemplateColumns = w < 600 ? '1fr' : '1fr 1fr';
+}
+
+window.addEventListener('resize', responsiveGrids);
+responsiveGrids();
+
+/* ── Set min date for booking ─────────── */
+const dateInput = document.getElementById('f-date');
+if (dateInput) {
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  dateInput.min = tomorrow.toISOString().split('T')[0];
+}
+</script>
+</body>
+</html>
