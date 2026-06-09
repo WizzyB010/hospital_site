@@ -1,1424 +1,2461 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Oasis Medical Clinic – Afienya, Ghana</title>
-<script src="https://cdn.tailwindcss.com"></script>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap" rel="stylesheet" />
-<script>
-tailwind.config = {
-  theme: {
-    extend: {
-      colors: {
-        teal:   { 50:'#f0fafa', 100:'#ccf0ef', 200:'#99e0de', 300:'#5bc9c7', 400:'#2db0ae', 500:'#1a9593', 600:'#14807e', 700:'#0f6563', 800:'#0b4f4e', 900:'#073a39' },
-        slate:  { 50:'#f8fafc', 100:'#f1f5f9', 200:'#e2e8f0', 300:'#cbd5e1', 400:'#94a3b8', 500:'#64748b', 600:'#475569', 700:'#334155', 800:'#1e293b', 900:'#0f172a' },
-        sand:   { 50:'#fdfaf5', 100:'#f9f2e3', 200:'#f1e2c0', 300:'#e4c98a', 400:'#d4a857', 500:'#c08d3a', 600:'#a37330', 700:'#835b26', 800:'#65461e', 900:'#4a3316' },
-      },
-      fontFamily: {
-        display: ['Cormorant Garamond', 'Georgia', 'serif'],
-        body:    ['DM Sans', 'system-ui', 'sans-serif'],
-      },
-      backgroundImage: {
-        'hero-gradient': 'linear-gradient(135deg, rgba(10,50,60,0.82) 0%, rgba(15,101,99,0.65) 50%, rgba(10,30,50,0.80) 100%)',
-      },
-      animation: {
-        'fade-in':      'fadeIn 0.6s ease forwards',
-        'slide-up':     'slideUp 0.5s ease forwards',
-        'pulse-slow':   'pulse 3s cubic-bezier(0.4,0,0.6,1) infinite',
-        'float':        'float 6s ease-in-out infinite',
-        'toast-in':     'toastIn 0.4s ease forwards',
-        'toast-out':    'toastOut 0.4s ease forwards',
-      },
-      keyframes: {
-        fadeIn:  { '0%':{ opacity:'0' }, '100%':{ opacity:'1' } },
-        slideUp: { '0%':{ opacity:'0', transform:'translateY(20px)' }, '100%':{ opacity:'1', transform:'translateY(0)' } },
-        float:   { '0%,100%':{ transform:'translateY(0px)' }, '50%':{ transform:'translateY(-12px)' } },
-        toastIn: { '0%':{ opacity:'0', transform:'translateY(20px) scale(0.95)' }, '100%':{ opacity:'1', transform:'translateY(0) scale(1)' } },
-        toastOut:{ '0%':{ opacity:'1', transform:'translateY(0) scale(1)' }, '100%':{ opacity:'0', transform:'translateY(20px) scale(0.95)' } },
-      },
-    }
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Oasis Medical Clinic — Afienya, Ghana</title>
+<meta name="description" content="Oasis Medical Clinic – Premium, compassionate healthcare in Afienya, Greater Accra. Book an appointment today."/>
+
+<!-- Tailwind -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.js"></script>
+<!-- Three.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<!-- GSAP + ScrollTrigger -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+
+<style>
+/* ── TOKENS ─────────────────────────────────────────────────── */
+:root{
+  --obsidian:#05080f;
+  --void:#080c15;
+  --abyss:#0b1120;
+  --slate:#111827;
+  --surface:#141b2d;
+  --glass-bg:rgba(14,20,38,.55);
+  --glass-border:rgba(0,230,200,.12);
+  --teal:#00e6c8;
+  --cyan:#00bcd4;
+  --teal-glow:rgba(0,230,200,.35);
+  --teal-dim:rgba(0,230,200,.08);
+  --teal-mid:rgba(0,230,200,.18);
+  --white:rgba(255,255,255,.92);
+  --muted:rgba(255,255,255,.45);
+  --dimmer:rgba(255,255,255,.22);
+  --font-display:'Bebas Neue',sans-serif;
+  --font-body:'Syne',sans-serif;
+  --font-mono:'JetBrains Mono',monospace;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{font-size:16px;background:var(--obsidian);}
+body{
+  font-family:var(--font-body);
+  color:var(--white);
+  background:transparent;
+  overflow-x:hidden;
+  cursor:none;
+}
+::selection{background:rgba(0,230,200,.25);color:#fff;}
+::-webkit-scrollbar{width:4px;}
+::-webkit-scrollbar-track{background:var(--void);}
+::-webkit-scrollbar-thumb{background:var(--teal);border-radius:4px;}
+
+/* ── CURSOR ─────────────────────────────────────────────────── */
+#cursor{
+  position:fixed;width:12px;height:12px;
+  border-radius:50%;background:var(--teal);
+  pointer-events:none;z-index:9999;
+  transform:translate(-50%,-50%);
+  transition:width .2s,height .2s,opacity .2s;
+  mix-blend-mode:screen;
+}
+#cursor-ring{
+  position:fixed;width:40px;height:40px;
+  border-radius:50%;border:1.5px solid rgba(0,230,200,.5);
+  pointer-events:none;z-index:9998;
+  transform:translate(-50%,-50%);
+  transition:width .35s,height .35s,border-color .3s;
+}
+body:has(a:hover) #cursor,
+body:has(button:hover) #cursor{width:20px;height:20px;}
+body:has(a:hover) #cursor-ring,
+body:has(button:hover) #cursor-ring{width:60px;height:60px;border-color:rgba(0,230,200,.8);}
+
+/* ── PRELOADER ───────────────────────────────────────────────── */
+#preloader{
+  position:fixed;inset:0;z-index:10000;
+  background:var(--void);
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  gap:2.5rem;
+}
+.loader-glyph{
+  position:relative;width:120px;height:120px;
+}
+.loader-glyph svg{
+  position:absolute;inset:0;width:100%;height:100%;
+}
+.ring-outer{
+  animation:spin-slow 6s linear infinite;
+  transform-origin:center;
+}
+.ring-inner{
+  animation:spin-slow 4s linear infinite reverse;
+  transform-origin:center;
+}
+.ring-pulse{
+  animation:pulse-ring 2s ease-in-out infinite;
+  transform-origin:center;
+}
+@keyframes spin-slow{to{transform:rotate(360deg);}}
+@keyframes pulse-ring{
+  0%,100%{opacity:.4;transform:scale(.92);}
+  50%{opacity:1;transform:scale(1.06);}
+}
+.loader-cross{
+  animation:cross-glow 2s ease-in-out infinite alternate;
+}
+@keyframes cross-glow{
+  from{filter:drop-shadow(0 0 4px var(--teal));}
+  to{filter:drop-shadow(0 0 16px var(--teal)) drop-shadow(0 0 32px var(--cyan));}
+}
+.loader-info{
+  display:flex;flex-direction:column;align-items:center;gap:.75rem;
+}
+.loader-name{
+  font-family:var(--font-display);
+  font-size:2rem;letter-spacing:.2em;
+  color:var(--white);
+  text-transform:uppercase;
+}
+.loader-sub{
+  font-family:var(--font-mono);
+  font-size:.7rem;letter-spacing:.2em;
+  color:var(--teal);text-transform:uppercase;
+}
+.loader-bar-wrap{
+  width:260px;height:2px;
+  background:rgba(255,255,255,.08);
+  border-radius:2px;overflow:hidden;
+}
+.loader-bar-fill{
+  height:100%;width:0%;
+  background:linear-gradient(90deg,var(--cyan),var(--teal));
+  border-radius:2px;
+  box-shadow:0 0 12px var(--teal);
+  transition:width .05s linear;
+}
+.loader-counter{
+  font-family:var(--font-mono);
+  font-size:3.5rem;font-weight:300;
+  color:var(--teal);
+  letter-spacing:-.02em;
+  line-height:1;
+  text-shadow:0 0 30px var(--teal-glow);
+}
+.loader-pct{
+  font-size:1.2rem;
+  color:var(--muted);
+  margin-left:.15rem;
+}
+.loader-scanline{
+  position:absolute;inset:0;
+  background:repeating-linear-gradient(
+    0deg,
+    transparent,transparent 2px,
+    rgba(0,230,200,.015) 2px,rgba(0,230,200,.015) 4px
+  );
+  pointer-events:none;
+}
+
+/* ── NAVIGATION ─────────────────────────────────────────────── */
+#navbar{
+  position:fixed;top:0;left:0;right:0;z-index:500;
+  transition:all .4s ease;
+  padding:.75rem 0;
+}
+#navbar.scrolled{
+  background:rgba(5,8,15,.85);
+  backdrop-filter:blur(24px);
+  border-bottom:1px solid var(--glass-border);
+  padding:.5rem 0;
+  box-shadow:0 4px 40px rgba(0,0,0,.4);
+}
+.nav-logo-text{
+  font-family:var(--font-display);
+  font-size:1.45rem;letter-spacing:.12em;
+  color:var(--white);transition:color .3s;
+}
+.nav-logo-text span{color:var(--teal);}
+.nav-link{
+  font-size:.8rem;font-weight:600;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--muted);
+  transition:color .3s;position:relative;
+}
+.nav-link::after{
+  content:'';position:absolute;bottom:-3px;left:0;right:0;
+  height:1px;background:var(--teal);
+  transform:scaleX(0);transform-origin:right;
+  transition:transform .3s ease;
+}
+.nav-link:hover{color:var(--white);}
+.nav-link:hover::after{transform:scaleX(1);transform-origin:left;}
+.nav-book-btn{
+  font-family:var(--font-mono);
+  font-size:.72rem;letter-spacing:.15em;text-transform:uppercase;
+  padding:.6rem 1.4rem;
+  border:1px solid var(--teal);
+  color:var(--teal);
+  border-radius:2px;
+  background:transparent;
+  position:relative;overflow:hidden;
+  transition:color .3s,box-shadow .3s;
+  cursor:none;white-space:nowrap;
+}
+.nav-book-btn::before{
+  content:'';position:absolute;inset:0;
+  background:var(--teal);
+  transform:translateX(-101%);
+  transition:transform .35s cubic-bezier(.4,0,.2,1);
+}
+.nav-book-btn:hover{color:var(--obsidian);box-shadow:0 0 24px var(--teal-glow);}
+.nav-book-btn:hover::before{transform:translateX(0);}
+.nav-book-btn span{position:relative;z-index:1;}
+
+/* Mobile Menu */
+#mobile-menu-btn{
+  display:none;background:none;border:none;cursor:pointer;
+  width:40px;height:40px;padding:6px;
+  color:var(--teal);z-index:600;
+  align-items:center;justify-content:center;
+  border-radius:4px;transition:color .25s;
+}
+#mobile-menu-btn .icon-close{display:none;}
+#mobile-menu-btn.open .icon-close{display:block;}
+#mobile-menu-btn.open .icon-menu{display:none;}
+#nav-overlay{
+  display:none;position:fixed;inset:0;z-index:450;
+  background:rgba(0,0,0,.6);
+}
+#nav-overlay.active{display:block;}
+#navbar nav{
+  transition:transform .3s ease;
+}
+#navbar nav.mobile-open{
+  transform:translateX(0);
+}
+
+/* ── HERO ───────────────────────────────────────────────────── */
+#hero{
+  position:relative;width:100%;height:100vh;
+  display:flex;align-items:center;
+  overflow:hidden;
+}
+#hero::after{
+  content:'';
+  position:absolute;
+  bottom:0;left:0;right:0;
+  height:32%;
+  background:linear-gradient(to bottom,transparent 0%,rgba(5,8,15,.55) 100%);
+  pointer-events:none;
+  z-index:3;
+}
+/* ── FULL-PAGE VIDEO BACKGROUND (fixed, behind all sections) ─── */
+#video-bg{
+  position:fixed;
+  inset:0;
+  z-index:0;
+  pointer-events:none;
+  overflow:hidden;
+}
+#hero-video{
+  position:absolute;inset:0;
+  width:100%;height:100%;
+  object-fit:cover;object-position:center;
+}
+.hero-video-overlay{
+  position:absolute;inset:0;
+  background:rgba(5,8,15,.72);
+}
+#three-canvas{
+  position:absolute;inset:0;
+  width:100%;height:100%;
+  pointer-events:none;
+  z-index:2;
+  opacity:.6;
+}
+.hero-vignette{
+  position:absolute;inset:0;z-index:3;
+  background:radial-gradient(ellipse 85% 90% at 50% 50%,transparent 30%,rgba(5,8,15,.55) 100%),
+             linear-gradient(to bottom,rgba(5,8,15,.15) 0%,transparent 30%,transparent 70%,rgba(5,8,15,.85) 100%);
+  pointer-events:none;
+}
+.hero-grid{
+  position:absolute;inset:0;z-index:4;
+  background-image:
+    linear-gradient(rgba(0,230,200,.04) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(0,230,200,.04) 1px,transparent 1px);
+  background-size:60px 60px;
+  mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black 20%,transparent 70%);
+}
+.hero-content{
+  position:relative;z-index:10;
+  max-width:1280px;margin:0 auto;
+  padding:0 2rem;padding-top:5rem;
+}
+.hero-eyebrow{
+  font-family:var(--font-mono);
+  font-size:.75rem;letter-spacing:.25em;text-transform:uppercase;
+  color:var(--teal);
+  display:flex;align-items:center;gap:.75rem;
+  margin-bottom:1.75rem;opacity:0;
+}
+.hero-eyebrow::before{
+  content:'';flex:0 0 32px;height:1px;background:var(--teal);
+  box-shadow:0 0 8px var(--teal);
+}
+.hero-title{
+  font-family:var(--font-display);
+  font-size:clamp(4rem,10vw,9.5rem);
+  line-height:.92;letter-spacing:.02em;
+  text-transform:uppercase;
+  color:var(--white);
+  overflow:hidden;
+}
+.hero-title-line{
+  display:block;overflow:hidden;
+}
+.hero-title-word{
+  display:inline-block;
+  transform:translateY(110%);
+}
+.hero-title .accent{color:var(--teal);text-shadow:0 0 40px var(--teal-glow);}
+.hero-sub{
+  font-size:1rem;font-weight:400;
+  color:var(--muted);
+  max-width:44ch;line-height:1.8;
+  margin-top:1.5rem;opacity:0;
+}
+.hero-cta-row{
+  display:flex;align-items:center;gap:1.5rem;
+  margin-top:2.5rem;flex-wrap:wrap;opacity:0;
+}
+.btn-primary-glow{
+  font-family:var(--font-mono);font-size:.78rem;
+  letter-spacing:.15em;text-transform:uppercase;
+  padding:.9rem 2.2rem;
+  background:var(--teal);color:var(--obsidian);
+  font-weight:500;border-radius:2px;
+  position:relative;overflow:hidden;
+  box-shadow:0 0 30px var(--teal-glow),0 4px 20px rgba(0,0,0,.4);
+  transition:box-shadow .3s,transform .2s;
+  cursor:none;display:inline-block;
+  border:none;
+}
+.btn-primary-glow:hover{
+  box-shadow:0 0 50px var(--teal-glow),0 0 80px rgba(0,230,200,.2),0 4px 20px rgba(0,0,0,.4);
+  transform:translateY(-2px);
+}
+.btn-ghost{
+  font-family:var(--font-mono);font-size:.78rem;
+  letter-spacing:.15em;text-transform:uppercase;
+  padding:.85rem 2rem;
+  color:var(--white);
+  border:1px solid rgba(255,255,255,.2);
+  border-radius:2px;
+  background:transparent;
+  transition:border-color .3s,color .3s,box-shadow .3s,transform .2s;
+  cursor:none;display:inline-block;
+}
+.btn-ghost:hover{
+  border-color:var(--teal);color:var(--teal);
+  box-shadow:0 0 20px var(--teal-dim);
+  transform:translateY(-2px);
+}
+.hero-data-strip{
+  display:flex;align-items:center;gap:3rem;
+  margin-top:4rem;
+  padding-top:2rem;
+  border-top:1px solid rgba(255,255,255,.07);
+  opacity:0;
+  flex-wrap:wrap;gap:2rem;
+}
+.hero-data-item{
+  display:flex;flex-direction:column;gap:.25rem;
+}
+.data-label{
+  font-family:var(--font-mono);font-size:.65rem;
+  letter-spacing:.15em;text-transform:uppercase;
+  color:var(--muted);
+}
+.data-value{
+  font-family:var(--font-display);font-size:1.6rem;
+  letter-spacing:.05em;color:var(--teal);
+}
+.scroll-indicator{
+  position:absolute;bottom:2.5rem;left:50%;
+  transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:.5rem;
+  opacity:0;
+  z-index:10;
+}
+.scroll-text{
+  font-family:var(--font-mono);font-size:.62rem;
+  letter-spacing:.2em;text-transform:uppercase;color:var(--muted);
+}
+.scroll-line{
+  width:1px;height:48px;
+  background:linear-gradient(to bottom,var(--teal),transparent);
+  animation:scroll-drop 1.8s ease-in-out infinite;
+}
+@keyframes scroll-drop{
+  0%{transform:scaleY(0);transform-origin:top;opacity:1;}
+  50%{transform:scaleY(1);transform-origin:top;opacity:1;}
+  51%{transform:scaleY(1);transform-origin:bottom;opacity:1;}
+  100%{transform:scaleY(0);transform-origin:bottom;opacity:0;}
+}
+
+/* ── SECTION SHARED ─────────────────────────────────────────── */
+.section-wrap{
+  position:relative;
+  padding:clamp(5rem,10vw,9rem) 0;
+  overflow:hidden;
+}
+.section-bg-glow{
+  position:absolute;pointer-events:none;
+  border-radius:50%;filter:blur(100px);opacity:.12;
+}
+.inner{
+  max-width:1280px;margin:0 auto;
+  padding:0 clamp(1.25rem,4vw,2.5rem);
+}
+.section-tag{
+  font-family:var(--font-mono);font-size:.7rem;
+  letter-spacing:.22em;text-transform:uppercase;
+  color:var(--teal);
+  display:inline-flex;align-items:center;gap:.6rem;
+  margin-bottom:1.25rem;
+}
+.section-tag::before{
+  content:'';flex:0 0 20px;height:1px;
+  background:var(--teal);
+  box-shadow:0 0 6px var(--teal);
+}
+.section-title{
+  font-family:var(--font-display);
+  font-size:clamp(2.8rem,6vw,5.5rem);
+  letter-spacing:.04em;text-transform:uppercase;
+  line-height:.95;color:var(--white);
+}
+.title-accent{color:var(--teal);}
+.section-body{
+  font-size:1rem;color:var(--muted);
+  line-height:1.8;max-width:52ch;
+  margin-top:1.25rem;
+}
+
+/* ── ABOUT ──────────────────────────────────────────────────── */
+#about-section{
+  background:linear-gradient(to bottom,rgba(5,8,15,.5) 0%,rgba(5,8,15,.58) 60%,transparent 100%);
+}
+.about-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:5rem;align-items:center;
+}
+.about-visual{
+  position:relative;
+  aspect-ratio:1;max-width:480px;
+}
+.about-hex{
+  position:absolute;inset:0;
+  display:flex;align-items:center;justify-content:center;
+}
+.hex-ring{
+  position:absolute;border-radius:50%;
+  border:1px solid;
+  animation:hex-rotate linear infinite;
+}
+.hex-ring-1{
+  width:90%;height:90%;
+  border-color:rgba(0,230,200,.15);
+  animation-duration:20s;
+}
+.hex-ring-2{
+  width:70%;height:70%;
+  border-color:rgba(0,230,200,.1);
+  animation-duration:15s;animation-direction:reverse;
+}
+.hex-ring-3{
+  width:50%;height:50%;
+  border-color:rgba(0,230,200,.2);
+  animation-duration:10s;
+}
+@keyframes hex-rotate{to{transform:rotate(360deg);}}
+.hex-center{
+  width:180px;height:180px;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(0,230,200,.15) 0%,rgba(0,230,200,.05) 50%,transparent 70%);
+  border:1px solid rgba(0,230,200,.3);
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 0 60px rgba(0,230,200,.12),inset 0 0 40px rgba(0,230,200,.06);
+}
+.hex-data-point{
+  position:absolute;
+  background:var(--glass-bg);
+  backdrop-filter:blur(12px);
+  border:1px solid var(--glass-border);
+  border-radius:4px;
+  padding:.7rem 1rem;
+  display:flex;flex-direction:column;gap:.2rem;
+  box-shadow:0 8px 32px rgba(0,0,0,.4);
+}
+.hdp-num{font-family:var(--font-display);font-size:1.5rem;color:var(--teal);}
+.hdp-lbl{font-family:var(--font-mono);font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);}
+
+/* ── SCROLL SHOWCASE ────────────────────────────────────────── */
+#scroll-showcase{
+  background:transparent;
+  overflow:visible;
+}
+.scroll-showcase-inner{
+  min-height:60rem;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  padding:5rem 0 8rem;
+  position:relative;
+}
+@media(min-width:768px){
+  .scroll-showcase-inner{ min-height:80rem; padding:8rem 0 12rem; }
+}
+.scroll-perspective-wrap{
+  perspective:1000px;
+  width:100%;
+  max-width:72rem;
+  margin:0 auto;
+  padding:0 1.25rem;
+}
+.scroll-title-wrap{
+  text-align:center;
+  margin-bottom:2.5rem;
+}
+.scroll-title-wrap .section-title{
+  margin-top:.75rem;
+}
+.scroll-card{
+  margin:-2rem auto 0;
+  height:22rem;
+  border:3px solid rgba(108,108,108,.45);
+  border-radius:28px;
+  background:#111827;
+  padding:.4rem;
+  transform-origin:50% 0%;
+  box-shadow:0 0 #0000004d,0 9px 20px #0000004a,0 37px 37px #00000042,0 84px 50px #00000026,0 149px 60px #0000000a,0 233px 65px #00000003;
+  will-change:transform;
+}
+@media(min-width:768px){
+  .scroll-card{ height:36rem; padding:1rem; border-width:4px; border-radius:30px; }
+}
+.scroll-card-inner{
+  width:100%;
+  height:100%;
+  border-radius:20px;
+  overflow:hidden;
+  position:relative;
+}
+.scroll-card-inner img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:center;
+  display:block;
+}
+.scroll-card-overlay{
+  position:absolute;
+  inset:0;
+  background:linear-gradient(to top,rgba(5,8,15,.9) 0%,rgba(5,8,15,.35) 45%,transparent 70%);
+  display:flex;
+  align-items:flex-end;
+  padding:1.5rem;
+}
+@media(min-width:768px){
+  .scroll-card-overlay{ padding:2.5rem; }
+}
+.scroll-card-stats{
+  display:flex;
+  gap:1.5rem;
+  flex-wrap:wrap;
+}
+@media(min-width:768px){
+  .scroll-card-stats{ gap:2.5rem; }
+}
+.scroll-stat{
+  display:flex;
+  flex-direction:column;
+  gap:.15rem;
+}
+.scroll-stat-num{
+  font-family:var(--font-display);
+  font-size:1.6rem;
+  color:var(--teal);
+  letter-spacing:.05em;
+  line-height:1;
+}
+@media(min-width:768px){
+  .scroll-stat-num{ font-size:2.2rem; }
+}
+.scroll-stat-label{
+  font-size:.55rem;
+  letter-spacing:.15em;
+  text-transform:uppercase;
+  color:rgba(255,255,255,.55);
+  font-family:var(--font-mono);
+}
+@media(min-width:768px){
+  .scroll-stat-label{ font-size:.62rem; }
+}
+.scroll-card-badge{
+  position:absolute;
+  top:1.25rem;
+  right:1.25rem;
+  background:rgba(0,230,200,.12);
+  border:1px solid rgba(0,230,200,.3);
+  backdrop-filter:blur(12px);
+  border-radius:50px;
+  padding:.35rem 1rem;
+  font-family:var(--font-mono);
+  font-size:.65rem;
+  letter-spacing:.1em;
+  color:var(--teal);
+  text-transform:uppercase;
+}
+
+/* ── SERVICES ───────────────────────────────────────────────── */
+#services-section{
+  background:linear-gradient(to bottom,transparent 0%,rgba(5,8,15,.55) 18%,rgba(5,8,15,.55) 100%);
+}
+.services-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+  gap:1.5rem;
+  margin-top:3.5rem;
+}
+.service-card{
+  position:relative;
+  background:var(--glass-bg);
+  backdrop-filter:blur(20px);
+  border:1px solid var(--glass-border);
+  border-radius:4px;
+  padding:2.25rem 2rem;
+  overflow:hidden;
+  cursor:none;
+  transition:border-color .4s,box-shadow .4s,transform .4s;
+  will-change:transform;
+}
+.service-card::before{
+  content:'';position:absolute;
+  inset:0;
+  background:linear-gradient(135deg,rgba(0,230,200,.06) 0%,transparent 60%);
+  opacity:0;transition:opacity .4s;
+}
+.service-card:hover{
+  border-color:rgba(0,230,200,.35);
+  box-shadow:0 0 40px rgba(0,230,200,.1),0 20px 60px rgba(0,0,0,.4);
+  transform:translateY(-6px) rotateX(2deg) rotateY(-1deg);
+}
+.service-card:hover::before{opacity:1;}
+.card-corner{
+  position:absolute;top:0;right:0;
+  width:60px;height:60px;
+  border-left:1px solid rgba(0,230,200,.15);
+  border-bottom:1px solid rgba(0,230,200,.15);
+  border-bottom-left-radius:4px;
+}
+.card-icon{
+  width:52px;height:52px;
+  border:1px solid rgba(0,230,200,.25);
+  border-radius:4px;
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:1.5rem;
+  background:rgba(0,230,200,.05);
+  transition:background .4s,border-color .4s,box-shadow .4s;
+}
+.service-card:hover .card-icon{
+  background:rgba(0,230,200,.12);
+  border-color:rgba(0,230,200,.5);
+  box-shadow:0 0 20px rgba(0,230,200,.15);
+}
+.card-num{
+  position:absolute;top:1.5rem;right:1.5rem;
+  font-family:var(--font-mono);font-size:.65rem;
+  letter-spacing:.1em;color:rgba(0,230,200,.3);
+}
+.card-title{
+  font-family:var(--font-display);font-size:1.55rem;
+  letter-spacing:.05em;text-transform:uppercase;
+  color:var(--white);margin-bottom:.75rem;line-height:1.1;
+}
+.card-desc{
+  font-size:.88rem;color:var(--muted);line-height:1.75;
+}
+.card-link{
+  display:inline-flex;align-items:center;gap:.5rem;
+  margin-top:1.25rem;
+  font-family:var(--font-mono);font-size:.7rem;
+  letter-spacing:.12em;text-transform:uppercase;
+  color:var(--teal);
+  transition:gap .3s;
+}
+.card-link:hover{gap:.8rem;}
+.card-glow-line{
+  position:absolute;bottom:0;left:0;right:0;
+  height:2px;
+  background:linear-gradient(90deg,transparent,var(--teal),transparent);
+  transform:scaleX(0);
+  transition:transform .4s ease;
+}
+.service-card:hover .card-glow-line{transform:scaleX(1);}
+
+/* ── HOURS BAND ─────────────────────────────────────────────── */
+#hours-band{
+  background:linear-gradient(to bottom,transparent 0%,rgba(0,8,10,.5) 20%,rgba(0,8,10,.5) 80%,transparent 100%);
+  padding:3rem 0;
+}
+.hours-inner{
+  display:flex;align-items:center;justify-content:center;
+  gap:4rem;flex-wrap:wrap;
+}
+.hours-item{
+  display:flex;flex-direction:column;align-items:center;gap:.5rem;text-align:center;
+}
+.hours-day{
+  font-family:var(--font-mono);font-size:.68rem;
+  letter-spacing:.18em;text-transform:uppercase;color:var(--muted);
+}
+.hours-time{
+  font-family:var(--font-display);font-size:2rem;
+  letter-spacing:.05em;color:var(--teal);
+  text-shadow:0 0 20px var(--teal-glow);
+}
+.hours-divider{
+  width:1px;height:60px;
+  background:linear-gradient(to bottom,transparent,var(--glass-border),transparent);
+}
+
+/* ── CONTACT ────────────────────────────────────────────────── */
+#contact-section{
+  background:linear-gradient(to bottom,transparent 0%,rgba(5,8,15,.6) 12%,rgba(5,8,15,.6) 78%,transparent 100%);
+}
+.contact-grid{
+  display:grid;
+  grid-template-columns:1fr 1.1fr;
+  gap:4rem;align-items:start;
+  margin-top:3.5rem;
+}
+.contact-info{
+  display:flex;flex-direction:column;gap:1.5rem;
+}
+.info-card{
+  background:var(--glass-bg);
+  backdrop-filter:blur(20px);
+  border:1px solid var(--glass-border);
+  border-radius:4px;
+  padding:1.5rem 1.75rem;
+  display:flex;align-items:flex-start;gap:1.25rem;
+  transition:border-color .3s,box-shadow .3s;
+}
+.info-card:hover{
+  border-color:rgba(0,230,200,.3);
+  box-shadow:0 0 30px rgba(0,230,200,.08);
+}
+.info-icon{
+  width:44px;height:44px;flex-shrink:0;
+  border:1px solid rgba(0,230,200,.2);
+  border-radius:4px;
+  display:flex;align-items:center;justify-content:center;
+  background:rgba(0,230,200,.05);
+}
+.info-label{
+  font-family:var(--font-mono);font-size:.62rem;
+  letter-spacing:.15em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:.3rem;
+}
+.info-value{
+  font-size:.95rem;color:var(--white);
+  font-weight:500;line-height:1.55;
+}
+.info-value a{color:var(--teal);text-decoration:none;transition:text-shadow .3s;}
+.info-phones{display:flex;flex-direction:column;gap:.3rem;margin-top:.35rem;}
+.info-phone-link{
+  display:flex;align-items:center;justify-content:space-between;
+  text-decoration:none;padding:.3rem .45rem;margin:0 -.45rem;
+  border-radius:4px;transition:background .2s;
+}
+.info-phone-link:hover{background:rgba(0,230,200,.07);}
+.info-phone-num{
+  font-family:var(--font-mono);font-size:.9rem;
+  color:var(--white);font-weight:600;letter-spacing:.04em;
+}
+.info-phone-cta{
+  font-family:var(--font-mono);font-size:.52rem;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--teal);
+  background:rgba(0,230,200,.1);border:1px solid rgba(0,230,200,.2);
+  padding:.18rem .5rem;border-radius:2px;white-space:nowrap;
+}
+.info-card-emergency{border-color:rgba(255,140,0,.2);}
+.info-card-emergency:hover{border-color:rgba(255,140,0,.4);box-shadow:0 0 28px rgba(255,140,0,.06);}
+.info-icon-emergency{border-color:rgba(255,140,0,.3)!important;background:rgba(255,140,0,.05)!important;}
+.info-card-map{cursor:pointer;}
+.info-card-map .info-value{color:var(--teal);}
+.info-value a:hover{text-shadow:0 0 16px var(--teal-glow);}
+
+/* Form */
+.form-glass{
+  background:var(--glass-bg);
+  backdrop-filter:blur(24px);
+  border:1px solid var(--glass-border);
+  border-radius:4px;
+  padding:2.5rem;
+  position:relative;overflow:hidden;
+}
+.form-glass::before{
+  content:'';position:absolute;
+  top:-80px;right:-80px;
+  width:240px;height:240px;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(0,230,200,.08) 0%,transparent 70%);
+  pointer-events:none;
+}
+.form-title{
+  font-family:var(--font-display);font-size:2.2rem;
+  letter-spacing:.05em;text-transform:uppercase;
+  color:var(--white);margin-bottom:.5rem;
+}
+.form-sub{
+  font-family:var(--font-mono);font-size:.72rem;
+  letter-spacing:.12em;color:var(--muted);
+  margin-bottom:1.75rem;
+}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+.form-group{display:flex;flex-direction:column;gap:.4rem;margin-bottom:.9rem;}
+.form-label{
+  font-family:var(--font-mono);font-size:.65rem;
+  letter-spacing:.15em;text-transform:uppercase;
+  color:var(--muted);
+}
+.form-input,.form-select,.form-textarea{
+  width:100%;
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:2px;
+  color:var(--white);
+  font-family:var(--font-body);font-size:.9rem;
+  padding:.8rem 1rem;
+  outline:none;
+  transition:border-color .3s,box-shadow .3s,background .3s;
+  -webkit-appearance:none;
+  appearance:none;
+}
+.form-input::placeholder,.form-textarea::placeholder{color:var(--dimmer);}
+.form-input:focus,.form-select:focus,.form-textarea:focus{
+  border-color:var(--teal);
+  box-shadow:0 0 0 3px rgba(0,230,200,.08),0 0 16px rgba(0,230,200,.1);
+  background:rgba(0,230,200,.04);
+}
+.form-input.err,.form-select.err{border-color:#ff4d6d;}
+.form-err-msg{font-family:var(--font-mono);font-size:.62rem;color:#ff4d6d;display:none;}
+.form-err-msg.show{display:block;}
+.form-select{
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%2300e6c8' d='M6 8L0 0h12z'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 1rem center;
+  padding-right:2.5rem;cursor:none;
+  color:var(--muted);
+}
+.form-select option{background:var(--surface);color:var(--white);}
+.form-textarea{resize:vertical;min-height:90px;}
+.form-submit{
+  width:100%;margin-top:.5rem;
+  font-family:var(--font-mono);font-size:.75rem;
+  letter-spacing:.15em;text-transform:uppercase;
+  padding:1rem;
+  background:transparent;
+  border:1px solid var(--teal);
+  color:var(--teal);
+  border-radius:2px;
+  position:relative;overflow:hidden;
+  transition:color .3s,box-shadow .3s;
+  cursor:none;
+}
+.form-submit::before{
+  content:'';position:absolute;inset:0;
+  background:var(--teal);
+  transform:translateY(101%);
+  transition:transform .4s cubic-bezier(.4,0,.2,1);
+}
+.form-submit:hover{
+  color:var(--obsidian);
+  box-shadow:0 0 30px var(--teal-glow);
+}
+.form-submit:hover::before{transform:translateY(0);}
+.form-submit span{position:relative;z-index:1;}
+.form-success{
+  display:none;
+  background:rgba(0,230,200,.08);
+  border:1px solid rgba(0,230,200,.3);
+  border-radius:4px;
+  padding:1.25rem;
+  font-family:var(--font-mono);font-size:.8rem;
+  letter-spacing:.08em;
+  color:var(--teal);
+  align-items:center;gap:.75rem;
+  margin-bottom:1rem;
+}
+.form-success.show{display:flex;}
+
+/* ── FOOTER ─────────────────────────────────────────────────── */
+footer{
+  background:linear-gradient(to bottom,transparent 0%,rgba(5,8,15,.88) 10%,rgba(5,8,15,.97) 100%);
+  padding:5rem 0 0;
+  position:relative;
+}
+.footer-grid{
+  max-width:1280px;margin:0 auto;
+  padding:0 clamp(1.25rem,4vw,2.5rem) 4rem;
+  display:grid;
+  grid-template-columns:1.5fr 1fr 1.3fr 1fr;
+  gap:3.5rem;
+}
+@media(max-width:960px){
+  .footer-grid{grid-template-columns:1fr 1fr;gap:2.5rem 2rem;}
+}
+@media(max-width:500px){
+  .footer-grid{grid-template-columns:1fr;gap:2rem;}
+}
+.footer-brand-name{
+  font-family:var(--font-display);font-size:1.6rem;
+  letter-spacing:.1em;line-height:1;margin-bottom:.4rem;
+}
+.footer-brand-name span{color:var(--teal);}
+.footer-brand-tagline{
+  font-family:var(--font-mono);font-size:.6rem;
+  letter-spacing:.14em;color:var(--muted);
+  margin-bottom:1.5rem;line-height:1.7;max-width:22ch;
+}
+.footer-brand-contacts{display:flex;flex-direction:column;gap:.55rem;}
+.fbc-item{
+  display:flex;align-items:center;gap:.65rem;
+  font-family:var(--font-mono);font-size:.63rem;
+  letter-spacing:.06em;color:rgba(255,255,255,.5);
+  text-decoration:none;transition:color .25s;
+  line-height:1.5;
+}
+.fbc-item:hover{color:var(--teal);}
+.fbc-item svg{flex-shrink:0;opacity:.7;}
+.footer-col-title{
+  font-family:var(--font-mono);font-size:.55rem;
+  letter-spacing:.22em;text-transform:uppercase;color:var(--teal);
+  margin-bottom:1.2rem;padding-bottom:.55rem;
+  border-bottom:1px solid rgba(0,230,200,.12);
+}
+.footer-col-links{display:flex;flex-direction:column;gap:.7rem;}
+.footer-col-links a{
+  font-family:var(--font-mono);font-size:.66rem;
+  letter-spacing:.08em;color:rgba(255,255,255,.44);
+  text-decoration:none;transition:color .25s,padding-left .2s;
+  display:flex;align-items:center;gap:.4rem;
+}
+.footer-col-links a::before{
+  content:'';width:4px;height:4px;border-radius:50%;
+  background:var(--teal);opacity:0;flex-shrink:0;
+  transition:opacity .2s;
+}
+.footer-col-links a:hover{color:var(--teal);padding-left:.5rem;}
+.footer-col-links a:hover::before{opacity:1;}
+.footer-bottom{
+  border-top:1px solid rgba(0,230,200,.07);
+  max-width:1280px;margin:0 auto;
+  padding:1.5rem clamp(1.25rem,4vw,2.5rem);
+  display:flex;align-items:center;
+  justify-content:space-between;flex-wrap:wrap;gap:1rem;
+}
+.footer-bottom-copy{
+  font-family:var(--font-mono);font-size:.58rem;
+  letter-spacing:.1em;color:rgba(255,255,255,.22);
+}
+.footer-bottom-badge{
+  font-family:var(--font-mono);font-size:.58rem;
+  letter-spacing:.1em;color:rgba(0,230,200,.38);
+  display:flex;align-items:center;gap:.5rem;
+}
+.footer-bottom-badge svg{opacity:.5;}
+
+/* ── RESPONSIVE ─────────────────────────────────────────────── */
+
+/* Tablet (iPad) */
+@media(max-width:1023px){
+  .about-grid{grid-template-columns:1fr;gap:3rem;}
+  .about-visual{max-width:360px;margin:0 auto;}
+  .contact-grid{grid-template-columns:1fr;}
+  
+  .hero-title{font-size:clamp(2.8rem,8vw,6rem);}
+  .nav-book-btn{font-size:.65rem;padding:.5rem 1rem;white-space:normal;}
+  .section-title{font-size:clamp(2rem,5vw,4rem);}
+  
+  .services-grid{grid-template-columns:repeat(auto-fill,minmax(240px,1fr));}
+  .service-card{padding:1.75rem 1.5rem;}
+  
+  .contact-info{gap:1rem;}
+  .info-card{padding:1.25rem 1.5rem;}
+  
+  .form-glass{padding:2rem;}
+  .form-title{font-size:1.8rem;}
+  
+}
+
+/* Tablet & up: nav inline, no hamburger */
+@media(min-width:768px){
+  #mobile-menu-btn{display:none;}
+  nav{transform:none;}
+}
+
+/* Mobile Landscape & Large Phones */
+@media(max-width:767px){
+  html{font-size:15px;}
+  
+  body{cursor:auto;}
+  #cursor,#cursor-ring{display:none;}
+  
+  /* Navigation */
+  #navbar{padding:.6rem 1.25rem;}
+  #mobile-menu-btn{display:flex;align-items:center;justify-content:center;}
+  nav{
+    position:fixed;right:0;left:auto;top:0;bottom:0;
+    width:min(300px,85vw);
+    flex-direction:column;align-items:flex-start;
+    gap:0;
+    background:rgba(5,8,15,.97);
+    backdrop-filter:blur(28px);-webkit-backdrop-filter:blur(28px);
+    border-left:1px solid var(--glass-border);
+    transform:translateX(101%);
+    padding:5.5rem 2rem 2.5rem;
+    overflow-y:auto;z-index:502;
+    box-shadow:-4px 0 48px rgba(0,0,0,.75);
+    transition:transform .35s cubic-bezier(.4,0,.2,1);
+  }
+  .nav-link{
+    font-family:var(--font-display);
+    font-size:2.4rem;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    color:rgba(255,255,255,.85);
+    padding:.7rem 0;
+    border-bottom:1px solid rgba(255,255,255,.07);
+    width:100%;min-height:60px;
+    display:flex;align-items:center;
+  }
+  .nav-link::after{display:none;}
+  .nav-link:hover{color:var(--teal);}
+  .nav-book-btn{
+    margin-top:2rem;width:100%;
+    text-align:center;padding:1rem 1.5rem;
+    font-size:.78rem;letter-spacing:.15em;
+    min-height:52px;
+    display:flex;align-items:center;justify-content:center;
+  }
+  
+  /* Hero */
+  .hero-content{padding:0 1.25rem;padding-top:4.5rem;}
+  .hero-title{font-size:clamp(2rem,6vw,3.5rem);line-height:1;}
+  .hero-eyebrow{font-size:.6rem;margin-bottom:1rem;}
+  .hero-eyebrow::before{flex:0 0 20px;}
+  .hero-sub{font-size:.9rem;max-width:100%;line-height:1.6;margin-top:1rem;}
+  
+  .hero-cta-row{gap:.75rem;margin-top:1.75rem;flex-direction:column;align-items:stretch;}
+  .hero-cta-row a{
+    display:flex!important;align-items:center;justify-content:center;
+    text-align:center;width:100%;min-height:50px;
+  }
+  .btn-primary-glow,.btn-ghost{padding:.85rem 1.5rem;font-size:.73rem;width:100%;}
+  
+  .hero-data-strip{
+    flex-wrap:nowrap;
+    overflow-x:auto;-webkit-overflow-scrolling:touch;
+    scrollbar-width:none;
+    gap:.65rem;
+    margin-top:1.75rem;padding-top:0;border-top:none;
+    margin-left:-1.25rem;margin-right:-1.25rem;
+    padding-left:1.25rem;padding-right:1.25rem;
+    padding-bottom:.5rem;
+  }
+  .hero-data-strip::-webkit-scrollbar{display:none;}
+  .hero-data-strip::after{content:'';flex:0 0 1.25rem;}
+  .hero-data-item{
+    flex:0 0 auto;
+    background:rgba(14,20,38,.8);
+    backdrop-filter:blur(12px);
+    border:1px solid rgba(0,230,200,.2);
+    border-radius:8px;
+    padding:.6rem 1rem;
+    gap:.15rem;
+    min-width:88px;
+  }
+  .data-label{font-size:.52rem;opacity:.7;}
+  .data-value{font-size:1.1rem;}
+  
+  /* Sections */
+  .section-wrap{padding:4rem 0;}
+  .inner{padding:0 1.25rem;}
+  .section-title{font-size:clamp(1.8rem,5vw,3.5rem);}
+  .section-body{font-size:.95rem;}
+  
+  /* About */
+  .about-grid{gap:2rem;}
+  .about-visual{max-width:300px;aspect-ratio:1;}
+  .hex-data-point{padding:.5rem .75rem;}
+  .hdp-num{font-size:1.2rem;}
+  .hdp-lbl{font-size:.55rem;}
+  
+  /* Services */
+  .services-grid{grid-template-columns:1fr;gap:1rem;}
+  .service-card{
+    padding:1.4rem 1.25rem;
+    border-left:2px solid rgba(0,230,200,.3);
+    border-radius:0 4px 4px 0;
+    transform:none!important;
+  }
+  .service-card:hover{transform:none!important;}
+  .card-title{font-size:1.25rem;margin-bottom:.5rem;}
+  .card-desc{font-size:.82rem;line-height:1.65;}
+  .card-icon{width:40px;height:40px;margin-bottom:1rem;}
+  .card-num{font-size:.6rem;}
+  
+  /* Hours */
+  #hours-band{padding:2.5rem 0;}
+  .hours-inner{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:1.5rem 1rem;
+    justify-items:center;
+  }
+  .hours-inner>.hours-item:last-child{
+    grid-column:1/-1;
+    flex-direction:row;
+    justify-content:center;
+    gap:.75rem;
+    padding-top:1.25rem;
+    border-top:1px solid rgba(255,255,255,.06);
+    width:100%;
+  }
+  .hours-item{gap:.35rem;}
+  .hours-day{font-size:.58rem;}
+  .hours-time{font-size:1.35rem;}
+  .hours-divider{display:none;}
+  
+  /* Contact */
+  .contact-grid{grid-template-columns:1fr;gap:2rem;}
+  .contact-info{gap:.75rem;}
+  .info-card{padding:1rem 1.1rem;gap:.8rem;}
+  .info-icon{width:38px;height:38px;flex-shrink:0;}
+  .info-label{font-size:.54rem;}
+  .info-value{font-size:.86rem;line-height:1.45;}
+  .info-phone-num{font-size:.82rem;}
+  .info-phone-cta{font-size:.5rem;}
+  /* collapse addr+hours grid to single column on small screens */
+  .contact-info > div[style*="grid-template-columns"]{grid-template-columns:1fr;}
+
+  /* Form */
+  .form-glass{padding:1.75rem 1.5rem;}
+  .form-title{font-size:1.75rem;margin-bottom:.35rem;}
+  .form-sub{font-size:.63rem;margin-bottom:1.35rem;}
+  .form-row{grid-template-columns:1fr;gap:0;}
+  .form-group{margin-bottom:.8rem;}
+  .form-label{font-size:.6rem;}
+  .form-input,.form-select,.form-textarea{
+    font-size:1rem;
+    padding:.8rem 1rem;
+    border-radius:4px;
+  }
+  .form-textarea{min-height:80px;}
+  .form-submit{padding:.9rem;font-size:.72rem;min-height:52px;border-radius:4px;}
+
+  /* Footer */
+  .footer-inner{flex-direction:column;align-items:center;text-align:center;gap:1.5rem;}
+  .footer-logo-name{font-size:1.1rem;}
+  .footer-meta{font-size:.6rem;}
+  .footer-links{gap:1.25rem 2rem;justify-content:center;flex-wrap:wrap;}
+  .footer-links a{font-size:.6rem;}
+  .footer-copy{font-size:.57rem;}
+}
+
+/* Small Phones */
+@media(max-width:480px){
+  html{font-size:14px;}
+  
+  .hero-title{font-size:clamp(1.8rem,6vw,3.5rem);}
+  .hero-content{padding:0 1rem;padding-top:4rem;}
+  
+  .btn-primary-glow,.btn-ghost{
+    padding:.8rem 1.2rem;
+    font-size:.68rem;
+    width:100%;
+  }
+  .hero-cta-row{
+    flex-direction:column;
+    gap:.75rem;
+  }
+  .hero-cta-row a{width:100%;}
+  
+  .hero-eyebrow{font-size:.6rem;}
+  .hero-sub{font-size:.9rem;}
+  
+  .hero-data-strip{gap:.6rem;margin-top:1.5rem;}
+  .hero-data-item{padding:.55rem .9rem;min-width:82px;}
+  .data-value{font-size:1rem;}
+  .data-label{font-size:.5rem;}
+  
+  .section-wrap{padding:3rem 0;}
+  .inner{padding:0 1rem;}
+  .section-title{font-size:clamp(1.6rem,4.5vw,3rem);}
+  .section-tag{font-size:.65rem;}
+  
+  .services-grid{grid-template-columns:1fr;}
+  .service-card{padding:1.25rem 1rem;}
+  .card-title{font-size:1.1rem;margin-bottom:.5rem;}
+  .card-desc{font-size:.75rem;}
+  
+  .contact-grid{gap:1.5rem;}
+  .contact-info{gap:.65rem;}
+  .info-card{padding:.9rem .95rem;gap:.7rem;}
+  .info-icon{width:34px;height:34px;}
+  .info-phone-num{font-size:.78rem;}
+  .contact-info > div[style*="grid-template-columns"]{grid-template-columns:1fr;}
+  
+  .form-glass{padding:1.5rem 1rem;}
+  .form-title{font-size:1.4rem;}
+  .form-sub{font-size:.6rem;}
+  
+  .hours-inner{flex-direction:column;gap:1.5rem;}
+  
+  .footer-inner{flex-direction:column;align-items:center;text-align:center;}
+  .footer-links{flex-direction:column;gap:1rem;}
+}
+
+/* Extra Small Phones */
+@media(max-width:360px){
+  html{font-size:13px;}
+  
+  .hero-content{padding:0 .75rem;}
+  .section-wrap{padding:2.5rem 0;}
+  .inner{padding:0 .75rem;}
+  
+  .hero-title{font-size:clamp(1.6rem,5vw,3rem);}
+  .section-title{font-size:clamp(1.4rem,4vw,2.5rem);}
+  
+  .btn-primary-glow,.btn-ghost{font-size:.6rem;padding:.6rem .8rem;}
+  
+  nav{gap:.75rem;}
+  .nav-link{font-size:.65rem;}
+  .nav-book-btn{font-size:.55rem;padding:.4rem .75rem;}
+  
+  .form-input,.form-select,.form-textarea{padding:.65rem .8rem;}
+}
+
+/* ── MOBILE OPTIMIZATIONS ───────────────────────────────────── */
+@media(max-width:767px){
+  /* Improve touch targets */
+  a, button {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* Better scrollbar on mobile */
+  ::-webkit-scrollbar{width:6px;}
+  
+  /* Remove input zoom on focus for iOS */
+  .form-input, .form-select, .form-textarea {
+    font-size: 16px !important;
+  }
+  
+  /* Better spacing for touch */
+  .nav-link, .nav-book-btn {
+    padding: .75rem .5rem;
+  }
+  
+  /* Improve hero visibility */
+  #hero {
+    min-height: 100vh;
+  }
+  
+  /* Better button spacing */
+  .hero-cta-row {
+    align-items: stretch;
+  }
+  .hero-cta-row a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    min-height: 44px;
   }
 }
-</script>
-<style>
-  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-  html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
-  body{font-family:'DM Sans',sans-serif;background:#f8fafc;color:#1e293b;overflow-x:hidden}
-  ::-webkit-scrollbar{width:5px}
-  ::-webkit-scrollbar-track{background:#f1f5f9}
-  ::-webkit-scrollbar-thumb{background:#2db0ae;border-radius:99px}
 
-  /* Glassmorphism */
-  .glass{backdrop-filter:blur(18px) saturate(160%);-webkit-backdrop-filter:blur(18px) saturate(160%);background:rgba(255,255,255,0.88);border-bottom:1px solid rgba(255,255,255,0.6)}
-  .glass-card{backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);background:rgba(255,255,255,0.72);border:1px solid rgba(255,255,255,0.55)}
+@media(max-width:480px){
+  /* Ensure readability */
+  body {
+    font-size: 14px;
+  }
+  
+  /* Better spacing around sections */
+  .section-wrap {
+    padding: 3rem 0;
+  }
+  
+  /* Make cards full width for mobile */
+  .service-card:first-child {
+    margin-top: 0;
+  }
+  
+  /* Better form spacing on small devices */
+  .form-input, .form-select, .form-textarea {
+    border-radius: 4px;
+  }
+}
 
-  /* Hero video placeholder */
-  .hero-bg{position:absolute;inset:0;background:
-    linear-gradient(135deg,rgba(7,58,57,0.88) 0%,rgba(15,101,99,0.72) 45%,rgba(10,28,50,0.85) 100%),
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='600'%3E%3Crect fill='%230b4f4e' width='800' height='600'/%3E%3Ccircle cx='200' cy='300' r='260' fill='%2314807e' opacity='.18'/%3E%3Ccircle cx='600' cy='200' r='180' fill='%232db0ae' opacity='.12'/%3E%3Ccircle cx='700' cy='500' r='220' fill='%230f6563' opacity='.15'/%3E%3C/svg%3E");
-    background-size:cover;background-position:center}
+/* ── MOBILE TOUCH POLISH ─────────────────────────────────────── */
+@media(max-width:767px){
+  /* Snappier tap — removes 300 ms delay on links/buttons */
+  a,button,.service-card,.info-card{touch-action:manipulation;}
 
-  /* Animated orbs in hero */
-  .orb{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;opacity:.18}
-
-  /* Floating card */
-  .stat-badge{background:rgba(255,255,255,0.14);border:1px solid rgba(255,255,255,0.22);backdrop-filter:blur(10px)}
-
-  /* Section reveal */
-  .reveal{opacity:0;transform:translateY(28px);transition:opacity 0.7s ease,transform 0.7s ease}
-  .reveal.visible{opacity:1;transform:none}
-
-  /* Form fields */
-  .form-field{width:100%;padding:0.75rem 1rem;border:1.5px solid #e2e8f0;border-radius:12px;font-family:'DM Sans',sans-serif;font-size:0.9rem;color:#1e293b;background:#fff;transition:border-color 0.2s,box-shadow 0.2s;outline:none}
-  .form-field:focus{border-color:#2db0ae;box-shadow:0 0 0 3px rgba(45,176,174,0.15)}
-  .form-field::placeholder{color:#94a3b8}
-  select.form-field{cursor:pointer}
-
-  /* Event card gradient border */
-  .event-card{background:#fff;border-radius:20px;border:1px solid #e2e8f0;overflow:hidden;transition:transform 0.3s ease,box-shadow 0.3s ease}
-  .event-card:hover{transform:translateY(-6px);box-shadow:0 20px 48px rgba(15,101,99,0.14)}
-
-  /* CTA buttons */
-  .btn-primary{background:linear-gradient(135deg,#2db0ae,#1a9593);color:#fff;font-weight:500;border-radius:99px;padding:0.75rem 2rem;transition:all 0.3s ease;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;display:inline-flex;align-items:center;gap:0.5rem}
-  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(45,176,174,0.38)}
-  .btn-outline{background:transparent;color:#2db0ae;font-weight:500;border-radius:99px;padding:0.7rem 1.8rem;border:1.5px solid #2db0ae;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.3s ease;display:inline-flex;align-items:center;gap:0.5rem}
-  .btn-outline:hover{background:#2db0ae;color:#fff;transform:translateY(-2px)}
-  .btn-gold{background:linear-gradient(135deg,#d4a857,#c08d3a);color:#fff;font-weight:500;border-radius:99px;padding:0.65rem 1.5rem;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.25s ease;font-size:0.88rem}
-  .btn-gold:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(192,141,58,0.35)}
-
-  /* Nav link hover */
-  .nav-link{position:relative;color:#475569;font-weight:500;font-size:0.9rem;transition:color 0.2s;text-decoration:none}
-  .nav-link::after{content:'';position:absolute;bottom:-3px;left:0;width:0;height:2px;background:#2db0ae;border-radius:2px;transition:width 0.25s ease}
-  .nav-link:hover{color:#2db0ae}
-  .nav-link:hover::after{width:100%}
-  .nav-link.active{color:#2db0ae}
-  .nav-link.active::after{width:100%}
-
-  /* Mobile menu */
-  .mobile-menu{transform:translateY(-8px);opacity:0;pointer-events:none;transition:all 0.3s ease}
-  .mobile-menu.open{transform:translateY(0);opacity:1;pointer-events:all}
-
-  /* Toast */
-  .toast{position:fixed;bottom:2rem;right:2rem;z-index:9999;display:flex;align-items:center;gap:0.75rem;background:#fff;border-radius:16px;padding:1rem 1.5rem;box-shadow:0 8px 32px rgba(15,101,99,0.18);border-left:4px solid #2db0ae;font-family:'DM Sans',sans-serif;max-width:360px}
-
-  /* Portal */
-  .portal-overlay{position:fixed;inset:0;z-index:9000;background:rgba(7,58,57,0.55);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;padding:1rem}
-  .portal-card{background:#fff;border-radius:24px;width:100%;max-width:900px;max-height:90vh;overflow-y:auto;padding:2.5rem;box-shadow:0 32px 80px rgba(7,58,57,0.22)}
-
-  /* Tab active */
-  .tab-btn.active-tab{background:#2db0ae;color:#fff}
-
-  /* Appointment row */
-  .appt-row{background:#f0fafa;border:1px solid #ccf0ef;border-radius:12px;padding:1rem 1.25rem;display:flex;flex-wrap:wrap;gap:0.5rem;align-items:center;justify-content:space-between;animation:slideUp 0.4s ease forwards}
-
-  /* Department badge colors */
-  .badge{display:inline-flex;align-items:center;padding:0.25rem 0.75rem;border-radius:99px;font-size:0.75rem;font-weight:500}
-
-  /* Scrollbar inside portal */
-  .portal-card::-webkit-scrollbar{width:4px}
-  .portal-card::-webkit-scrollbar-thumb{background:#2db0ae;border-radius:4px}
-
-  /* Location card accent */
-  .location-accent{background:linear-gradient(135deg,#f0fafa,#fff);border:1px solid #ccf0ef}
-
-  /* Service icon wrapper */
-  .svc-icon{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#f0fafa,#ccf0ef)}
-
-  /* Pulse ring for phone */
-  .pulse-ring{display:inline-block;position:relative}
-  .pulse-ring::before{content:'';position:absolute;inset:-4px;border-radius:50%;border:2px solid #2db0ae;animation:ping 1.5s ease-out infinite;opacity:0}
-  @keyframes ping{0%{transform:scale(1);opacity:0.6}100%{transform:scale(1.5);opacity:0}}
-
-  /* Horizontal scroll for mobile events */
-  @media(max-width:640px){
-    .events-grid{display:flex;overflow-x:auto;gap:1rem;padding-bottom:1rem;scroll-snap-type:x mandatory}
-    .events-grid>*{min-width:280px;scroll-snap-align:start}
+  /* Nav panel "MENU" label at top-left */
+  nav::before{
+    content:'MENU';
+    position:absolute;top:1.75rem;left:2rem;
+    font-family:var(--font-mono);
+    font-size:.6rem;letter-spacing:.22em;
+    color:var(--teal);text-transform:uppercase;
   }
 
-  /* Hero particles (CSS only) */
-  .particle{position:absolute;border-radius:50%;background:rgba(255,255,255,0.12)}
+  /* Overlay sits between page and nav panel */
+  #nav-overlay{z-index:501;}
+
+  /* Section body text more readable */
+  .section-body{line-height:1.75;}
+
+  /* Hide scroll indicator on mobile — less noise */
+  .scroll-indicator{display:none;}
+}
+
+/* ── NOISE GRAIN OVERLAY ────────────────────────────────────── */
+body::after{
+  content:'';position:fixed;inset:0;
+  pointer-events:none;z-index:9997;
+  opacity:.025;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-repeat:repeat;background-size:150px 150px;
+}
 </style>
 </head>
+
 <body>
 
-<!-- ═══════════════════════════════════════════
-     TOAST NOTIFICATION
-═══════════════════════════════════════════ -->
-<div id="toast" class="toast hidden">
-  <div style="width:36px;height:36px;background:#f0fafa;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0">
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2db0ae" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-  </div>
-  <div>
-    <p id="toast-title" style="font-weight:600;color:#0b4f4e;font-size:0.9rem"></p>
-    <p id="toast-msg" style="color:#475569;font-size:0.82rem;margin-top:2px"></p>
-  </div>
-  <button onclick="closeToast()" style="margin-left:auto;color:#94a3b8;background:none;border:none;cursor:pointer;padding:4px">
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-  </button>
+<!-- ── FULL-PAGE VIDEO BACKGROUND ─────────────────────────── -->
+<div id="video-bg">
+  <video id="hero-video" autoplay muted loop playsinline>
+    <source src="hero-bg.mp4" type="video/mp4">
+  </video>
+  <div class="hero-video-overlay"></div>
 </div>
 
-<!-- ═══════════════════════════════════════════
-     PATIENT PORTAL MODAL
-═══════════════════════════════════════════ -->
-<div id="portal-overlay" class="portal-overlay hidden">
-  <div class="portal-card">
+<!-- ── CURSOR ─────────────────────────────────────────────── -->
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
 
-    <!-- Portal Header -->
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;flex-wrap:wrap;gap:1rem">
-      <div>
-        <p style="font-size:0.78rem;letter-spacing:0.08em;text-transform:uppercase;color:#2db0ae;font-weight:600;margin-bottom:4px">Oasis Medical Clinic</p>
-        <h2 style="font-family:'Cormorant Garamond',serif;font-size:1.8rem;color:#0b4f4e;font-weight:600">Patient Portal</h2>
-      </div>
-      <button onclick="closePortal()" style="width:38px;height:38px;border-radius:50%;border:1.5px solid #e2e8f0;background:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#64748b;transition:all 0.2s">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-      </button>
+<!-- ── PRELOADER ─────────────────────────────────────────── -->
+<div id="preloader">
+  <div class="loader-scanline"></div>
+
+  <div class="loader-glyph">
+    <!-- Outer ring -->
+    <svg class="ring-outer" viewBox="0 0 120 120" fill="none">
+      <circle cx="60" cy="60" r="56" stroke="url(#ring-grad)" stroke-width="1" stroke-dasharray="8 4"/>
+      <defs>
+        <linearGradient id="ring-grad" x1="0" y1="0" x2="120" y2="120" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="#00e6c8" stop-opacity=".8"/>
+          <stop offset="50%" stop-color="#00bcd4" stop-opacity=".2"/>
+          <stop offset="100%" stop-color="#00e6c8" stop-opacity=".8"/>
+        </linearGradient>
+      </defs>
+    </svg>
+    <!-- Inner ring -->
+    <svg class="ring-inner" viewBox="0 0 120 120" fill="none">
+      <circle cx="60" cy="60" r="44" stroke="rgba(0,230,200,.3)" stroke-width="1" stroke-dasharray="4 8"/>
+    </svg>
+    <!-- Pulse ring -->
+    <svg class="ring-pulse" viewBox="0 0 120 120" fill="none">
+      <circle cx="60" cy="60" r="32" stroke="rgba(0,230,200,.4)" stroke-width="1"/>
+    </svg>
+    <!-- Center cross -->
+    <svg class="loader-cross" viewBox="0 0 120 120" fill="none">
+      <rect x="54" y="36" width="12" height="48" rx="2" fill="#00e6c8"/>
+      <rect x="36" y="54" width="48" height="12" rx="2" fill="#00e6c8"/>
+    </svg>
+  </div>
+
+  <div class="loader-info">
+    <div class="loader-name">Oasis<span style="color:var(--teal)"> Medical</span></div>
+    <div class="loader-sub">Initialising Clinical Systems</div>
+  </div>
+
+  <div style="display:flex;flex-direction:column;align-items:center;gap:.75rem;">
+    <div class="loader-counter">
+      <span id="loader-num">0</span><span class="loader-pct">%</span>
     </div>
-
-    <!-- Login / Signup Toggle -->
-    <div id="portal-auth" class="">
-      <!-- Tabs -->
-      <div style="display:flex;gap:0.5rem;background:#f1f5f9;border-radius:12px;padding:4px;margin-bottom:1.5rem;width:fit-content">
-        <button onclick="switchAuthTab('login')" id="tab-login" class="tab-btn active-tab" style="padding:0.5rem 1.5rem;border-radius:9px;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:500;font-size:0.9rem;transition:all 0.25s">Sign In</button>
-        <button onclick="switchAuthTab('signup')" id="tab-signup" class="tab-btn" style="padding:0.5rem 1.5rem;border-radius:9px;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:500;font-size:0.9rem;color:#64748b;background:transparent;transition:all 0.25s">Create Account</button>
-      </div>
-
-      <!-- Login Form -->
-      <div id="login-form">
-        <div style="display:grid;gap:1rem;max-width:420px">
-          <div>
-            <label style="font-size:0.82rem;font-weight:500;color:#475569;display:block;margin-bottom:6px">Email Address</label>
-            <input type="email" placeholder="patient@email.com" class="form-field" id="portal-email"/>
-          </div>
-          <div>
-            <label style="font-size:0.82rem;font-weight:500;color:#475569;display:block;margin-bottom:6px">Password</label>
-            <input type="password" placeholder="••••••••" class="form-field" id="portal-pass"/>
-          </div>
-          <p style="font-size:0.8rem;color:#94a3b8">Demo: any email + any password works</p>
-          <button class="btn-primary" onclick="loginPortal()" style="width:fit-content">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
-            Sign In to Portal
-          </button>
-        </div>
-      </div>
-
-      <!-- Signup Form -->
-      <div id="signup-form" class="hidden">
-        <div style="display:grid;gap:1rem;max-width:420px">
-          <div>
-            <label style="font-size:0.82rem;font-weight:500;color:#475569;display:block;margin-bottom:6px">Full Name</label>
-            <input type="text" placeholder="Kwame Mensah" class="form-field" id="su-name"/>
-          </div>
-          <div>
-            <label style="font-size:0.82rem;font-weight:500;color:#475569;display:block;margin-bottom:6px">Phone Number</label>
-            <input type="tel" placeholder="+233 XX XXX XXXX" class="form-field" id="su-phone"/>
-          </div>
-          <div>
-            <label style="font-size:0.82rem;font-weight:500;color:#475569;display:block;margin-bottom:6px">Email Address</label>
-            <input type="email" placeholder="you@email.com" class="form-field" id="su-email"/>
-          </div>
-          <div>
-            <label style="font-size:0.82rem;font-weight:500;color:#475569;display:block;margin-bottom:6px">Create Password</label>
-            <input type="password" placeholder="••••••••" class="form-field" id="su-pass"/>
-          </div>
-          <button class="btn-primary" onclick="signupPortal()" style="width:fit-content">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-            Create My Account
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Dashboard (shown after login) -->
-    <div id="portal-dashboard" class="hidden">
-      <!-- Patient header -->
-      <div style="display:flex;align-items:center;gap:1rem;padding:1.25rem;background:linear-gradient(135deg,#f0fafa,#ccf0ef);border-radius:16px;margin-bottom:1.5rem">
-        <div style="width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#2db0ae,#0b4f4e);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:600;font-size:1.2rem;flex-shrink:0" id="avatar-initials">KM</div>
-        <div>
-          <p id="dash-name" style="font-weight:600;color:#0b4f4e;font-size:1rem">Kwame Mensah</p>
-          <p style="font-size:0.82rem;color:#64748b">Patient ID: OMC-2025-0042</p>
-        </div>
-        <button onclick="logoutPortal()" style="margin-left:auto;background:#fff;border:1.5px solid #e2e8f0;border-radius:99px;padding:0.45rem 1.1rem;font-size:0.82rem;color:#64748b;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s;white-space:nowrap">Sign Out</button>
-      </div>
-
-      <!-- Stats row -->
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:0.75rem;margin-bottom:1.5rem">
-        <div style="background:#f0fafa;border:1px solid #ccf0ef;border-radius:12px;padding:1rem;text-align:center">
-          <p id="stat-total" style="font-size:1.8rem;font-weight:600;color:#2db0ae">0</p>
-          <p style="font-size:0.78rem;color:#64748b;margin-top:2px">Appointments</p>
-        </div>
-        <div style="background:#fdfaf5;border:1px solid #f1e2c0;border-radius:12px;padding:1rem;text-align:center">
-          <p style="font-size:1.8rem;font-weight:600;color:#d4a857">1</p>
-          <p style="font-size:0.78rem;color:#64748b;margin-top:2px">Upcoming</p>
-        </div>
-        <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:1rem;text-align:center">
-          <p style="font-size:1.8rem;font-weight:600;color:#475569">0</p>
-          <p style="font-size:0.78rem;color:#64748b;margin-top:2px">Completed</p>
-        </div>
-      </div>
-
-      <!-- Appointments list -->
-      <div style="margin-bottom:1rem;display:flex;align-items:center;justify-content:space-between">
-        <h3 style="font-weight:600;color:#0b4f4e;font-size:1rem">Your Active Appointments</h3>
-        <span id="appt-count-badge" style="background:#2db0ae;color:#fff;font-size:0.72rem;padding:0.2rem 0.65rem;border-radius:99px;font-weight:600">0</span>
-      </div>
-
-      <div id="appointments-list" style="display:grid;gap:0.75rem">
-        <!-- Default appointment -->
-        <div class="appt-row">
-          <div style="display:flex;align-items:center;gap:0.75rem">
-            <div style="width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#2db0ae,#1a9593);display:flex;align-items:center;justify-content:center;flex-shrink:0">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-            </div>
-            <div>
-              <p style="font-weight:600;color:#0b4f4e;font-size:0.9rem">General Consultation</p>
-              <p style="font-size:0.78rem;color:#64748b">Dr. Akwesi Boateng</p>
-            </div>
-          </div>
-          <div style="text-align:right">
-            <p style="font-weight:500;color:#1e293b;font-size:0.85rem">Mon, 14 Jul 2025</p>
-            <p style="font-size:0.78rem;color:#64748b">10:00 AM</p>
-          </div>
-          <span class="badge" style="background:#f0fafa;color:#0f6563;border:1px solid #ccf0ef">Confirmed</span>
-        </div>
-
-        <!-- Empty state -->
-        <div id="empty-state" class="hidden" style="text-align:center;padding:2rem;color:#94a3b8">
-          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin:0 auto 0.75rem"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-          <p style="font-size:0.9rem">No appointments yet. Book one below!</p>
-        </div>
-      </div>
-
-      <!-- Quick book from portal -->
-      <div style="margin-top:1.5rem;padding:1rem;background:#fdfaf5;border:1px solid #f1e2c0;border-radius:14px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem">
-        <div>
-          <p style="font-weight:600;color:#0b4f4e;font-size:0.9rem">Need a new appointment?</p>
-          <p style="font-size:0.8rem;color:#64748b">Scroll to our booking section to schedule.</p>
-        </div>
-        <button class="btn-gold" onclick="closePortal();scrollToSection('booking')">Book Appointment →</button>
-      </div>
+    <div class="loader-bar-wrap">
+      <div class="loader-bar-fill" id="loader-bar"></div>
     </div>
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════
-     NAVIGATION BAR
-═══════════════════════════════════════════ -->
-<header id="navbar" class="glass fixed top-0 left-0 right-0 z-50 transition-all duration-300">
-  <!-- Top strip -->
-  <div style="background:linear-gradient(90deg,#073a39,#0f6563);padding:0.35rem 1.5rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:0.5rem" class="hidden sm:flex">
-    <div style="display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap">
-      <a href="tel:+233243329756" style="color:rgba(255,255,255,0.9);font-size:0.78rem;display:flex;align-items:center;gap:0.4rem;text-decoration:none">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.21h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.86a16 16 0 0 0 6.29 6.29l.96-.96a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-        +233 24 332 9756
-      </a>
-      <span style="color:rgba(255,255,255,0.5);font-size:0.78rem">|</span>
-      <span style="color:rgba(255,255,255,0.8);font-size:0.78rem;display:flex;align-items:center;gap:0.4rem">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-        Mon–Sat: 8AM–8PM &nbsp;|&nbsp; Sun: 9AM–8PM
-      </span>
-    </div>
-    <span style="color:rgba(255,255,255,0.7);font-size:0.78rem;display:flex;align-items:center;gap:0.35rem">
-      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-      Afienya, Greater Accra
-    </span>
-  </div>
-
-  <!-- Main nav -->
-  <nav style="display:flex;align-items:center;justify-content:space-between;padding:0.85rem 1.5rem;max-width:1200px;margin:0 auto">
-    <!-- Logo -->
-    <a href="#" style="text-decoration:none;display:flex;align-items:center;gap:0.6rem">
-      <div style="width:38px;height:38px;background:linear-gradient(135deg,#2db0ae,#0b4f4e);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
-      </div>
-      <div>
-        <p style="font-family:'Cormorant Garamond',serif;font-size:1.15rem;font-weight:600;color:#0b4f4e;line-height:1">Oasis Medical</p>
-        <p style="font-size:0.65rem;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;color:#2db0ae">Clinic, Afienya</p>
-      </div>
+<!-- ── NAVIGATION ────────────────────────────────────────── -->
+<div id="nav-overlay"></div>
+<header id="navbar">
+  <div class="inner" style="display:flex;align-items:center;justify-content:space-between;gap:1rem;">
+    <a href="#hero" style="display:flex;align-items:center;gap:.65rem;text-decoration:none;">
+      <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+        <rect width="28" height="28" rx="4" fill="rgba(0,230,200,.1)" stroke="rgba(0,230,200,.3)"/>
+        <rect x="12" y="5" width="4" height="18" rx="1.5" fill="#00e6c8"/>
+        <rect x="5" y="12" width="18" height="4" rx="1.5" fill="#00e6c8"/>
+      </svg>
+      <div class="nav-logo-text">Oasis<span> Medical</span></div>
     </a>
 
-    <!-- Desktop links -->
-    <div class="hidden md:flex items-center gap-7">
-      <a href="#hero" class="nav-link" onclick="setActive(this)">Home</a>
-      <a href="#services" class="nav-link" onclick="setActive(this)">Services</a>
-      <a href="#events" class="nav-link" onclick="setActive(this)">Events</a>
-      <a href="#booking" class="nav-link" onclick="setActive(this)">Book Appointment</a>
-    </div>
+    <nav style="display:flex;align-items:center;gap:2.25rem;" aria-label="Main navigation">
+      <a href="#about-section" class="nav-link">About</a>
+      <a href="#services-section" class="nav-link">Services</a>
+      <a href="#contact-section" class="nav-link">Contact</a>
+      <a href="#contact-section" class="nav-book-btn"><span>Book Appointment</span></a>
+    </nav>
 
-    <!-- Right actions -->
-    <div class="hidden md:flex items-center gap-3">
-      <a href="tel:+233243329756" style="text-decoration:none">
-        <button class="btn-outline" style="padding:0.5rem 1.2rem;font-size:0.85rem">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.21h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.86a16 16 0 0 0 6.29 6.29l.96-.96a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-          Call Now
-        </button>
-      </a>
-      <button class="btn-primary" onclick="openPortal()" style="padding:0.55rem 1.3rem;font-size:0.85rem">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-        Patient Portal
-      </button>
-    </div>
-
-    <!-- Hamburger -->
-    <button id="hamburger" onclick="toggleMobileMenu()" class="md:hidden" style="width:38px;height:38px;border-radius:10px;border:1.5px solid #e2e8f0;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#475569">
-      <svg id="ham-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-      <svg id="close-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="hidden"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    <button id="mobile-menu-btn" aria-label="Toggle mobile menu" aria-expanded="false">
+      <svg class="icon-menu" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      <svg class="icon-close" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>
     </button>
-  </nav>
-
-  <!-- Mobile Menu -->
-  <div id="mobile-menu" class="mobile-menu md:hidden" style="background:rgba(255,255,255,0.97);border-top:1px solid #e2e8f0;padding:1rem 1.5rem 1.5rem">
-    <div style="display:flex;flex-direction:column;gap:0.25rem;margin-bottom:1rem">
-      <a href="#hero" class="nav-link" onclick="closeMobileMenu()" style="padding:0.65rem 0;border-bottom:1px solid #f1f5f9">Home</a>
-      <a href="#services" class="nav-link" onclick="closeMobileMenu()" style="padding:0.65rem 0;border-bottom:1px solid #f1f5f9">Services</a>
-      <a href="#events" class="nav-link" onclick="closeMobileMenu()" style="padding:0.65rem 0;border-bottom:1px solid #f1f5f9">Events</a>
-      <a href="#booking" class="nav-link" onclick="closeMobileMenu()" style="padding:0.65rem 0;border-bottom:1px solid #f1f5f9">Book Appointment</a>
-    </div>
-    <div style="display:flex;flex-direction:column;gap:0.65rem">
-      <a href="tel:+233243329756" style="text-decoration:none"><button class="btn-outline" style="width:100%;justify-content:center">📞 +233 24 332 9756</button></a>
-      <button class="btn-primary" onclick="openPortal();closeMobileMenu()" style="width:100%;justify-content:center">Patient Portal</button>
-    </div>
-    <!-- Hours on mobile -->
-    <div style="margin-top:1rem;padding:0.85rem;background:#f0fafa;border-radius:12px;font-size:0.82rem;color:#64748b">
-      <span style="font-weight:600;color:#0b4f4e">Hours:</span> Mon–Sat 8AM–8PM &nbsp;|&nbsp; Sun 9AM–8PM
-    </div>
   </div>
 </header>
 
-<!-- ═══════════════════════════════════════════
-     HERO SECTION
-═══════════════════════════════════════════ -->
-<section id="hero" style="min-height:100vh;position:relative;display:flex;align-items:center;overflow:hidden">
+<!-- ── HERO ──────────────────────────────────────────────── -->
+<section id="hero">
+  <!-- Particle canvas overlays the video in hero (desktop only) -->
+  <canvas id="three-canvas"></canvas>
+  <div class="hero-vignette"></div>
+  <div class="hero-grid"></div>
 
-  <!-- BG -->
-  <div class="hero-bg">
-    <!-- animated orbs -->
-    <div class="orb" style="width:600px;height:600px;background:#2db0ae;top:-200px;right:-150px;animation:float 8s ease-in-out infinite"></div>
-    <div class="orb" style="width:400px;height:400px;background:#d4a857;bottom:-100px;left:-100px;animation:float 10s ease-in-out infinite reverse"></div>
-    <div class="orb" style="width:300px;height:300px;background:#073a39;top:40%;left:30%;animation:float 12s ease-in-out infinite 2s"></div>
+  <div class="inner hero-content" style="width:100%;">
+    <div class="hero-eyebrow" id="hero-eyebrow">
+      Mon–Sat 8am–8pm · Off First Bridge Road, Mataheko-Afienya · Greater Accra
+    </div>
 
-    <!-- Grid pattern overlay -->
-    <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.035) 1px,transparent 1px);background-size:50px 50px;pointer-events:none"></div>
+    <h1 class="hero-title" id="hero-title" aria-label="Your Health. Our Purpose.">
+      <span class="hero-title-line">
+        <span class="hero-title-word">Your</span>
+        <span class="hero-title-word" style="margin-left:.3em">Health.</span>
+      </span>
+      <span class="hero-title-line">
+        <span class="hero-title-word accent">Our</span>
+        <span class="hero-title-word" style="margin-left:.3em">Purpose.</span>
+      </span>
+    </h1>
 
-    <!-- Floating particles -->
-    <div class="particle" style="width:6px;height:6px;top:20%;left:15%;animation:float 7s ease-in-out infinite"></div>
-    <div class="particle" style="width:4px;height:4px;top:60%;left:80%;animation:float 9s ease-in-out infinite 1s"></div>
-    <div class="particle" style="width:8px;height:8px;top:80%;left:40%;animation:float 11s ease-in-out infinite 2s"></div>
-    <div class="particle" style="width:5px;height:5px;top:35%;left:65%;animation:float 6s ease-in-out infinite 0.5s"></div>
+    <p class="hero-sub" id="hero-sub">
+      Compassionate, modern healthcare for every family in the Afienya community. 
+      From routine consultations to emergency care — Oasis Medical Clinic is your trusted partner in health.
+    </p>
+
+    <div class="hero-cta-row" id="hero-cta">
+      <a href="#contact-section" class="btn-primary-glow">Book Appointment</a>
+      <a href="#services-section" class="btn-ghost">Explore Services</a>
+      <a href="tel:+233208894427" class="btn-ghost" style="display:flex;align-items:center;gap:.5rem;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 0117.5 2a2 2 0 012 2.18v3a2 2 0 01-1.45 1.94 12.5 12.5 0 01-3.92 1.18 12.5 12.5 0 01-3.18-3.92A2 2 0 0122 16.92z"/></svg>
+        020-889-4427
+      </a>
+    </div>
+
+    <div class="hero-data-strip" id="hero-stats">
+      <div class="hero-data-item">
+        <span class="data-label">Services</span>
+        <span class="data-value">7+</span>
+      </div>
+      <div class="hero-data-item">
+        <span class="data-label">Mon–Sat</span>
+        <span class="data-value">8–8 PM</span>
+      </div>
+      <div class="hero-data-item">
+        <span class="data-label">Laboratory</span>
+        <span class="data-value">On-Site</span>
+      </div>
+      <div class="hero-data-item">
+        <span class="data-label">Pharmacy</span>
+        <span class="data-value">In-House</span>
+      </div>
+      <div class="hero-data-item">
+        <span class="data-label">Rating</span>
+        <span class="data-value">4.3 ★</span>
+      </div>
+      <div class="hero-data-item">
+        <span class="data-label">After Hours</span>
+        <span class="data-value">24/7 Line</span>
+      </div>
+    </div>
   </div>
 
-  <!-- Hero content -->
-  <div style="position:relative;z-index:10;max-width:1200px;margin:0 auto;padding:8rem 1.5rem 4rem;width:100%">
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center" class="hero-grid">
+  <div class="scroll-indicator" id="scroll-indicator">
+    <span class="scroll-text">Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
 
-      <!-- Left text -->
-      <div style="animation:slideUp 0.9s ease forwards">
-        <!-- Tag -->
-        <div style="display:inline-flex;align-items:center;gap:0.5rem;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.18);border-radius:99px;padding:0.35rem 1rem;margin-bottom:1.5rem">
-          <div style="width:8px;height:8px;background:#2db0ae;border-radius:50%;animation:pulse 2s infinite"></div>
-          <span style="color:rgba(255,255,255,0.85);font-size:0.8rem;font-weight:500">Now Accepting New Patients</span>
+<!-- ── ABOUT ─────────────────────────────────────────────── -->
+<section id="about-section" class="section-wrap">
+  <div class="section-bg-glow" style="width:600px;height:600px;top:-200px;left:-200px;background:radial-gradient(circle,rgba(0,230,200,1) 0%,transparent 70%);"></div>
+  <div class="inner">
+    <div class="about-grid">
+      <div class="about-visual" id="about-visual">
+        <div class="about-hex">
+          <div class="hex-ring hex-ring-1"></div>
+          <div class="hex-ring hex-ring-2"></div>
+          <div class="hex-ring hex-ring-3"></div>
+          <div class="hex-center">
+            <svg width="60" height="60" viewBox="0 0 60 60" fill="none">
+              <rect x="26" y="8" width="8" height="44" rx="3" fill="#00e6c8"/>
+              <rect x="8" y="26" width="44" height="8" rx="3" fill="#00e6c8"/>
+              <circle cx="30" cy="30" r="29" stroke="rgba(0,230,200,.3)" stroke-width="1"/>
+            </svg>
+          </div>
         </div>
 
-        <h1 style="font-family:'Cormorant Garamond',serif;font-size:clamp(2.4rem,5vw,3.8rem);font-weight:600;color:#fff;line-height:1.12;margin-bottom:1.25rem">
-          Your Sanctuary of<br/>
-          <span style="color:#5bc9c7">Health</span> and<br/>
-          <span style="background:linear-gradient(135deg,#d4a857,#f1e2c0);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Healing</span>
-          <span style="color:#fff"> in Afienya</span>
-        </h1>
+        <div class="hex-data-point" style="top:8%;left:0;">
+          <span class="hdp-num">4.3★</span>
+          <span class="hdp-lbl">Patient Rating</span>
+        </div>
+        <div class="hex-data-point" style="bottom:12%;right:0;">
+          <span class="hdp-num">7×</span>
+          <span class="hdp-lbl">Days a Week</span>
+        </div>
+        <div class="hex-data-point" style="bottom:0%;left:15%;">
+          <span class="hdp-num">Lab</span>
+          <span class="hdp-lbl">On-Site Testing</span>
+        </div>
+      </div>
 
-        <p style="color:rgba(255,255,255,0.72);font-size:1.05rem;line-height:1.7;margin-bottom:2rem;max-width:480px">
-          Oasis Medical Clinic delivers compassionate, world-class healthcare right in the heart of Afienya — opposite Mataheko MELCOM. Your wellness is our calling.
+      <div id="about-text">
+        <span class="section-tag">About the Clinic</span>
+        <h2 class="section-title">
+          Healthcare<br/><span class="title-accent">Built for</span><br/>Afienya
+        </h2>
+        <p class="section-body">
+          Oasis Medical Clinic is a trusted healthcare facility located off First Bridge Road, Mataheko-Afienya, Greater Accra. We combine modern clinical standards with genuine, compassionate care — offering everything from general consultations to specialist clinics.
         </p>
-
-        <div style="display:flex;flex-wrap:wrap;gap:0.875rem;align-items:center">
-          <button class="btn-primary" onclick="scrollToSection('booking')" style="font-size:1rem;padding:0.875rem 2.2rem">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-            Book an Appointment
-          </button>
-          <a href="tel:+233243329756" style="text-decoration:none">
-            <button style="background:rgba(255,255,255,0.1);border:1.5px solid rgba(255,255,255,0.3);color:#fff;border-radius:99px;padding:0.875rem 2rem;font-family:'DM Sans',sans-serif;font-size:1rem;font-weight:500;cursor:pointer;transition:all 0.3s;display:flex;align-items:center;gap:0.5rem" onmouseover="this.style.background='rgba(255,255,255,0.2)'" onmouseout="this.style.background='rgba(255,255,255,0.1)'">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.21h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.86a16 16 0 0 0 6.29 6.29l.96-.96a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-              Call Us Now
-            </button>
-          </a>
-        </div>
-
-        <!-- Trust badges -->
-        <div style="display:flex;flex-wrap:wrap;gap:1.5rem;margin-top:2.5rem">
-          <div style="display:flex;align-items:center;gap:0.5rem">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5bc9c7" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-            <span style="color:rgba(255,255,255,0.75);font-size:0.83rem">GHS Certified</span>
-          </div>
-          <div style="display:flex;align-items:center;gap:0.5rem">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5bc9c7" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-            <span style="color:rgba(255,255,255,0.75);font-size:0.83rem">NHIA Accredited</span>
-          </div>
-          <div style="display:flex;align-items:center;gap:0.5rem">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5bc9c7" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-            <span style="color:rgba(255,255,255,0.75);font-size:0.83rem">Expert Medical Team</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Right floating cards -->
-      <div style="position:relative;display:flex;flex-direction:column;gap:1rem;animation:slideUp 1.1s ease 0.2s forwards;opacity:0" class="hidden md:flex">
-        <!-- Main card -->
-        <div class="glass-card" style="border-radius:20px;padding:1.5rem">
-          <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1rem">
-            <div style="width:42px;height:42px;background:linear-gradient(135deg,#2db0ae,#0b4f4e);border-radius:12px;display:flex;align-items:center;justify-content:center">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
-            </div>
-            <div>
-              <p style="font-weight:600;color:#0b4f4e;font-size:0.95rem">Emergency & Walk-In</p>
-              <p style="font-size:0.78rem;color:#64748b">Priority care, always ready</p>
-            </div>
-          </div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.5rem">
-            <div style="background:#f0fafa;border-radius:10px;padding:0.75rem;text-align:center">
-              <p style="font-size:1.4rem;font-weight:600;color:#2db0ae">4.9★</p>
-              <p style="font-size:0.7rem;color:#64748b">Patient Rating</p>
-            </div>
-            <div style="background:#fdfaf5;border-radius:10px;padding:0.75rem;text-align:center">
-              <p style="font-size:1.4rem;font-weight:600;color:#d4a857">12+</p>
-              <p style="font-size:0.7rem;color:#64748b">Yrs Experience</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Availability card -->
-        <div class="glass-card" style="border-radius:16px;padding:1.1rem;display:flex;align-items:center;gap:0.875rem;animation:float 5s ease-in-out infinite">
-          <div style="width:12px;height:12px;background:#22c55e;border-radius:50%;flex-shrink:0;box-shadow:0 0 0 3px rgba(34,197,94,0.25)"></div>
-          <div>
-            <p style="font-weight:600;color:#0b4f4e;font-size:0.9rem">Clinic Open Now</p>
-            <p style="font-size:0.78rem;color:#64748b">Accepting walk-ins & booked patients</p>
-          </div>
-        </div>
-
-        <!-- Quick contact -->
-        <div class="glass-card" style="border-radius:16px;padding:1.1rem;display:flex;align-items:center;gap:0.875rem">
-          <div style="width:40px;height:40px;background:linear-gradient(135deg,#d4a857,#c08d3a);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.21h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.86a16 16 0 0 0 6.29 6.29l.96-.96a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-          </div>
-          <div>
-            <p style="font-weight:600;color:#0b4f4e;font-size:0.9rem">+233 24 332 9756</p>
-            <p style="font-size:0.78rem;color:#64748b">Tap to call anytime</p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Scroll indicator -->
-    <div style="position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:0.4rem;opacity:0.6">
-      <span style="color:#fff;font-size:0.72rem;letter-spacing:0.08em;text-transform:uppercase">Explore</span>
-      <div style="width:1px;height:40px;background:linear-gradient(to bottom,rgba(255,255,255,0.6),transparent)"></div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══════════════════════════════════════════
-     SERVICES SECTION
-═══════════════════════════════════════════ -->
-<section id="services" style="padding:6rem 1.5rem;background:#fff">
-  <div style="max-width:1200px;margin:0 auto">
-    <!-- Header -->
-    <div class="reveal" style="text-align:center;margin-bottom:3.5rem">
-      <span style="display:inline-block;background:#f0fafa;color:#2db0ae;font-size:0.78rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;padding:0.35rem 1.1rem;border-radius:99px;border:1px solid #ccf0ef;margin-bottom:1rem">Our Departments</span>
-      <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,4vw,2.8rem);color:#0b4f4e;font-weight:600;margin-bottom:0.875rem">Comprehensive Care Under One Roof</h2>
-      <p style="color:#64748b;max-width:540px;margin:0 auto;line-height:1.7">From routine checkups to specialized care, our expert team is here for every step of your health journey.</p>
-    </div>
-
-    <div class="reveal" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.25rem">
-
-      <!-- Service cards -->
-      <div style="background:#fff;border:1px solid #e2e8f0;border-radius:18px;padding:1.5rem;transition:all 0.3s ease;cursor:default" onmouseover="this.style.borderColor='#2db0ae';this.style.transform='translateY(-4px)';this.style.boxShadow='0 12px 32px rgba(15,101,99,0.1)'" onmouseout="this.style.borderColor='#e2e8f0';this.style.transform='';this.style.boxShadow=''">
-        <div class="svc-icon" style="margin-bottom:1rem"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2db0ae" stroke-width="1.8"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div>
-        <h3 style="font-weight:600;color:#0b4f4e;margin-bottom:0.4rem">General Consultation</h3>
-        <p style="font-size:0.83rem;color:#64748b;line-height:1.6">Comprehensive health assessments by experienced physicians for all ages.</p>
-      </div>
-
-      <div style="background:#fff;border:1px solid #e2e8f0;border-radius:18px;padding:1.5rem;transition:all 0.3s ease;cursor:default" onmouseover="this.style.borderColor='#2db0ae';this.style.transform='translateY(-4px)';this.style.boxShadow='0 12px 32px rgba(15,101,99,0.1)'" onmouseout="this.style.borderColor='#e2e8f0';this.style.transform='';this.style.boxShadow=''">
-        <div class="svc-icon" style="margin-bottom:1rem"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2db0ae" stroke-width="1.8"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
-        <h3 style="font-weight:600;color:#0b4f4e;margin-bottom:0.4rem">Pediatrics</h3>
-        <p style="font-size:0.83rem;color:#64748b;line-height:1.6">Dedicated child health services — immunizations, growth monitoring, and care.</p>
-      </div>
-
-      <div style="background:#fff;border:1px solid #e2e8f0;border-radius:18px;padding:1.5rem;transition:all 0.3s ease;cursor:default" onmouseover="this.style.borderColor='#2db0ae';this.style.transform='translateY(-4px)';this.style.boxShadow='0 12px 32px rgba(15,101,99,0.1)'" onmouseout="this.style.borderColor='#e2e8f0';this.style.transform='';this.style.boxShadow=''">
-        <div class="svc-icon" style="margin-bottom:1rem"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2db0ae" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg></div>
-        <h3 style="font-weight:600;color:#0b4f4e;margin-bottom:0.4rem">O&G / Maternity</h3>
-        <p style="font-size:0.83rem;color:#64748b;line-height:1.6">Full obstetrics & gynaecology care — antenatal, postnatal, and family planning.</p>
-      </div>
-
-      <div style="background:#fff;border:1px solid #e2e8f0;border-radius:18px;padding:1.5rem;transition:all 0.3s ease;cursor:default" onmouseover="this.style.borderColor='#2db0ae';this.style.transform='translateY(-4px)';this.style.boxShadow='0 12px 32px rgba(15,101,99,0.1)'" onmouseout="this.style.borderColor='#e2e8f0';this.style.transform='';this.style.boxShadow=''">
-        <div class="svc-icon" style="margin-bottom:1rem"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2db0ae" stroke-width="1.8"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
-        <h3 style="font-weight:600;color:#0b4f4e;margin-bottom:0.4rem">Diagnostics & Lab</h3>
-        <p style="font-size:0.83rem;color:#64748b;line-height:1.6">On-site lab testing, X-rays, and ultrasound for fast, accurate diagnostics.</p>
-      </div>
-
-      <div style="background:#fff;border:1px solid #e2e8f0;border-radius:18px;padding:1.5rem;transition:all 0.3s ease;cursor:default" onmouseover="this.style.borderColor='#2db0ae';this.style.transform='translateY(-4px)';this.style.boxShadow='0 12px 32px rgba(15,101,99,0.1)'" onmouseout="this.style.borderColor='#e2e8f0';this.style.transform='';this.style.boxShadow=''">
-        <div class="svc-icon" style="margin-bottom:1rem"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2db0ae" stroke-width="1.8"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
-        <h3 style="font-weight:600;color:#0b4f4e;margin-bottom:0.4rem">Chronic Disease Care</h3>
-        <p style="font-size:0.83rem;color:#64748b;line-height:1.6">Management plans for diabetes, hypertension, and other long-term conditions.</p>
-      </div>
-
-      <div style="background:linear-gradient(135deg,#f0fafa,#ccf0ef);border:1px solid #ccf0ef;border-radius:18px;padding:1.5rem;cursor:default">
-        <div style="width:52px;height:52px;border-radius:14px;background:#2db0ae;display:flex;align-items:center;justify-content:center;margin-bottom:1rem">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-        </div>
-        <h3 style="font-weight:600;color:#0b4f4e;margin-bottom:0.4rem">NHIA Accepted</h3>
-        <p style="font-size:0.83rem;color:#0f6563;line-height:1.6">We proudly accept National Health Insurance for qualifying services. Quality care made accessible.</p>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<!-- ═══════════════════════════════════════════
-     ABOUT & LOCATION SECTION
-═══════════════════════════════════════════ -->
-<section id="about" style="padding:6rem 1.5rem;background:#f8fafc">
-  <div style="max-width:1200px;margin:0 auto">
-    <div class="reveal" style="display:grid;grid-template-columns:1fr 1fr;gap:3.5rem;align-items:center" id="about-grid">
-
-      <!-- Left: About text -->
-      <div>
-        <span style="display:inline-block;background:#fdfaf5;color:#d4a857;font-size:0.78rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;padding:0.35rem 1.1rem;border-radius:99px;border:1px solid #f1e2c0;margin-bottom:1rem">Our Story</span>
-        <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,3.5vw,2.5rem);color:#0b4f4e;font-weight:600;line-height:1.2;margin-bottom:1.25rem">A Landmark of Healthcare in the Afienya Community</h2>
-        <p style="color:#475569;line-height:1.75;margin-bottom:1.25rem;font-size:0.97rem">
-          Founded with a deep commitment to community health, Oasis Medical Clinic has served the Afienya area for over a decade — offering accessible, high-quality medical care to families across the Greater Accra Region.
+        <p class="section-body" style="margin-top:1rem;">
+          Rated "Very Serene Medical Environment" by our patients — we believe that healing begins in the atmosphere. Our skilled team is committed to your wellbeing, Monday through Saturday, 8 AM to 8 PM, with an after-hours line always available.
         </p>
-        <p style="color:#475569;line-height:1.75;margin-bottom:2rem;font-size:0.97rem">
-          We blend modern medical technology with warm, personalized care — because every patient deserves to feel seen, heard, and healed.
-        </p>
-
-        <!-- Pillars -->
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
-          <div style="display:flex;align-items:flex-start;gap:0.625rem">
-            <div style="width:32px;height:32px;background:#f0fafa;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2db0ae" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-            </div>
-            <div>
-              <p style="font-weight:600;color:#0b4f4e;font-size:0.9rem">Compassionate Team</p>
-              <p style="font-size:0.78rem;color:#94a3b8">Experienced, caring doctors & nurses</p>
-            </div>
-          </div>
-          <div style="display:flex;align-items:flex-start;gap:0.625rem">
-            <div style="width:32px;height:32px;background:#f0fafa;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2db0ae" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-            </div>
-            <div>
-              <p style="font-weight:600;color:#0b4f4e;font-size:0.9rem">Modern Equipment</p>
-              <p style="font-size:0.78rem;color:#94a3b8">Up-to-date diagnostic tools</p>
-            </div>
-          </div>
-          <div style="display:flex;align-items:flex-start;gap:0.625rem">
-            <div style="width:32px;height:32px;background:#f0fafa;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2db0ae" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-            </div>
-            <div>
-              <p style="font-weight:600;color:#0b4f4e;font-size:0.9rem">Community Rooted</p>
-              <p style="font-size:0.78rem;color:#94a3b8">Built for Afienya, serving all</p>
-            </div>
-          </div>
-          <div style="display:flex;align-items:flex-start;gap:0.625rem">
-            <div style="width:32px;height:32px;background:#f0fafa;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2db0ae" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-            </div>
-            <div>
-              <p style="font-weight:600;color:#0b4f4e;font-size:0.9rem">Affordable Care</p>
-              <p style="font-size:0.78rem;color:#94a3b8">NHIA & self-pay options</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Right: Location card -->
-      <div class="location-accent" style="border-radius:24px;overflow:hidden">
-        <!-- Map embed placeholder -->
-        <div style="position:relative;height:240px;background:linear-gradient(135deg,#073a39,#0f6563);overflow:hidden">
-          <!-- Decorative map-like grid -->
-          <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.06) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.06) 1px,transparent 1px);background-size:30px 30px"></div>
-          <!-- Road lines -->
-          <div style="position:absolute;top:50%;left:0;right:0;height:3px;background:rgba(255,255,255,0.12);transform:translateY(-50%)"></div>
-          <div style="position:absolute;top:0;bottom:0;left:50%;width:3px;background:rgba(255,255,255,0.12);transform:translateX(-50%)"></div>
-          <!-- Location pin -->
-          <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center">
-            <div style="width:48px;height:48px;background:#2db0ae;border-radius:50% 50% 50% 0;transform:rotate(-45deg);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(45,176,174,0.4)">
-              <div style="transform:rotate(45deg)">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
-              </div>
-            </div>
-            <div style="width:2px;height:16px;background:rgba(255,255,255,0.4);margin-top:2px"></div>
-          </div>
-          <!-- Label -->
-          <div style="position:absolute;bottom:16px;left:50%;transform:translateX(-50%);background:rgba(255,255,255,0.15);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.2);border-radius:99px;padding:0.35rem 1rem;white-space:nowrap">
-            <span style="color:#fff;font-size:0.78rem;font-weight:500">Afienya, Greater Accra</span>
-          </div>
-          <!-- Open Maps button -->
-          <a href="https://maps.app.goo.gl/uKgLKNRSiEwfm4Re7" target="_blank" style="position:absolute;top:12px;right:12px;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.25);border-radius:99px;padding:0.35rem 0.875rem;text-decoration:none;display:flex;align-items:center;gap:0.4rem">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-            <span style="color:#fff;font-size:0.75rem;font-weight:500">Open in Maps</span>
-          </a>
-        </div>
-
-        <!-- Location details -->
-        <div style="padding:1.5rem">
-          <h3 style="font-weight:600;color:#0b4f4e;font-size:1.05rem;margin-bottom:1rem">Find Us Easily</h3>
-          <div style="display:flex;flex-direction:column;gap:0.75rem">
-            <div style="display:flex;align-items:flex-start;gap:0.75rem">
-              <div style="width:34px;height:34px;background:#f0fafa;border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2db0ae" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-              </div>
-              <div>
-                <p style="font-weight:600;color:#0b4f4e;font-size:0.88rem">Address</p>
-                <p style="font-size:0.82rem;color:#64748b;line-height:1.5">Opposite Mataheko MELCOM,<br/>Afienya, Greater Accra Region, Ghana</p>
-              </div>
-            </div>
-            <div style="display:flex;align-items:flex-start;gap:0.75rem">
-              <div style="width:34px;height:34px;background:#f0fafa;border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2db0ae" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-              </div>
-              <div>
-                <p style="font-weight:600;color:#0b4f4e;font-size:0.88rem">Opening Hours</p>
-                <p style="font-size:0.82rem;color:#64748b;line-height:1.5">Monday – Saturday: 8:00 AM – 8:00 PM<br/>Sunday: 9:00 AM – 8:00 PM</p>
-              </div>
-            </div>
-            <div style="display:flex;align-items:flex-start;gap:0.75rem">
-              <div style="width:34px;height:34px;background:#f0fafa;border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2db0ae" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.21h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.86a16 16 0 0 0 6.29 6.29l.96-.96a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-              </div>
-              <div>
-                <p style="font-weight:600;color:#0b4f4e;font-size:0.88rem">Phone</p>
-                <a href="tel:+233243329756" style="font-size:0.88rem;color:#2db0ae;font-weight:500;text-decoration:none">+233 24 332 9756</a>
-              </div>
-            </div>
-          </div>
-          <a href="https://maps.app.goo.gl/uKgLKNRSiEwfm4Re7" target="_blank" style="text-decoration:none">
-            <button class="btn-primary" style="width:100%;justify-content:center;margin-top:1.25rem">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-              Get Directions on Google Maps
-            </button>
-          </a>
+        <div style="display:flex;gap:1rem;flex-wrap:wrap;margin-top:2rem;">
+          <a href="#services-section" class="btn-primary-glow">Our Services</a>
+          <a href="#contact-section" class="btn-ghost">Get Directions</a>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ═══════════════════════════════════════════
-     COMMUNITY EVENTS SECTION
-═══════════════════════════════════════════ -->
-<section id="events" style="padding:6rem 1.5rem;background:#fff">
-  <div style="max-width:1200px;margin:0 auto">
+<!-- ── SCROLL SHOWCASE ──────────────────────────────────── -->
+<section id="scroll-showcase" class="section-wrap" style="padding:0;">
+  <!-- ambient hero-connected glow -->
+  <div style="pointer-events:none;position:absolute;inset:0;z-index:0;
+    background:radial-gradient(ellipse 80% 60% at 50% 40%,rgba(0,230,200,.045) 0%,transparent 70%);"></div>
+  <div class="inner" style="width:100%;max-width:none;padding:0;position:relative;z-index:1;">
+    <div class="scroll-showcase-inner">
+      <div class="scroll-perspective-wrap" id="scroll-perspective-wrap">
 
-    <div class="reveal" style="display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:1.5rem;margin-bottom:3rem">
-      <div>
-        <span style="display:inline-block;background:#f0fafa;color:#2db0ae;font-size:0.78rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;padding:0.35rem 1.1rem;border-radius:99px;border:1px solid #ccf0ef;margin-bottom:1rem">Community Outreach</span>
-        <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,3.5vw,2.5rem);color:#0b4f4e;font-weight:600">Upcoming Community Events</h2>
-        <p style="color:#64748b;margin-top:0.5rem;max-width:480px;line-height:1.6">Bringing health closer to you — free screenings, drives, and wellness programmes for the Afienya community.</p>
+        <div class="scroll-title-wrap" id="scroll-title-wrap">
+          <span class="section-tag">Our Environment</span>
+          <h2 class="section-title">
+            Care You Can<br/><span style="color:var(--teal);">See &amp; Feel</span>
+          </h2>
+          <p class="section-body" style="max-width:38rem;margin:1rem auto 0;">
+            A serene, modern facility purpose-built to make every visit comfortable — from the moment you walk in to the moment you leave.
+          </p>
+        </div>
+
+        <div class="scroll-card" id="scroll-card">
+          <div class="scroll-card-inner">
+            <img
+              src="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=1400&q=80"
+              alt="Modern medical clinic interior — Oasis Medical Clinic"
+              loading="lazy"
+            />
+            <div class="scroll-card-badge">Mataheko-Afienya · Greater Accra</div>
+            <div class="scroll-card-overlay">
+              <div class="scroll-card-stats">
+                <div class="scroll-stat">
+                  <span class="scroll-stat-num">7+</span>
+                  <span class="scroll-stat-label">Services</span>
+                </div>
+                <div class="scroll-stat">
+                  <span class="scroll-stat-num">Mon–Sat</span>
+                  <span class="scroll-stat-label">8 AM – 8 PM</span>
+                </div>
+                <div class="scroll-stat">
+                  <span class="scroll-stat-num">4.3★</span>
+                  <span class="scroll-stat-label">Patient Rating</span>
+                </div>
+                <div class="scroll-stat">
+                  <span class="scroll-stat-num">24/7</span>
+                  <span class="scroll-stat-label">After-Hours Line</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
-      <button class="btn-outline" onclick="showToast('Events Calendar','Full events schedule coming soon — stay tuned!')">View All Events →</button>
     </div>
+  </div>
+</section>
 
-    <div class="events-grid reveal" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.5rem">
+<!-- ── SERVICES ───────────────────────────────────────────── -->
+<section id="services-section" class="section-wrap">
+  <div class="section-bg-glow" style="width:500px;height:500px;top:50%;right:-100px;transform:translateY(-50%);background:radial-gradient(circle,rgba(0,188,212,1) 0%,transparent 70%);"></div>
+  <div class="inner">
+    <span class="section-tag">Core Services</span>
+    <h2 class="section-title">
+      Comprehensive<br/><span class="title-accent">Clinical Care</span>
+    </h2>
+    <p class="section-body">From routine check-ups to urgent treatment — every service you need, under one roof.</p>
 
-      <!-- Event 1 -->
-      <div class="event-card">
-        <div style="height:8px;background:linear-gradient(90deg,#2db0ae,#5bc9c7)"></div>
-        <div style="padding:1.75rem">
-          <!-- Date badge -->
-          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem">
-            <div style="display:flex;align-items:center;gap:0.875rem">
-              <div style="background:linear-gradient(135deg,#f0fafa,#ccf0ef);border-radius:14px;padding:0.625rem 0.875rem;text-align:center;min-width:56px">
-                <p style="font-size:1.5rem;font-weight:600;color:#2db0ae;line-height:1">19</p>
-                <p style="font-size:0.7rem;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:#64748b">Jul</p>
-              </div>
-              <div>
-                <p style="font-weight:600;color:#0b4f4e;font-size:0.95rem">Saturday, 2025</p>
-                <p style="font-size:0.8rem;color:#64748b">8:00 AM – 4:00 PM</p>
-              </div>
-            </div>
-            <span class="badge" style="background:#f0fafa;color:#0f6563;border:1px solid #ccf0ef;font-size:0.7rem">Free Entry</span>
-          </div>
+    <div class="services-grid" id="services-grid">
 
-          <h3 style="font-weight:700;color:#0b4f4e;font-size:1.1rem;margin-bottom:0.625rem">Afienya Community Free Health Screening Weekend</h3>
-          <p style="font-size:0.85rem;color:#64748b;line-height:1.65;margin-bottom:1.25rem">Join us for a full day of complimentary health screenings — blood pressure, blood sugar, BMI, eye tests, and general wellness consultations for all age groups. No appointment needed.</p>
-
-          <div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:1.25rem;background:#f8fafc;border-radius:10px;padding:0.625rem 0.875rem">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2db0ae" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-            <span style="font-size:0.8rem;color:#475569">Oasis Medical Clinic Grounds, Afienya</span>
-          </div>
-
-          <div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:1.5rem">
-            <div style="display:flex">
-              <div style="width:24px;height:24px;border-radius:50%;background:#2db0ae;border:2px solid #fff;display:flex;align-items:center;justify-content:center"><span style="color:#fff;font-size:0.6rem;font-weight:600">AK</span></div>
-              <div style="width:24px;height:24px;border-radius:50%;background:#0b4f4e;border:2px solid #fff;margin-left:-6px;display:flex;align-items:center;justify-content:center"><span style="color:#fff;font-size:0.6rem;font-weight:600">NA</span></div>
-              <div style="width:24px;height:24px;border-radius:50%;background:#d4a857;border:2px solid #fff;margin-left:-6px;display:flex;align-items:center;justify-content:center"><span style="color:#fff;font-size:0.6rem;font-weight:600">+8</span></div>
-            </div>
-            <span style="font-size:0.78rem;color:#94a3b8">Attending so far</span>
-          </div>
-
-          <button class="btn-primary" onclick="registerEvent('Afienya Community Free Health Screening')" style="width:100%;justify-content:center">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
-            Register for Free
-          </button>
+      <article class="service-card">
+        <div class="card-num">01</div>
+        <div class="card-corner"></div>
+        <div class="card-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#00e6c8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
         </div>
-      </div>
+        <h3 class="card-title">General Clinic</h3>
+        <p class="card-desc">Thorough assessments for acute and chronic conditions. Personalised diagnoses and treatment plans for all ages — from infants to the elderly.</p>
+        <a href="#contact-section" class="card-link">Book Visit <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></a>
+        <div class="card-glow-line"></div>
+      </article>
 
-      <!-- Event 2 -->
-      <div class="event-card">
-        <div style="height:8px;background:linear-gradient(90deg,#c0130e,#e85d57)"></div>
-        <div style="padding:1.75rem">
-          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem">
-            <div style="display:flex;align-items:center;gap:0.875rem">
-              <div style="background:linear-gradient(135deg,#fcebeb,#f7c1c1);border-radius:14px;padding:0.625rem 0.875rem;text-align:center;min-width:56px">
-                <p style="font-size:1.5rem;font-weight:600;color:#c0130e;line-height:1">02</p>
-                <p style="font-size:0.7rem;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:#64748b">Aug</p>
-              </div>
-              <div>
-                <p style="font-weight:600;color:#0b4f4e;font-size:0.95rem">Saturday, 2025</p>
-                <p style="font-size:0.8rem;color:#64748b">9:00 AM – 5:00 PM</p>
-              </div>
-            </div>
-            <span class="badge" style="background:#fcebeb;color:#a32d2d;border:1px solid #f7c1c1;font-size:0.7rem">Annual Drive</span>
-          </div>
-
-          <h3 style="font-weight:700;color:#0b4f4e;font-size:1.1rem;margin-bottom:0.625rem">Oasis Annual Blood Donation Drive</h3>
-          <p style="font-size:0.85rem;color:#64748b;line-height:1.65;margin-bottom:1.25rem">Every donation saves up to three lives. Join us for our annual blood drive in partnership with the National Blood Service Ghana. Donors receive refreshments and a wellness check as a token of our appreciation.</p>
-
-          <div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:1.25rem;background:#fcebeb;border-radius:10px;padding:0.625rem 0.875rem">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#c0130e" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-            <span style="font-size:0.8rem;color:#a32d2d;font-weight:500">Oasis Medical Clinic, Afienya (Opp. Mataheko MELCOM)</span>
-          </div>
-
-          <div style="background:#fdfaf5;border:1px solid #f1e2c0;border-radius:10px;padding:0.75rem 1rem;margin-bottom:1.5rem">
-            <p style="font-size:0.8rem;color:#a37330;font-weight:500;display:flex;align-items:center;gap:0.4rem">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-              Eligible donors: 18–65 yrs, weight ≥50 kg, in good health.
-            </p>
-          </div>
-
-          <button style="width:100%;background:linear-gradient(135deg,#c0130e,#a32d2d);color:#fff;font-weight:500;border-radius:99px;padding:0.75rem 2rem;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;align-items:center;justify-content:center;gap:0.5rem;transition:all 0.3s;font-size:0.95rem" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 24px rgba(192,19,14,0.3)'" onmouseout="this.style.transform='';this.style.boxShadow=''" onclick="registerEvent('Oasis Annual Blood Donation Drive')">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-            Pledge to Donate Blood
-          </button>
+      <article class="service-card">
+        <div class="card-num">02</div>
+        <div class="card-corner"></div>
+        <div class="card-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#00e6c8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
         </div>
-      </div>
+        <h3 class="card-title">Specialist Clinic</h3>
+        <p class="card-desc">Expert specialist care in Cardiology and Urology. Our visiting specialists provide focused, evidence-based treatment for complex conditions.</p>
+        <a href="#contact-section" class="card-link">Book Visit <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></a>
+        <div class="card-glow-line"></div>
+      </article>
 
-      <!-- Event 3 -->
-      <div class="event-card">
-        <div style="height:8px;background:linear-gradient(90deg,#d4a857,#f1e2c0)"></div>
-        <div style="padding:1.75rem">
-          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem">
-            <div style="display:flex;align-items:center;gap:0.875rem">
-              <div style="background:linear-gradient(135deg,#fdfaf5,#faeeda);border-radius:14px;padding:0.625rem 0.875rem;text-align:center;min-width:56px">
-                <p style="font-size:1.5rem;font-weight:600;color:#d4a857;line-height:1">16</p>
-                <p style="font-size:0.7rem;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:#64748b">Aug</p>
-              </div>
-              <div>
-                <p style="font-weight:600;color:#0b4f4e;font-size:0.95rem">Saturday, 2025</p>
-                <p style="font-size:0.8rem;color:#64748b">10:00 AM – 2:00 PM</p>
-              </div>
-            </div>
-            <span class="badge" style="background:#fdfaf5;color:#a37330;border:1px solid #f1e2c0;font-size:0.7rem">Mothers Only</span>
-          </div>
-
-          <h3 style="font-weight:700;color:#0b4f4e;font-size:1.1rem;margin-bottom:0.625rem">Maternal & Child Health Awareness Day</h3>
-          <p style="font-size:0.85rem;color:#64748b;line-height:1.65;margin-bottom:1.25rem">A special awareness day focused on prenatal care, postnatal support, child immunization, and family nutrition. Free consultations with our O&G specialists and pediatricians.</p>
-
-          <div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:1.25rem;background:#f8fafc;border-radius:10px;padding:0.625rem 0.875rem">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#d4a857" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-            <span style="font-size:0.8rem;color:#475569">Oasis Medical Clinic, Afienya</span>
-          </div>
-
-          <div style="margin-bottom:1.5rem;display:flex;flex-wrap:wrap;gap:0.5rem">
-            <span style="background:#f0fafa;color:#0f6563;border:1px solid #ccf0ef;border-radius:99px;padding:0.2rem 0.65rem;font-size:0.75rem;font-weight:500">Free Screening</span>
-            <span style="background:#fdfaf5;color:#a37330;border:1px solid #f1e2c0;border-radius:99px;padding:0.2rem 0.65rem;font-size:0.75rem;font-weight:500">Expert Talks</span>
-            <span style="background:#fcebeb;color:#a32d2d;border:1px solid #f7c1c1;border-radius:99px;padding:0.2rem 0.65rem;font-size:0.75rem;font-weight:500">Refreshments</span>
-          </div>
-
-          <button class="btn-gold" onclick="registerEvent('Maternal & Child Health Awareness Day')" style="width:100%;justify-content:center;display:flex;align-items:center;gap:0.5rem;padding:0.75rem 2rem;font-size:0.95rem">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
-            Register for Event
-          </button>
+      <article class="service-card">
+        <div class="card-num">03</div>
+        <div class="card-corner"></div>
+        <div class="card-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#00e6c8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
         </div>
-      </div>
+        <h3 class="card-title">Obstetrics &amp; Gynaecology</h3>
+        <p class="card-desc">Comprehensive women's health services — antenatal care, postnatal support, gynaecological consultations, and safe delivery planning.</p>
+        <a href="#contact-section" class="card-link">Book Visit <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></a>
+        <div class="card-glow-line"></div>
+      </article>
+
+      <article class="service-card">
+        <div class="card-num">04</div>
+        <div class="card-corner"></div>
+        <div class="card-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#00e6c8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 100 20A10 10 0 0012 2z"/><path d="M12 6v6l4 2"/></svg>
+        </div>
+        <h3 class="card-title">Pain Management</h3>
+        <p class="card-desc">Structured pain assessment and management for acute and chronic pain. Our team designs personalised plans to restore your comfort and quality of life.</p>
+        <a href="#contact-section" class="card-link">Book Visit <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></a>
+        <div class="card-glow-line"></div>
+      </article>
+
+      <article class="service-card">
+        <div class="card-num">05</div>
+        <div class="card-corner"></div>
+        <div class="card-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#00e6c8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 010 8h-1"/><path d="M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
+        </div>
+        <h3 class="card-title">Physical Therapy</h3>
+        <p class="card-desc">Rehabilitation and physiotherapy services to restore mobility, strength, and function. Ideal for post-injury recovery, stroke rehabilitation, and musculoskeletal conditions.</p>
+        <a href="#contact-section" class="card-link">Book Session <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></a>
+        <div class="card-glow-line"></div>
+      </article>
+
+      <article class="service-card">
+        <div class="card-num">06</div>
+        <div class="card-corner"></div>
+        <div class="card-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#00e6c8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+        </div>
+        <h3 class="card-title">Pharmacy</h3>
+        <p class="card-desc">In-house pharmacy stocked with a wide range of prescription and over-the-counter medications. Fill your prescription and leave with your medication in one visit.</p>
+        <a href="#contact-section" class="card-link">Learn More <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></a>
+        <div class="card-glow-line"></div>
+      </article>
+
+      <article class="service-card">
+        <div class="card-num">07</div>
+        <div class="card-corner"></div>
+        <div class="card-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#00e6c8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2V9M9 21H5a2 2 0 01-2-2V9m0 0h18"/></svg>
+        </div>
+        <h3 class="card-title">Laboratory</h3>
+        <p class="card-desc">On-site laboratory for blood tests, urinalysis, malaria testing, and more. Accurate, rapid results to power faster, better-informed clinical decisions.</p>
+        <a href="#contact-section" class="card-link">Book Test <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></a>
+        <div class="card-glow-line"></div>
+      </article>
 
     </div>
   </div>
 </section>
 
-<!-- ═══════════════════════════════════════════
-     BOOKING SECTION
-═══════════════════════════════════════════ -->
-<section id="booking" style="padding:6rem 1.5rem;background:linear-gradient(135deg,#f8fafc,#f0fafa)">
-  <div style="max-width:1100px;margin:0 auto">
-
-    <div class="reveal" style="display:grid;grid-template-columns:1fr 1.6fr;gap:4rem;align-items:start" id="booking-grid">
-
-      <!-- Left: Info panel -->
-      <div style="position:sticky;top:6rem">
-        <span style="display:inline-block;background:#fff;color:#2db0ae;font-size:0.78rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;padding:0.35rem 1.1rem;border-radius:99px;border:1px solid #ccf0ef;margin-bottom:1rem">Book Online</span>
-        <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,3.5vw,2.6rem);color:#0b4f4e;font-weight:600;line-height:1.2;margin-bottom:1rem">Schedule Your Visit with Ease</h2>
-        <p style="color:#64748b;line-height:1.7;margin-bottom:2rem">Fill in the form and our reception team will confirm your appointment within 30 minutes during working hours.</p>
-
-        <!-- Info items -->
-        <div style="display:flex;flex-direction:column;gap:1rem;margin-bottom:2rem">
-          <div style="display:flex;align-items:center;gap:0.875rem;background:#fff;border-radius:14px;padding:1rem 1.25rem">
-            <div style="width:38px;height:38px;background:#f0fafa;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2db0ae" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-            </div>
-            <div>
-              <p style="font-weight:600;color:#0b4f4e;font-size:0.88rem">Confirmation in 30 min</p>
-              <p style="font-size:0.78rem;color:#94a3b8">During clinic hours</p>
-            </div>
-          </div>
-          <div style="display:flex;align-items:center;gap:0.875rem;background:#fff;border-radius:14px;padding:1rem 1.25rem">
-            <div style="width:38px;height:38px;background:#f0fafa;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2db0ae" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.21h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.86a16 16 0 0 0 6.29 6.29l.96-.96a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-            </div>
-            <div>
-              <p style="font-weight:600;color:#0b4f4e;font-size:0.88rem">Or call directly</p>
-              <a href="tel:+233243329756" style="font-size:0.88rem;color:#2db0ae;font-weight:500;text-decoration:none">+233 24 332 9756</a>
-            </div>
-          </div>
-          <div style="display:flex;align-items:center;gap:0.875rem;background:#fff;border-radius:14px;padding:1rem 1.25rem">
-            <div style="width:38px;height:38px;background:#fdfaf5;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#d4a857" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-            </div>
-            <div>
-              <p style="font-weight:600;color:#0b4f4e;font-size:0.88rem">NHIA & Cash Accepted</p>
-              <p style="font-size:0.78rem;color:#94a3b8">Flexible payment options</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Departments legend -->
-        <div style="background:#fff;border-radius:16px;padding:1.25rem;border:1px solid #e2e8f0">
-          <p style="font-weight:600;color:#0b4f4e;font-size:0.88rem;margin-bottom:0.75rem">Available Departments</p>
-          <div style="display:flex;flex-wrap:wrap;gap:0.5rem">
-            <span style="background:#f0fafa;color:#0f6563;border:1px solid #ccf0ef;border-radius:99px;padding:0.2rem 0.65rem;font-size:0.75rem">General</span>
-            <span style="background:#f0fafa;color:#0f6563;border:1px solid #ccf0ef;border-radius:99px;padding:0.2rem 0.65rem;font-size:0.75rem">Pediatrics</span>
-            <span style="background:#f0fafa;color:#0f6563;border:1px solid #ccf0ef;border-radius:99px;padding:0.2rem 0.65rem;font-size:0.75rem">O&G</span>
-            <span style="background:#f0fafa;color:#0f6563;border:1px solid #ccf0ef;border-radius:99px;padding:0.2rem 0.65rem;font-size:0.75rem">Diagnostics</span>
-            <span style="background:#f0fafa;color:#0f6563;border:1px solid #ccf0ef;border-radius:99px;padding:0.2rem 0.65rem;font-size:0.75rem">Chronic Care</span>
-          </div>
+<!-- ── HOURS BAND ──────────────────────────────────────────── -->
+<div id="hours-band">
+  <div class="inner">
+    <div class="hours-inner">
+      <div class="hours-item">
+        <span class="hours-day">Monday – Saturday</span>
+        <span class="hours-time">8:00 AM – 8:00 PM</span>
+      </div>
+      <div class="hours-divider"></div>
+      <div class="hours-item">
+        <span class="hours-day">After-Hours Line</span>
+        <span class="hours-time"><a href="tel:+233243329756" style="color:var(--teal);text-decoration:none;">024-332-9756</a></span>
+      </div>
+      <div class="hours-divider"></div>
+      <div class="hours-item" style="flex-direction:row;gap:1rem;align-items:center;">
+        <div style="width:10px;height:10px;border-radius:50%;background:#4ade80;box-shadow:0 0 0 4px rgba(74,222,128,.2);animation:pulse-green 2s ease infinite;"></div>
+        <div>
+          <div class="hours-day">Status</div>
+          <div style="font-family:var(--font-display);font-size:1.4rem;color:#4ade80;letter-spacing:.05em;">Open Now</div>
         </div>
       </div>
+    </div>
+  </div>
+</div>
+<style>@keyframes pulse-green{0%,100%{box-shadow:0 0 0 4px rgba(74,222,128,.2);}50%{box-shadow:0 0 0 8px rgba(74,222,128,.08);}}</style>
 
-      <!-- Right: Booking form -->
-      <div style="background:#fff;border-radius:24px;border:1px solid #e2e8f0;padding:2.5rem;box-shadow:0 4px 24px rgba(15,101,99,0.06)">
-        <h3 style="font-weight:700;color:#0b4f4e;font-size:1.2rem;margin-bottom:0.375rem">Appointment Request</h3>
-        <p style="font-size:0.85rem;color:#94a3b8;margin-bottom:2rem">All fields required. We'll confirm via phone or email.</p>
+<!-- ── CONTACT ────────────────────────────────────────────── -->
+<section id="contact-section" class="section-wrap">
+  <div class="section-bg-glow" style="width:600px;height:600px;bottom:-200px;left:-100px;background:radial-gradient(circle,rgba(0,230,200,1) 0%,transparent 70%);"></div>
+  <div class="inner">
+    <span class="section-tag">Find & Contact Us</span>
+    <h2 class="section-title">
+      Visit, Call<br/><span class="title-accent">or Book</span>
+    </h2>
+    <p class="section-body">We're easy to reach. Walk in, call ahead, or send a booking request and our team will confirm within one business day.</p>
 
-        <div style="display:grid;gap:1.25rem">
+    <div class="contact-grid">
+      <!-- Info -->
+      <div class="contact-info" id="contact-info">
 
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem" id="form-name-phone">
-            <div>
-              <label style="font-size:0.82rem;font-weight:500;color:#475569;display:block;margin-bottom:6px">Full Name *</label>
-              <input type="text" id="f-name" class="form-field" placeholder="Kwame Mensah" />
+        <!-- ── Phone numbers (each individually tappable) -->
+        <div class="info-card">
+          <div class="info-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#00e6c8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 010 4.18 2 2 0 012 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.91 9.4a16 16 0 006.69 6.69l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
+          </div>
+          <div style="flex:1;min-width:0;">
+            <div class="info-label">Call Us</div>
+            <div class="info-phones">
+              <a href="tel:+233208894427" class="info-phone-link">
+                <span class="info-phone-num">020-889-4427</span>
+                <span class="info-phone-cta">Call</span>
+              </a>
+              <a href="tel:+233557890990" class="info-phone-link">
+                <span class="info-phone-num">055-789-0990</span>
+                <span class="info-phone-cta">Call</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── After-hours emergency -->
+        <a href="tel:+233243329756" class="info-card info-card-emergency" style="text-decoration:none;">
+          <div class="info-icon info-icon-emergency">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(255,140,0,.9)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          </div>
+          <div>
+            <div class="info-label" style="color:rgba(255,140,0,.7);">After-Hours Emergency</div>
+            <div class="info-value">024-332-9756</div>
+            <div style="font-size:.65rem;color:rgba(255,140,0,.6);margin-top:.25rem;font-family:var(--font-mono);letter-spacing:.06em;">Available after 8 PM daily</div>
+          </div>
+        </a>
+
+        <!-- ── Email -->
+        <a href="mailto:oasismedical@visitingnursegh.com" class="info-card" style="text-decoration:none;">
+          <div class="info-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#00e6c8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </div>
+          <div style="min-width:0;">
+            <div class="info-label">Email</div>
+            <div class="info-value" style="word-break:break-word;font-size:.85rem;">oasismedical@visitingnursegh.com</div>
+          </div>
+        </a>
+
+        <!-- ── Address + Hours side by side on desktop -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem;">
+          <div class="info-card" style="flex-direction:column;gap:.75rem;">
+            <div class="info-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#00e6c8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
             </div>
             <div>
-              <label style="font-size:0.82rem;font-weight:500;color:#475569;display:block;margin-bottom:6px">Phone Number *</label>
-              <input type="tel" id="f-phone" class="form-field" placeholder="+233 XX XXX XXXX" />
+              <div class="info-label">Address</div>
+              <div class="info-value" style="font-size:.85rem;">Off First Bridge Road,<br/>Mataheko-Afienya,<br/>Greater Accra</div>
+            </div>
+          </div>
+          <div class="info-card" style="flex-direction:column;gap:.75rem;">
+            <div class="info-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#00e6c8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </div>
+            <div>
+              <div class="info-label">Hours</div>
+              <div class="info-value" style="font-size:.85rem;">Mon–Sat<br/>8:00 AM – 8:00 PM</div>
+              <div style="font-size:.65rem;opacity:.55;margin-top:.3rem;font-family:var(--font-mono);">Sun: call ahead</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── Google Maps link -->
+        <a href="https://maps.google.com/?q=Oasis+Medical+Clinic,Mataheko,Afienya,Ghana" target="_blank" rel="noopener noreferrer" class="info-card info-card-map" style="text-decoration:none;">
+          <div class="info-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#00e6c8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
+          </div>
+          <div>
+            <div class="info-label">Location</div>
+            <div class="info-value">Get Directions →</div>
+            <div style="font-size:.65rem;color:var(--muted);margin-top:.2rem;font-family:var(--font-mono);">Opens Google Maps</div>
+          </div>
+        </a>
+
+      </div>
+
+      <!-- Form -->
+      <div class="form-glass" id="booking-form-wrap">
+        <div class="form-success" id="form-success" role="status">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          Appointment request received. We'll confirm shortly.
+        </div>
+
+        <p class="form-title">Book a<br/><span style="color:var(--teal)">Consultation</span></p>
+        <p class="form-sub">// Fill in your details below</p>
+
+        <form id="booking-form" novalidate>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="f-fname">First Name *</label>
+              <input class="form-input" id="f-fname" type="text" placeholder="Kwame" autocomplete="given-name" required/>
+              <span class="form-err-msg" id="err-fname">Required</span>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="f-lname">Last Name *</label>
+              <input class="form-input" id="f-lname" type="text" placeholder="Mensah" autocomplete="family-name" required/>
+              <span class="form-err-msg" id="err-lname">Required</span>
             </div>
           </div>
 
-          <div>
-            <label style="font-size:0.82rem;font-weight:500;color:#475569;display:block;margin-bottom:6px">Email Address *</label>
-            <input type="email" id="f-email" class="form-field" placeholder="kwame@example.com" />
+          <div class="form-group">
+            <label class="form-label" for="f-phone">Phone Number *</label>
+            <input class="form-input" id="f-phone" type="tel" placeholder="024 000 0000" autocomplete="tel" required/>
+            <span class="form-err-msg" id="err-phone">Enter a valid phone number</span>
           </div>
 
-          <div>
-            <label style="font-size:0.82rem;font-weight:500;color:#475569;display:block;margin-bottom:6px">Medical Department *</label>
-            <select id="f-dept" class="form-field">
-              <option value="" disabled selected>Select a department…</option>
-              <option>General Consultation</option>
-              <option>Pediatrics</option>
-              <option>Obstetrics & Gynaecology (O&G)</option>
-              <option>Diagnostics & Laboratory</option>
-              <option>Chronic Disease Management</option>
-              <option>Emergency / Walk-In</option>
+          <div class="form-group">
+            <label class="form-label" for="f-service">Service Required *</label>
+            <select class="form-select" id="f-service" required>
+              <option value="">Select service…</option>
+              <option>General Clinic</option>
+              <option>Specialist Clinic (Cardiology &amp; Urology)</option>
+              <option>Obstetrics &amp; Gynaecology</option>
+              <option>Pain Management</option>
+              <option>Physical Therapy</option>
+              <option>Pharmacy</option>
+              <option>Laboratory</option>
+              <option>Other</option>
             </select>
+            <span class="form-err-msg" id="err-service">Please select a service</span>
           </div>
 
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
-            <div>
-              <label style="font-size:0.82rem;font-weight:500;color:#475569;display:block;margin-bottom:6px">Preferred Date *</label>
-              <input type="date" id="f-date" class="form-field" />
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="f-date">Preferred Date *</label>
+              <input class="form-input" id="f-date" type="date" required/>
+              <span class="form-err-msg" id="err-date">Choose a date</span>
             </div>
-            <div>
-              <label style="font-size:0.82rem;font-weight:500;color:#475569;display:block;margin-bottom:6px">Preferred Time *</label>
-              <select id="f-time" class="form-field">
-                <option value="" disabled selected>Select time…</option>
-                <option>8:00 AM</option>
-                <option>9:00 AM</option>
-                <option>10:00 AM</option>
-                <option>11:00 AM</option>
-                <option>12:00 PM</option>
-                <option>1:00 PM</option>
-                <option>2:00 PM</option>
-                <option>3:00 PM</option>
-                <option>4:00 PM</option>
-                <option>5:00 PM</option>
-                <option>6:00 PM</option>
-                <option>7:00 PM</option>
+            <div class="form-group">
+              <label class="form-label" for="f-time">Preferred Time</label>
+              <select class="form-select" id="f-time">
+                <option value="">Any time</option>
+                <option>8:00 AM</option><option>9:00 AM</option><option>10:00 AM</option>
+                <option>11:00 AM</option><option>12:00 PM</option><option>1:00 PM</option>
+                <option>2:00 PM</option><option>3:00 PM</option><option>4:00 PM</option>
+                <option>5:00 PM</option><option>6:00 PM</option><option>7:00 PM</option>
               </select>
             </div>
           </div>
 
-          <div>
-            <label style="font-size:0.82rem;font-weight:500;color:#475569;display:block;margin-bottom:6px">Additional Notes (Optional)</label>
-            <textarea id="f-notes" class="form-field" rows="3" placeholder="Briefly describe your symptoms or any special requests…"></textarea>
+          <div class="form-group">
+            <label class="form-label" for="f-notes">Additional Notes</label>
+            <textarea class="form-textarea" id="f-notes" placeholder="Symptoms or anything our team should know…"></textarea>
           </div>
 
-          <!-- NHIA toggle -->
-          <div style="display:flex;align-items:center;gap:0.75rem;background:#fdfaf5;border:1px solid #f1e2c0;border-radius:12px;padding:0.875rem 1rem">
-            <input type="checkbox" id="f-nhia" style="width:18px;height:18px;accent-color:#2db0ae;cursor:pointer" />
-            <label for="f-nhia" style="font-size:0.85rem;color:#475569;cursor:pointer;font-weight:500">I am an NHIA (National Health Insurance) subscriber</label>
-          </div>
-
-          <button class="btn-primary" onclick="submitBooking()" id="submit-btn" style="width:100%;justify-content:center;font-size:1rem;padding:0.9rem">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-            Confirm My Appointment
-          </button>
-
-          <p style="font-size:0.78rem;color:#94a3b8;text-align:center;line-height:1.5">
-            By submitting, you agree to our Privacy Policy. We never share your data. Your information is confidential and protected.
-          </p>
-        </div>
+          <button type="submit" class="form-submit"><span>→ Send Appointment Request</span></button>
+        </form>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ═══════════════════════════════════════════
-     TESTIMONIALS STRIP
-═══════════════════════════════════════════ -->
-<section style="padding:5rem 1.5rem;background:#0b4f4e;overflow:hidden">
-  <div style="max-width:1200px;margin:0 auto">
-    <div class="reveal" style="text-align:center;margin-bottom:3rem">
-      <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,3vw,2.4rem);color:#fff;font-weight:600">What Our Patients Say</h2>
-      <p style="color:rgba(255,255,255,0.6);margin-top:0.5rem">Real words from our Afienya community</p>
-    </div>
-    <div class="reveal" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.25rem">
+<!-- ── FOOTER ─────────────────────────────────────────────── -->
+<footer>
+  <div class="footer-grid">
 
-      <div style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);border-radius:18px;padding:1.5rem">
-        <div style="display:flex;gap:2px;margin-bottom:1rem">
-          <span style="color:#d4a857;font-size:1rem">★★★★★</span>
-        </div>
-        <p style="color:rgba(255,255,255,0.82);font-size:0.9rem;line-height:1.7;margin-bottom:1.25rem">"The doctors at Oasis are so thorough and caring. I came in for a routine check and left feeling genuinely cared for. Best clinic in Afienya!"</p>
-        <div style="display:flex;align-items:center;gap:0.625rem">
-          <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#2db0ae,#0b4f4e);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:600;font-size:0.8rem">AB</div>
-          <div>
-            <p style="color:#fff;font-weight:600;font-size:0.85rem">Abena Boateng</p>
-            <p style="color:rgba(255,255,255,0.5);font-size:0.75rem">Afienya Resident</p>
-          </div>
-        </div>
-      </div>
-
-      <div style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);border-radius:18px;padding:1.5rem">
-        <div style="display:flex;gap:2px;margin-bottom:1rem">
-          <span style="color:#d4a857;font-size:1rem">★★★★★</span>
-        </div>
-        <p style="color:rgba(255,255,255,0.82);font-size:0.9rem;line-height:1.7;margin-bottom:1.25rem">"My delivery was handled with so much professionalism and warmth. The O&G team made me feel safe and confident. Thank you Oasis Medical!"</p>
-        <div style="display:flex;align-items:center;gap:0.625rem">
-          <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#d4a857,#c08d3a);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:600;font-size:0.8rem">NA</div>
-          <div>
-            <p style="color:#fff;font-weight:600;font-size:0.85rem">Naomi Asante</p>
-            <p style="color:rgba(255,255,255,0.5);font-size:0.75rem">Patient, Maternity Ward</p>
-          </div>
-        </div>
-      </div>
-
-      <div style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);border-radius:18px;padding:1.5rem">
-        <div style="display:flex;gap:2px;margin-bottom:1rem">
-          <span style="color:#d4a857;font-size:1rem">★★★★★</span>
-        </div>
-        <p style="color:rgba(255,255,255,0.82);font-size:0.9rem;line-height:1.7;margin-bottom:1.25rem">"Convenient location, fast lab results, and a team that actually listens. I manage my diabetes at Oasis and my condition has never been better controlled."</p>
-        <div style="display:flex;align-items:center;gap:0.625rem">
-          <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#5bc9c7,#2db0ae);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:600;font-size:0.8rem">KO</div>
-          <div>
-            <p style="color:#fff;font-weight:600;font-size:0.85rem">Kwabena Ofori</p>
-            <p style="color:rgba(255,255,255,0.5);font-size:0.75rem">Chronic Care Patient</p>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<!-- ═══════════════════════════════════════════
-     FOOTER
-═══════════════════════════════════════════ -->
-<footer style="background:#073a39;padding:4rem 1.5rem 2rem">
-  <div style="max-width:1200px;margin:0 auto">
-    <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1.2fr;gap:2.5rem;margin-bottom:3rem;flex-wrap:wrap" id="footer-grid">
-
-      <!-- Brand -->
-      <div>
-        <div style="display:flex;align-items:center;gap:0.6rem;margin-bottom:1.25rem">
-          <div style="width:38px;height:38px;background:linear-gradient(135deg,#2db0ae,#1a9593);border-radius:10px;display:flex;align-items:center;justify-content:center">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
-          </div>
-          <div>
-            <p style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:600;color:#fff">Oasis Medical Clinic</p>
-            <p style="font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;color:#5bc9c7">Afienya, Ghana</p>
-          </div>
-        </div>
-        <p style="color:rgba(255,255,255,0.55);font-size:0.85rem;line-height:1.7;max-width:260px;margin-bottom:1.5rem">Your sanctuary of health — premium, compassionate medical care in the heart of Afienya, opposite Mataheko MELCOM.</p>
-        <a href="tel:+233243329756" style="display:inline-flex;align-items:center;gap:0.5rem;background:#2db0ae;color:#fff;text-decoration:none;padding:0.6rem 1.25rem;border-radius:99px;font-size:0.85rem;font-weight:500">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.21h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.86a16 16 0 0 0 6.29 6.29l.96-.96a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-          +233 24 332 9756
+    <!-- Brand column -->
+    <div>
+      <div class="footer-brand-name">Oasis<span> Medical</span> Clinic</div>
+      <p class="footer-brand-tagline">Your health. Our purpose.<br/>Compassionate care, right here in Afienya.</p>
+      <div class="footer-brand-contacts">
+        <a href="tel:+233208894427" class="fbc-item">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 010 4.18 2 2 0 012 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.91 9.4a16 16 0 006.69 6.69l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
+          020-889-4427
         </a>
-      </div>
-
-      <!-- Quick links -->
-      <div>
-        <p style="color:#fff;font-weight:600;font-size:0.9rem;margin-bottom:1.25rem">Quick Links</p>
-        <div style="display:flex;flex-direction:column;gap:0.65rem">
-          <a href="#hero" style="color:rgba(255,255,255,0.55);font-size:0.85rem;text-decoration:none;transition:color 0.2s" onmouseover="this.style.color='#5bc9c7'" onmouseout="this.style.color='rgba(255,255,255,0.55)'">Home</a>
-          <a href="#services" style="color:rgba(255,255,255,0.55);font-size:0.85rem;text-decoration:none;transition:color 0.2s" onmouseover="this.style.color='#5bc9c7'" onmouseout="this.style.color='rgba(255,255,255,0.55)'">Our Services</a>
-          <a href="#events" style="color:rgba(255,255,255,0.55);font-size:0.85rem;text-decoration:none;transition:color 0.2s" onmouseover="this.style.color='#5bc9c7'" onmouseout="this.style.color='rgba(255,255,255,0.55)'">Community Events</a>
-          <a href="#booking" style="color:rgba(255,255,255,0.55);font-size:0.85rem;text-decoration:none;transition:color 0.2s" onmouseover="this.style.color='#5bc9c7'" onmouseout="this.style.color='rgba(255,255,255,0.55)'">Book Appointment</a>
-          <a href="#about" style="color:rgba(255,255,255,0.55);font-size:0.85rem;text-decoration:none;transition:color 0.2s" onmouseover="this.style.color='#5bc9c7'" onmouseout="this.style.color='rgba(255,255,255,0.55)'">About Us</a>
-        </div>
-      </div>
-
-      <!-- Departments -->
-      <div>
-        <p style="color:#fff;font-weight:600;font-size:0.9rem;margin-bottom:1.25rem">Departments</p>
-        <div style="display:flex;flex-direction:column;gap:0.65rem">
-          <span style="color:rgba(255,255,255,0.55);font-size:0.85rem">General Consultation</span>
-          <span style="color:rgba(255,255,255,0.55);font-size:0.85rem">Pediatrics</span>
-          <span style="color:rgba(255,255,255,0.55);font-size:0.85rem">Obstetrics & G</span>
-          <span style="color:rgba(255,255,255,0.55);font-size:0.85rem">Diagnostics & Lab</span>
-          <span style="color:rgba(255,255,255,0.55);font-size:0.85rem">Chronic Disease</span>
-        </div>
-      </div>
-
-      <!-- Hours & Location -->
-      <div>
-        <p style="color:#fff;font-weight:600;font-size:0.9rem;margin-bottom:1.25rem">Hours & Location</p>
-        <div style="display:flex;flex-direction:column;gap:0.75rem">
-          <div>
-            <p style="color:#5bc9c7;font-size:0.78rem;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:3px">Opening Hours</p>
-            <p style="color:rgba(255,255,255,0.6);font-size:0.82rem;line-height:1.5">Mon–Sat: 8:00 AM – 8:00 PM<br/>Sunday: 9:00 AM – 8:00 PM</p>
-          </div>
-          <div>
-            <p style="color:#5bc9c7;font-size:0.78rem;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:3px">Address</p>
-            <p style="color:rgba(255,255,255,0.6);font-size:0.82rem;line-height:1.5">Opp. Mataheko MELCOM<br/>Afienya, Greater Accra</p>
-          </div>
-          <a href="https://maps.app.goo.gl/uKgLKNRSiEwfm4Re7" target="_blank" style="display:inline-flex;align-items:center;gap:0.4rem;color:#5bc9c7;font-size:0.82rem;text-decoration:none;font-weight:500">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-            View on Google Maps
-          </a>
-        </div>
+        <a href="tel:+233557890990" class="fbc-item">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 010 4.18 2 2 0 012 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.91 9.4a16 16 0 006.69 6.69l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
+          055-789-0990
+        </a>
+        <a href="mailto:oasismedical@visitingnursegh.com" class="fbc-item">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          oasismedical@visitingnursegh.com
+        </a>
+        <span class="fbc-item">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          Off First Bridge Road, Mataheko-Afienya
+        </span>
       </div>
     </div>
 
-    <!-- Bottom bar -->
-    <div style="border-top:1px solid rgba(255,255,255,0.1);padding-top:1.5rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem">
-      <p style="color:rgba(255,255,255,0.35);font-size:0.8rem">© 2025 Oasis Medical Clinic, Afienya. All rights reserved.</p>
-      <div style="display:flex;gap:1.25rem">
-        <a href="#" style="color:rgba(255,255,255,0.35);font-size:0.8rem;text-decoration:none">Privacy Policy</a>
-        <a href="#" style="color:rgba(255,255,255,0.35);font-size:0.8rem;text-decoration:none">Terms of Service</a>
+    <!-- Quick Links -->
+    <div>
+      <div class="footer-col-title">Quick Links</div>
+      <nav class="footer-col-links" aria-label="Footer quick links">
+        <a href="#hero">Home</a>
+        <a href="#about-section">About Us</a>
+        <a href="#scroll-showcase">Our Clinic</a>
+        <a href="#services-section">Services</a>
+        <a href="#contact-section">Contact</a>
+        <a href="#contact-section">Book Appointment</a>
+      </nav>
+    </div>
+
+    <!-- Services -->
+    <div>
+      <div class="footer-col-title">Our Services</div>
+      <nav class="footer-col-links" aria-label="Footer services">
+        <a href="#services-section">General Clinic</a>
+        <a href="#services-section">Specialist Clinic</a>
+        <a href="#services-section">Obstetrics &amp; Gynaecology</a>
+        <a href="#services-section">Pain Management</a>
+        <a href="#services-section">Physical Therapy</a>
+        <a href="#services-section">Pharmacy</a>
+        <a href="#services-section">Laboratory</a>
+      </nav>
+    </div>
+
+    <!-- Hours & Emergency -->
+    <div>
+      <div class="footer-col-title">Opening Hours</div>
+      <div class="footer-col-links" style="gap:.5rem;margin-bottom:1.75rem;">
+        <span style="display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:.65rem;color:rgba(255,255,255,.44);">
+          <span>Monday</span><span style="color:rgba(255,255,255,.28);">8 AM – 8 PM</span>
+        </span>
+        <span style="display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:.65rem;color:rgba(255,255,255,.44);">
+          <span>Tuesday</span><span style="color:rgba(255,255,255,.28);">8 AM – 8 PM</span>
+        </span>
+        <span style="display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:.65rem;color:rgba(255,255,255,.44);">
+          <span>Wednesday</span><span style="color:rgba(255,255,255,.28);">8 AM – 8 PM</span>
+        </span>
+        <span style="display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:.65rem;color:rgba(255,255,255,.44);">
+          <span>Thursday</span><span style="color:rgba(255,255,255,.28);">8 AM – 8 PM</span>
+        </span>
+        <span style="display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:.65rem;color:rgba(255,255,255,.44);">
+          <span>Friday</span><span style="color:rgba(255,255,255,.28);">8 AM – 8 PM</span>
+        </span>
+        <span style="display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:.65rem;color:rgba(255,255,255,.44);">
+          <span>Saturday</span><span style="color:rgba(255,255,255,.28);">8 AM – 8 PM</span>
+        </span>
+        <span style="display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:.65rem;color:rgba(255,255,255,.28);">
+          <span>Sunday</span><span>Call ahead</span>
+        </span>
       </div>
+      <div class="footer-col-title" style="color:rgba(255,140,0,.7);border-color:rgba(255,140,0,.12);">Emergency Line</div>
+      <a href="tel:+233243329756" class="fbc-item" style="color:rgba(255,160,0,.7);font-size:.72rem;">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+        024-332-9756
+      </a>
+    </div>
+
+  </div>
+
+  <!-- Bottom bar -->
+  <div class="footer-bottom">
+    <p class="footer-bottom-copy">© <span id="fyear"></span> Oasis Medical Clinic, Afienya, Ghana. All rights reserved.</p>
+    <div class="footer-bottom-badge">
+      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      Trusted Healthcare · Greater Accra
     </div>
   </div>
-</section>
+</footer>
 
-<!-- Scroll to top button -->
-<button id="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" style="position:fixed;bottom:2rem;left:2rem;z-index:500;width:42px;height:42px;background:#2db0ae;border:none;border-radius:50%;display:none;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 4px 16px rgba(45,176,174,0.35);transition:all 0.3s">
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg>
-</button>
-
-<!-- ═══════════════════════════════════════════
-     JAVASCRIPT
-═══════════════════════════════════════════ -->
+<!-- ── SCRIPTS ────────────────────────────────────────────── -->
 <script>
-/* ── State ────────────────────────────── */
-let appointments = []; // user-submitted appointments
-let isLoggedIn = false;
-let mobileMenuOpen = false;
-let loggedInName = '';
+/* ── CURSOR ──────────────────────────────────────────────── */
+const cur = document.getElementById('cursor');
+const ring = document.getElementById('cursor-ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove', e=>{
+  mx=e.clientX; my=e.clientY;
+  cur.style.left=mx+'px'; cur.style.top=my+'px';
+});
+(function animRing(){
+  rx+=(mx-rx)*.12; ry+=(my-ry)*.12;
+  ring.style.left=rx+'px'; ring.style.top=ry+'px';
+  requestAnimationFrame(animRing);
+})();
 
-/* ── Mobile menu ─────────────────────── */
-function toggleMobileMenu() {
-  mobileMenuOpen = !mobileMenuOpen;
-  const menu = document.getElementById('mobile-menu');
-  const ham  = document.getElementById('ham-icon');
-  const cls  = document.getElementById('close-icon');
-  menu.classList.toggle('open', mobileMenuOpen);
-  ham.classList.toggle('hidden', mobileMenuOpen);
-  cls.classList.toggle('hidden', !mobileMenuOpen);
+/* ── YEAR ─────────────────────────────────────────────────── */
+document.getElementById('fyear').textContent=new Date().getFullYear();
+
+/* ── PRELOADER ────────────────────────────────────────────── */
+const preloader=document.getElementById('preloader');
+const loaderNum=document.getElementById('loader-num');
+const loaderBar=document.getElementById('loader-bar');
+let progress=0;
+const loadInterval=setInterval(()=>{
+  const step=Math.random()*3+1;
+  progress=Math.min(100,progress+step);
+  loaderNum.textContent=Math.floor(progress);
+  loaderBar.style.width=progress+'%';
+  if(progress>=100){
+    clearInterval(loadInterval);
+    setTimeout(startIntro,350);
+  }
+},28);
+
+function startIntro(){
+  /* Preloader out */
+  gsap.to(preloader,{
+    clipPath:'inset(0 0 100% 0)',
+    duration:1.1,
+    ease:'power4.inOut',
+    onComplete:()=>{ preloader.style.display='none'; }
+  });
+  gsap.to(preloader,{ opacity:0, duration:.5, delay:.6, ease:'power2.inOut' });
+
+  /* Hero in sequence */
+  const tl=gsap.timeline({ delay:.5 });
+  tl.to('#hero-eyebrow',{ opacity:1, y:0, duration:.7, ease:'power3.out' })
+    .to('.hero-title-word',{
+      y:0, duration:.9, ease:'power4.out', stagger:.1
+    },'-=.3')
+    .to('#hero-sub',{ opacity:1, y:0, duration:.7, ease:'power3.out' },'-=.4')
+    .to('#hero-cta',{ opacity:1, y:0, duration:.7, ease:'power3.out' },'-=.4')
+    .to('#hero-stats',{ opacity:1, y:0, duration:.7, ease:'power3.out' },'-=.3')
+    .to('#scroll-indicator',{ opacity:1, duration:.5, ease:'power2.out' },'-=.3');
+
+  /* Full-page video fade in */
+  gsap.fromTo('#video-bg',
+    { opacity:0 },
+    { opacity:1, duration:2.5, ease:'power2.out', delay:.3 }
+  );
+  /* Particle canvas (hero, desktop only) */
+  gsap.fromTo('#three-canvas',
+    { opacity:0 },
+    { opacity:.6, duration:2, ease:'power2.out', delay:1 }
+  );
+
+  /* Start title cycling after intro sequence settles */
+  setTimeout(startTitleCycle, 3600);
 }
-function closeMobileMenu() {
-  mobileMenuOpen = false;
-  document.getElementById('mobile-menu').classList.remove('open');
-  document.getElementById('ham-icon').classList.remove('hidden');
-  document.getElementById('close-icon').classList.add('hidden');
+
+/* ── HERO TITLE CYCLE ─────────────────────────────────────── */
+const heroTitlePhrases = [
+  { l1:['Your','Health.'],   l2:['Our','Purpose.']  },
+  { l1:['Your','Care.'],     l2:['Our','Mission.']  },
+  { l1:['Your','Life.'],     l2:['Our','Calling.']  },
+  { l1:['Better','Health.'], l2:['Starts','Here.']  },
+  { l1:['Expert','Care.'],   l2:['Always','Near.']  },
+  { l1:['One','Goal.'],      l2:['Your','Health.']  },
+];
+let heroTitleIdx = 0;
+
+function startTitleCycle(){
+  const titleEl = document.getElementById('hero-title');
+  /* words[0]=line1w1  words[1]=line1w2
+     words[2]=line2w1(accent)  words[3]=line2w2 */
+  const words = titleEl.querySelectorAll('.hero-title-word');
+
+  setInterval(()=>{
+    heroTitleIdx = (heroTitleIdx + 1) % heroTitlePhrases.length;
+    const phrase = heroTitlePhrases[heroTitleIdx];
+
+    /* ── EXIT: reverse cascade — last word leaves first */
+    gsap.to(words,{
+      y:'-110%',
+      duration:.4,
+      ease:'power2.in',
+      stagger:{ each:.065, from:'end' },
+      onComplete:function(){
+        /* swap text */
+        words[0].textContent = phrase.l1[0];
+        words[1].textContent = phrase.l1[1];
+        words[2].textContent = phrase.l2[0];
+        words[3].textContent = phrase.l2[1];
+        titleEl.setAttribute('aria-label',
+          phrase.l1.join(' ')+' '+phrase.l2.join(' '));
+
+        /* ── ENTER: snap below clip, rise up */
+        gsap.set(words,{ y:'110%' });
+        gsap.to(words,{
+          y:'0%',
+          duration:.58,
+          ease:'power3.out',
+          stagger:{ each:.08 },
+        });
+      }
+    });
+  }, 10000);
 }
 
-/* ── Nav active ──────────────────────── */
-function setActive(el){ document.querySelectorAll('.nav-link').forEach(l=>l.classList.remove('active')); el.classList.add('active'); }
-
-/* ── Scroll helpers ──────────────────── */
-function scrollToSection(id) {
-  const el = document.getElementById(id);
-  if(el) el.scrollIntoView({behavior:'smooth',block:'start'});
-}
-
-/* ── Toast ───────────────────────────── */
-let toastTimer;
-function showToast(title, msg, type='success') {
-  clearTimeout(toastTimer);
-  const t = document.getElementById('toast');
-  document.getElementById('toast-title').textContent = title;
-  document.getElementById('toast-msg').textContent = msg;
-  t.style.borderLeftColor = type === 'error' ? '#c0130e' : '#2db0ae';
-  t.classList.remove('hidden');
-  t.style.animation = 'toastIn 0.4s ease forwards';
-  toastTimer = setTimeout(closeToast, 4500);
-}
-function closeToast() {
-  const t = document.getElementById('toast');
-  t.style.animation = 'toastOut 0.4s ease forwards';
-  setTimeout(()=>t.classList.add('hidden'), 400);
-}
-
-/* ── Booking form submission ─────────── */
-function submitBooking() {
-  const name  = document.getElementById('f-name').value.trim();
-  const phone = document.getElementById('f-phone').value.trim();
-  const email = document.getElementById('f-email').value.trim();
-  const dept  = document.getElementById('f-dept').value;
-  const date  = document.getElementById('f-date').value;
-  const time  = document.getElementById('f-time').value;
-
-  if (!name || !phone || !email || !dept || !date || !time) {
-    showToast('Missing Information', 'Please fill in all required fields before submitting.', 'error');
+/* ── THREE.JS PARTICLE NETWORK ────────────────────────────── */
+(function initThree(){
+  const canvas=document.getElementById('three-canvas');
+  
+  // Disable 3D on small mobile screens for performance
+  if(window.innerWidth < 640) {
+    canvas.style.display = 'none';
     return;
   }
+  
+  const renderer=new THREE.WebGLRenderer({ canvas, antialias:true, alpha:true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio,1.8));
+  renderer.setClearColor(0x000000,0);
 
-  // Format date for display
-  const dateObj = new Date(date + 'T00:00:00');
-  const options = {weekday:'short', day:'numeric', month:'short', year:'numeric'};
-  const dateStr = dateObj.toLocaleDateString('en-GB', options);
+  const scene=new THREE.Scene();
+  const camera=new THREE.PerspectiveCamera(60,1,0.1,1000);
+  camera.position.z=80;
 
-  // Create appointment object
-  const appt = { name, phone, email, dept, date: dateStr, time, id: Date.now() };
-  appointments.push(appt);
-
-  // Clear form
-  ['f-name','f-phone','f-email','f-notes'].forEach(id => document.getElementById(id).value = '');
-  document.getElementById('f-dept').selectedIndex = 0;
-  document.getElementById('f-date').value = '';
-  document.getElementById('f-time').selectedIndex = 0;
-
-  showToast('Appointment Booked! 🎉', `Thank you, ${name}! We'll confirm your ${dept} appointment via call or email shortly.`);
-
-  // If logged in, update dashboard
-  if (isLoggedIn) updateDashboard();
-}
-
-/* ── Event registration ──────────────── */
-function registerEvent(eventName) {
-  showToast('You\'re Registered!', `Successfully registered for "${eventName}". See you there!`);
-}
-
-/* ── Portal open/close ───────────────── */
-function openPortal() {
-  document.getElementById('portal-overlay').classList.remove('hidden');
-  document.body.style.overflow = 'hidden';
-  if (isLoggedIn) {
-    showPortalDashboard();
+  /* Resize */
+  function resize(){
+    const w=canvas.parentElement.offsetWidth;
+    const h=canvas.parentElement.offsetHeight;
+    renderer.setSize(w,h);
+    camera.aspect=w/h;
+    camera.updateProjectionMatrix();
   }
+  resize();
+  window.addEventListener('resize',resize);
+
+  /* ── Node network (DNA-helix + floating particles) ── */
+  const NODE_COUNT=180;
+  const CONN_COUNT=200;
+
+  /* Positions */
+  const positions=new Float32Array(NODE_COUNT*3);
+  const velocities=[];
+  const nodeData=[];
+  for(let i=0;i<NODE_COUNT;i++){
+    const theta=Math.random()*Math.PI*2;
+    const phi=Math.acos(2*Math.random()-1);
+    const r=25+Math.random()*30;
+    positions[i*3]  =r*Math.sin(phi)*Math.cos(theta);
+    positions[i*3+1]=r*Math.sin(phi)*Math.sin(theta);
+    positions[i*3+2]=r*Math.cos(phi);
+    velocities.push(new THREE.Vector3(
+      (Math.random()-.5)*.04,
+      (Math.random()-.5)*.04,
+      (Math.random()-.5)*.04
+    ));
+    nodeData.push(new THREE.Vector3(
+      positions[i*3],positions[i*3+1],positions[i*3+2]
+    ));
+  }
+
+  /* Node geometry */
+  const nodeGeo=new THREE.BufferGeometry();
+  nodeGeo.setAttribute('position',new THREE.BufferAttribute(positions,3));
+  const nodeMat=new THREE.PointsMaterial({
+    color:0x00e6c8, size:.9, transparent:true, opacity:.75,
+    blending:THREE.AdditiveBlending, depthWrite:false
+  });
+  const nodes=new THREE.Points(nodeGeo,nodeMat);
+  scene.add(nodes);
+
+  /* Connection lines */
+  const lineMat=new THREE.LineBasicMaterial({
+    color:0x00bcd4, transparent:true, opacity:.18,
+    blending:THREE.AdditiveBlending, depthWrite:false
+  });
+  const lineGroup=new THREE.Group();
+  scene.add(lineGroup);
+
+  function rebuildLines(){
+    while(lineGroup.children.length) lineGroup.remove(lineGroup.children[0]);
+    let count=0;
+    for(let i=0;i<NODE_COUNT&&count<CONN_COUNT;i++){
+      const a=nodeData[i];
+      for(let j=i+1;j<NODE_COUNT&&count<CONN_COUNT;j++){
+        const b=nodeData[j];
+        const d=a.distanceTo(b);
+        if(d<18){
+          const geo=new THREE.BufferGeometry().setFromPoints([a.clone(),b.clone()]);
+          lineGroup.add(new THREE.Line(geo,lineMat));
+          count++;
+        }
+      }
+    }
+  }
+  rebuildLines();
+
+  /* Mouse */
+  const mouse=new THREE.Vector2();
+  document.addEventListener('mousemove',e=>{
+    mouse.x=(e.clientX/window.innerWidth-.5)*2;
+    mouse.y=-(e.clientY/window.innerHeight-.5)*2;
+  });
+
+  let frame=0;
+  function animate(){
+    requestAnimationFrame(animate);
+    frame++;
+
+    /* Move nodes */
+    for(let i=0;i<NODE_COUNT;i++){
+      nodeData[i].add(velocities[i]);
+      /* Soft boundary bounce */
+      ['x','y','z'].forEach(ax=>{
+        if(Math.abs(nodeData[i][ax])>58){
+          velocities[i][ax]*=-1;
+          nodeData[i][ax]=Math.sign(nodeData[i][ax])*58;
+        }
+      });
+      positions[i*3]  =nodeData[i].x;
+      positions[i*3+1]=nodeData[i].y;
+      positions[i*3+2]=nodeData[i].z;
+    }
+    nodeGeo.attributes.position.needsUpdate=true;
+
+    /* Rebuild lines every 20 frames */
+    if(frame%20===0) rebuildLines();
+
+    /* Camera gentle drift + mouse reaction */
+    camera.position.x+=(mouse.x*12-camera.position.x)*.015;
+    camera.position.y+=(mouse.y*8 -camera.position.y)*.015;
+    camera.lookAt(0,0,0);
+
+    /* Rotate whole scene */
+    scene.rotation.y+=.0015;
+    scene.rotation.x+=.0004;
+
+    renderer.render(scene,camera);
+  }
+  animate();
+})();
+
+/* ── SCROLL: NAVBAR ──────────────────────────────────────── */
+const navbar=document.getElementById('navbar');
+window.addEventListener('scroll',()=>{
+  navbar.classList.toggle('scrolled',window.scrollY>60);
+},{ passive:true });
+
+/* ── MOBILE MENU ──────────────────────────────────────────── */
+const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+const navOverlay = document.getElementById('nav-overlay');
+const navElement = document.querySelector('header nav');
+
+function openMenu(){
+  navElement.classList.add('mobile-open');
+  navOverlay.classList.add('active');
+  mobileMenuBtn.classList.add('open');
+  mobileMenuBtn.setAttribute('aria-expanded','true');
+  document.body.style.overflow='hidden';
 }
-function closePortal() {
-  document.getElementById('portal-overlay').classList.add('hidden');
-  document.body.style.overflow = '';
+function closeMenu(){
+  navElement.classList.remove('mobile-open');
+  navOverlay.classList.remove('active');
+  mobileMenuBtn.classList.remove('open');
+  mobileMenuBtn.setAttribute('aria-expanded','false');
+  document.body.style.overflow='';
 }
-// Close on backdrop click
-document.getElementById('portal-overlay').addEventListener('click', function(e) {
-  if (e.target === this) closePortal();
+
+mobileMenuBtn.addEventListener('click', () => {
+  navElement.classList.contains('mobile-open') ? closeMenu() : openMenu();
 });
 
-/* ── Auth tab switch ─────────────────── */
-function switchAuthTab(tab) {
-  const loginBtn  = document.getElementById('tab-login');
-  const signupBtn = document.getElementById('tab-signup');
-  const loginF    = document.getElementById('login-form');
-  const signupF   = document.getElementById('signup-form');
+navOverlay.addEventListener('click', closeMenu);
 
-  if (tab === 'login') {
-    loginBtn.classList.add('active-tab');
-    signupBtn.classList.remove('active-tab');
-    signupBtn.style.color = '#64748b'; signupBtn.style.background = 'transparent';
-    loginF.classList.remove('hidden');
-    signupF.classList.add('hidden');
-  } else {
-    signupBtn.classList.add('active-tab');
-    loginBtn.classList.remove('active-tab');
-    loginBtn.style.color = '#64748b'; loginBtn.style.background = 'transparent';
-    signupF.classList.remove('hidden');
-    loginF.classList.add('hidden');
-  }
-}
-
-/* ── Login ───────────────────────────── */
-function loginPortal() {
-  const email = document.getElementById('portal-email').value.trim();
-  const pass  = document.getElementById('portal-pass').value.trim();
-  if (!email || !pass) {
-    showToast('Enter credentials', 'Please enter your email and password.', 'error');
-    return;
-  }
-  // Extract name from email for demo
-  const raw = email.split('@')[0].replace(/[._]/g,' ');
-  loggedInName = raw.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
-  isLoggedIn = true;
-  showPortalDashboard();
-}
-
-/* ── Signup ──────────────────────────── */
-function signupPortal() {
-  const name  = document.getElementById('su-name').value.trim();
-  const phone = document.getElementById('su-phone').value.trim();
-  const email = document.getElementById('su-email').value.trim();
-  const pass  = document.getElementById('su-pass').value.trim();
-  if (!name || !phone || !email || !pass) {
-    showToast('Fill all fields', 'Please complete all registration fields.', 'error');
-    return;
-  }
-  loggedInName = name;
-  isLoggedIn = true;
-  showPortalDashboard();
-  showToast('Account Created!', `Welcome to Oasis Medical, ${name.split(' ')[0]}! Your portal is ready.`);
-}
-
-/* ── Show dashboard ──────────────────── */
-function showPortalDashboard() {
-  document.getElementById('portal-auth').classList.add('hidden');
-  document.getElementById('portal-dashboard').classList.remove('hidden');
-
-  // Set name
-  const displayName = loggedInName || 'Patient';
-  document.getElementById('dash-name').textContent = displayName;
-
-  // Initials
-  const parts = displayName.split(' ');
-  const initials = parts.length >= 2 ? parts[0][0]+parts[parts.length-1][0] : parts[0].slice(0,2);
-  document.getElementById('avatar-initials').textContent = initials.toUpperCase();
-
-  updateDashboard();
-}
-
-/* ── Update dashboard appointments ──── */
-function updateDashboard() {
-  const list = document.getElementById('appointments-list');
-  const countBadge = document.getElementById('appt-count-badge');
-  const statTotal  = document.getElementById('stat-total');
-
-  // Clear existing dynamic rows
-  document.querySelectorAll('.dynamic-appt').forEach(el => el.remove());
-
-  const total = 1 + appointments.length; // 1 default + submitted
-  countBadge.textContent = total;
-  statTotal.textContent  = total;
-
-  const deptColors = {
-    'General Consultation': '#2db0ae',
-    'Pediatrics': '#d4a857',
-    'Obstetrics & Gynaecology (O&G)': '#e85d57',
-    'Diagnostics & Laboratory': '#475569',
-    'Chronic Disease Management': '#1a9593',
-    'Emergency / Walk-In': '#c0130e',
-  };
-
-  appointments.forEach(appt => {
-    const color = deptColors[appt.dept] || '#2db0ae';
-    const initials = appt.name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
-
-    const row = document.createElement('div');
-    row.className = 'appt-row dynamic-appt';
-    row.innerHTML = `
-      <div style="display:flex;align-items:center;gap:0.75rem">
-        <div style="width:42px;height:42px;border-radius:12px;background:${color};display:flex;align-items:center;justify-content:center;flex-shrink:0;color:#fff;font-weight:600;font-size:0.85rem">${initials}</div>
-        <div>
-          <p style="font-weight:600;color:#0b4f4e;font-size:0.9rem">${appt.dept}</p>
-          <p style="font-size:0.78rem;color:#64748b">${appt.name} · ${appt.phone}</p>
-        </div>
-      </div>
-      <div style="text-align:right">
-        <p style="font-weight:500;color:#1e293b;font-size:0.85rem">${appt.date}</p>
-        <p style="font-size:0.78rem;color:#64748b">${appt.time}</p>
-      </div>
-      <span class="badge" style="background:#fdfaf5;color:#a37330;border:1px solid #f1e2c0">Pending</span>
-    `;
-    list.appendChild(row);
-  });
-}
-
-/* ── Logout ──────────────────────────── */
-function logoutPortal() {
-  isLoggedIn = false;
-  loggedInName = '';
-  document.getElementById('portal-dashboard').classList.add('hidden');
-  document.getElementById('portal-auth').classList.remove('hidden');
-  document.getElementById('portal-email').value = '';
-  document.getElementById('portal-pass').value  = '';
-  switchAuthTab('login');
-  showToast('Signed Out', 'You have been safely signed out of the Patient Portal.');
-}
-
-/* ── Scroll-triggered reveals ────────── */
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add('visible');
-      observer.unobserve(entry.target);
+// Close menu and scroll — delay so menu transition finishes before scrolling
+document.querySelectorAll('header nav .nav-link, header nav .nav-book-btn').forEach(link => {
+  link.addEventListener('click', (e) => {
+    if(navElement.classList.contains('mobile-open')){
+      const href = link.getAttribute('href');
+      if(href && href.startsWith('#')){
+        e.preventDefault();
+        e.stopImmediatePropagation(); // stop general smooth-scroll handler
+        closeMenu();
+        setTimeout(()=>{
+          const target = document.querySelector(href);
+          if(target) target.scrollIntoView({behavior:'smooth'});
+        }, 400); // wait for 350ms nav transition + buffer
+      } else {
+        closeMenu();
+      }
+    } else {
+      closeMenu();
     }
   });
-}, { threshold: 0.12 });
-
-document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-
-/* ── Scroll-top button & navbar shadow ── */
-window.addEventListener('scroll', () => {
-  const st = document.getElementById('scroll-top');
-  if (window.scrollY > 400) { st.style.display = 'flex'; }
-  else { st.style.display = 'none'; }
 });
 
-/* ── Responsive: stack hero & about grids on mobile ── */
-function responsiveGrids() {
-  const w = window.innerWidth;
-  const heroGrid = document.querySelector('.hero-grid');
-  const aboutGrid = document.getElementById('about-grid');
-  const bookingGrid = document.getElementById('booking-grid');
-  const footerGrid = document.getElementById('footer-grid');
+/* ── GSAP SCROLL REVEALS ─────────────────────────────────── */
+gsap.registerPlugin(ScrollTrigger);
 
-  if (heroGrid) heroGrid.style.gridTemplateColumns = w < 768 ? '1fr' : '1fr 1fr';
-  if (aboutGrid) aboutGrid.style.gridTemplateColumns = w < 768 ? '1fr' : '1fr 1fr';
-  if (bookingGrid) bookingGrid.style.gridTemplateColumns = w < 900 ? '1fr' : '1fr 1.6fr';
-  if (footerGrid) footerGrid.style.gridTemplateColumns = w < 768 ? '1fr 1fr' : w < 1024 ? '1fr 1fr 1fr 1fr' : '2fr 1fr 1fr 1.2fr';
+/* About section */
+gsap.from('#about-visual',{
+  scrollTrigger:{ trigger:'#about-section', start:'top 75%' },
+  x:-60, opacity:0, duration:1.1, ease:'power3.out'
+});
+gsap.from('#about-text > *',{
+  scrollTrigger:{ trigger:'#about-section', start:'top 70%' },
+  y:40, opacity:0, duration:.9, ease:'power3.out', stagger:.12, delay:.15
+});
 
-  // Name/phone row
-  const np = document.getElementById('form-name-phone');
-  if (np) np.style.gridTemplateColumns = w < 600 ? '1fr' : '1fr 1fr';
+/* Services cards — 3D tilt lift */
+gsap.from('#services-grid .service-card',{
+  scrollTrigger:{
+    trigger:'#services-section', start:'top 70%'
+  },
+  y:70, opacity:0, rotateX:12,
+  duration:1, ease:'power3.out', stagger:.12,
+  transformOrigin:'bottom center'
+});
+
+/* Scroll showcase — 3D card flatten on scroll */
+gsap.set('#scroll-card',{ rotateX:20, scale:1.05 });
+gsap.to('#scroll-card',{
+  scrollTrigger:{
+    trigger:'#scroll-showcase',
+    start:'top 85%',
+    end:'bottom 30%',
+    scrub:1.5,
+  },
+  rotateX:0,
+  scale:1,
+  ease:'none',
+});
+gsap.to('#scroll-title-wrap',{
+  scrollTrigger:{
+    trigger:'#scroll-showcase',
+    start:'top 60%',
+    end:'center top',
+    scrub:1,
+  },
+  y:-60,
+  ease:'none',
+});
+gsap.from('#scroll-title-wrap > *',{
+  scrollTrigger:{ trigger:'#scroll-showcase', start:'top 80%' },
+  y:40, opacity:0, duration:1, ease:'power3.out', stagger:.12
+});
+
+/* Hours band */
+gsap.from('#hours-band .hours-item',{
+  scrollTrigger:{ trigger:'#hours-band', start:'top 85%' },
+  y:30, opacity:0, duration:.8, ease:'power3.out', stagger:.15
+});
+
+/* Contact */
+gsap.from('#contact-info > *',{
+  scrollTrigger:{ trigger:'#contact-section', start:'top 70%' },
+  x:-50, opacity:0, duration:.9, ease:'power3.out', stagger:.12
+});
+gsap.from('#booking-form-wrap',{
+  scrollTrigger:{ trigger:'#contact-section', start:'top 70%' },
+  x:50, opacity:0, duration:.9, ease:'power3.out', delay:.15
+});
+
+/* ── MAGNETIC BUTTON EFFECT ──────────────────────────────── */
+document.querySelectorAll('.btn-primary-glow,.btn-ghost,.nav-book-btn,.form-submit').forEach(btn=>{
+  // Only apply magnetic effect on non-touch devices
+  if(!window.matchMedia('(hover: hover)').matches) return;
+  
+  btn.addEventListener('mousemove',e=>{
+    const r=btn.getBoundingClientRect();
+    const dx=(e.clientX-r.left-r.width/2)*.25;
+    const dy=(e.clientY-r.top -r.height/2)*.25;
+    gsap.to(btn,{ x:dx, y:dy, duration:.3, ease:'power2.out' });
+  });
+  btn.addEventListener('mouseleave',()=>{
+    gsap.to(btn,{ x:0, y:0, duration:.5, ease:'elastic.out(1,.6)' });
+  });
+});
+
+/* ── FORM VALIDATION ──────────────────────────────────────── */
+const today=new Date().toISOString().split('T')[0];
+document.getElementById('f-date').min=today;
+
+const form=document.getElementById('booking-form');
+const formSuccess=document.getElementById('form-success');
+
+function checkField(id,errId,test){
+  const el=document.getElementById(id);
+  const ok=test(el.value);
+  el.classList.toggle('err',!ok);
+  const errEl=document.getElementById(errId);
+  if(errEl) errEl.classList.toggle('show',!ok);
+  return ok;
 }
 
-window.addEventListener('resize', responsiveGrids);
-responsiveGrids();
+form.addEventListener('submit',e=>{
+  e.preventDefault();
+  const v=[
+    checkField('f-fname','err-fname',v=>v.trim().length>0),
+    checkField('f-lname','err-lname',v=>v.trim().length>0),
+    checkField('f-phone','err-phone',v=>/^[\d\s\+\-\(\)]{7,}$/.test(v.trim())),
+    checkField('f-service','err-service',v=>v!==''),
+    checkField('f-date','err-date',v=>v!==''),
+  ];
+  if(v.every(Boolean)){
+    form.style.display='none';
+    formSuccess.classList.add('show');
+  }
+});
 
-/* ── Set min date for booking ─────────── */
-const dateInput = document.getElementById('f-date');
-if (dateInput) {
-  const tomorrow = new Date();
-  tomorrow.setDate(tomorrow.getDate() + 1);
-  dateInput.min = tomorrow.toISOString().split('T')[0];
-}
+['f-fname','f-lname','f-phone','f-service','f-date'].forEach(id=>{
+  const el=document.getElementById(id);
+  const ev=el.tagName==='SELECT'?'change':'input';
+  el.addEventListener(ev,()=>{
+    el.classList.remove('err');
+    const errId='err-'+id.replace('f-','');
+    const e=document.getElementById(errId);
+    if(e) e.classList.remove('show');
+  });
+});
+
+/* ── SMOOTH ANCHOR SCROLL ────────────────────────────────── */
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click',e=>{
+    const target=document.querySelector(a.getAttribute('href'));
+    if(target){ e.preventDefault(); target.scrollIntoView({ behavior:'smooth' }); }
+  });
+});
 </script>
 </body>
 </html>
