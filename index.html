@@ -168,15 +168,28 @@ body:has(button:hover) #cursor-ring{width:60px;height:60px;border-color:rgba(0,2
 /* ── NAVIGATION ─────────────────────────────────────────────── */
 #navbar{
   position:fixed;top:0;left:0;right:0;z-index:510;
-  transition:all .4s ease;
+  transition:padding .4s ease;
   padding:.75rem 0;
 }
-#navbar.scrolled{
+/* The scrolled look (blur/background/shadow) lives on ::before rather than
+   #navbar itself — backdrop-filter on #navbar would make it the containing
+   block for its position:fixed descendant (the mobile nav panel), clipping
+   that panel to the header's own height instead of the full viewport. */
+#navbar::before{
+  content:'';position:absolute;inset:0;z-index:-1;
+  pointer-events:none;
+  opacity:0;
+  transition:opacity .4s ease;
+}
+#navbar.scrolled::before{
+  opacity:1;
   background:rgba(5,8,15,.85);
-  backdrop-filter:blur(24px);
+  backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
   border-bottom:1px solid var(--glass-border);
-  padding:.5rem 0;
   box-shadow:0 4px 40px rgba(0,0,0,.4);
+}
+#navbar.scrolled{
+  padding:.5rem 0;
 }
 .nav-logo-text{
   font-family:var(--font-display);
