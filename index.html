@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>Oasis Medical Clinic — Afienya, Ghana</title>
-<meta name="description" content="Oasis Medical Clinic – Premium, compassionate healthcare in Afienya, Greater Accra. Book an appointment today."/>
+<title>Grace Yard Hospital — Afienya, Ghana</title>
+<meta name="description" content="Grace Yard Hospital – Premium, compassionate healthcare in Afienya, Greater Accra. Book an appointment today."/>
 
 <!-- Tailwind -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.js"></script>
@@ -16,7 +16,7 @@
 <!-- Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&amp;family=Syne:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@300;400;500&amp;display=swap" rel="stylesheet"/>
 
 <style>
 /* ── TOKENS ─────────────────────────────────────────────────── */
@@ -39,7 +39,9 @@
   --font-display:'Bebas Neue',sans-serif;
   --font-body:'Syne',sans-serif;
   --font-mono:'JetBrains Mono',monospace;
+  --nav-h:84px;
 }
+@media(max-width:767px){ :root{ --nav-h:64px; } }
 
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html{font-size:16px;background:var(--obsidian);}
@@ -165,16 +167,29 @@ body:has(button:hover) #cursor-ring{width:60px;height:60px;border-color:rgba(0,2
 
 /* ── NAVIGATION ─────────────────────────────────────────────── */
 #navbar{
-  position:fixed;top:0;left:0;right:0;z-index:500;
-  transition:all .4s ease;
+  position:fixed;top:0;left:0;right:0;z-index:510;
+  transition:padding .4s ease;
   padding:.75rem 0;
 }
-#navbar.scrolled{
+/* The scrolled look (blur/background/shadow) lives on ::before rather than
+   #navbar itself — backdrop-filter on #navbar would make it the containing
+   block for its position:fixed descendant (the mobile nav panel), clipping
+   that panel to the header's own height instead of the full viewport. */
+#navbar::before{
+  content:'';position:absolute;inset:0;z-index:-1;
+  pointer-events:none;
+  opacity:0;
+  transition:opacity .4s ease;
+}
+#navbar.scrolled::before{
+  opacity:1;
   background:rgba(5,8,15,.85);
-  backdrop-filter:blur(24px);
+  backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
   border-bottom:1px solid var(--glass-border);
-  padding:.5rem 0;
   box-shadow:0 4px 40px rgba(0,0,0,.4);
+}
+#navbar.scrolled{
+  padding:.5rem 0;
 }
 .nav-logo-text{
   font-family:var(--font-display);
@@ -376,7 +391,8 @@ body:has(button:hover) #cursor-ring{width:60px;height:60px;border-color:rgba(0,2
   flex-wrap:wrap;gap:2rem;
 }
 .hero-data-item{
-  display:flex;flex-direction:column;gap:.25rem;
+  display:flex;flex-direction:column;align-items:center;gap:.25rem;
+  text-align:center;
 }
 .data-label{
   font-family:var(--font-mono);font-size:.65rem;
@@ -411,6 +427,12 @@ body:has(button:hover) #cursor-ring{width:60px;height:60px;border-color:rgba(0,2
 }
 
 /* ── SECTION SHARED ─────────────────────────────────────────── */
+/* Anchor-linked sections need clearance from the fixed navbar, or the
+   jump-to-section scroll (nav links, footer links) lands their title
+   tucked right up under the header. */
+#hero,#about-section,#scroll-showcase,#services-section,#why-section,#contact-section{
+  scroll-margin-top:var(--nav-h);
+}
 .section-wrap{
   position:relative;
   padding:clamp(5rem,10vw,9rem) 0;
@@ -995,39 +1017,28 @@ footer{
   .contact-grid{grid-template-columns:1fr;}
   
   .hero-title{font-size:clamp(2.8rem,8vw,6rem);}
-  .nav-book-btn{font-size:.65rem;padding:.5rem 1rem;white-space:normal;}
   .section-title{font-size:clamp(2rem,5vw,4rem);}
-  
+
   .services-grid{grid-template-columns:repeat(auto-fill,minmax(240px,1fr));}
   .service-card{padding:1.75rem 1.5rem;}
-  
+
   .contact-info{gap:1rem;}
   .info-card{padding:1.25rem 1.5rem;}
-  
+
   .form-glass{padding:2rem;}
   .form-title{font-size:1.8rem;}
-  
+
 }
 
-/* Tablet & up: nav inline, no hamburger */
-@media(min-width:768px){
-  #mobile-menu-btn{display:none;}
-  nav{transform:none;}
-}
-
-/* Mobile Landscape & Large Phones */
-@media(max-width:767px){
-  html{font-size:15px;}
-  
-  body{cursor:auto;}
-  #cursor,#cursor-ring{display:none;}
-  
-  /* Navigation */
+/* Tablet + Mobile: off-canvas hamburger nav (full-width inline nav doesn't
+   fit logo + 5 links + CTA below desktop widths, so every screen under
+   1024px gets the same slide-out panel desktop already proves works) */
+@media(max-width:1023px){
   #navbar{padding:.6rem 1.25rem;}
   #mobile-menu-btn{display:flex;align-items:center;justify-content:center;}
   nav{
     position:fixed;right:0;left:auto;top:0;bottom:0;
-    width:min(300px,85vw);
+    width:min(320px,85vw);
     flex-direction:column;align-items:flex-start;
     gap:0;
     background:rgba(5,8,15,.97);
@@ -1039,15 +1050,23 @@ footer{
     box-shadow:-4px 0 48px rgba(0,0,0,.75);
     transition:transform .35s cubic-bezier(.4,0,.2,1);
   }
+  nav::before{
+    content:'MENU';
+    position:absolute;top:1.75rem;left:2rem;
+    font-family:var(--font-mono);
+    font-size:.6rem;letter-spacing:.22em;
+    color:var(--teal);text-transform:uppercase;
+  }
+  #nav-overlay{z-index:501;}
   .nav-link{
     font-family:var(--font-display);
-    font-size:2.4rem;
+    font-size:2rem;
     letter-spacing:.06em;
     text-transform:uppercase;
     color:rgba(255,255,255,.85);
     padding:.7rem 0;
     border-bottom:1px solid rgba(255,255,255,.07);
-    width:100%;min-height:60px;
+    width:100%;min-height:56px;
     display:flex;align-items:center;
   }
   .nav-link::after{display:none;}
@@ -1059,7 +1078,27 @@ footer{
     min-height:52px;
     display:flex;align-items:center;justify-content:center;
   }
-  
+}
+
+/* Desktop only: nav inline, no hamburger */
+@media(min-width:1024px){
+  #mobile-menu-btn{display:none;}
+  nav{transform:none;}
+}
+
+/* Mobile Landscape & Large Phones */
+@media(max-width:767px){
+  html{font-size:15px;}
+
+  body{cursor:auto;}
+  #cursor,#cursor-ring{display:none;}
+
+  /* Navigation: bigger touch-friendly link size than the tablet default set above */
+  .nav-link{
+    font-size:2.4rem;
+    min-height:60px;
+  }
+
   /* Hero */
   .hero-content{padding:0 1.25rem;padding-top:4.5rem;}
   .hero-title{font-size:clamp(2rem,6vw,3.5rem);line-height:1;}
@@ -1323,24 +1362,15 @@ footer{
   /* Snappier tap — removes 300 ms delay on links/buttons */
   a,button,.service-card,.info-card{touch-action:manipulation;}
 
-  /* Nav panel "MENU" label at top-left */
-  nav::before{
-    content:'MENU';
-    position:absolute;top:1.75rem;left:2rem;
-    font-family:var(--font-mono);
-    font-size:.6rem;letter-spacing:.22em;
-    color:var(--teal);text-transform:uppercase;
-  }
-
-  /* Overlay sits between page and nav panel */
-  #nav-overlay{z-index:501;}
-
   /* Section body text more readable */
   .section-body{line-height:1.75;}
 
   /* Hide scroll indicator on mobile — less noise */
   .scroll-indicator{display:none;}
 }
+
+/* ── HOURS BAND STATUS PULSE ───────────────────────────────── */
+@keyframes pulse-green{0%,100%{box-shadow:0 0 0 4px rgba(74,222,128,.2);}50%{box-shadow:0 0 0 8px rgba(74,222,128,.08);}}
 
 /* ── NOISE GRAIN OVERLAY ────────────────────────────────────── */
 body::after{
@@ -1399,7 +1429,7 @@ body::after{
   </div>
 
   <div class="loader-info">
-    <div class="loader-name">Oasis<span style="color:var(--teal)"> Medical</span></div>
+    <div class="loader-name">Grace Yard<span style="color:var(--teal)"> Hospital</span></div>
     <div class="loader-sub">Initialising Clinical Systems</div>
   </div>
 
@@ -1423,7 +1453,7 @@ body::after{
         <rect x="12" y="5" width="4" height="18" rx="1.5" fill="#00e6c8"/>
         <rect x="5" y="12" width="18" height="4" rx="1.5" fill="#00e6c8"/>
       </svg>
-      <div class="nav-logo-text">Oasis<span> Medical</span></div>
+      <div class="nav-logo-text">Grace Yard<span> Hospital</span></div>
     </a>
 
     <nav style="display:flex;align-items:center;gap:2.25rem;" aria-label="Main navigation">
@@ -1434,7 +1464,7 @@ body::after{
       <a href="#contact-section" class="nav-book-btn"><span>Book Appointment</span></a>
     </nav>
 
-    <button id="mobile-menu-btn" aria-label="Toggle mobile menu" aria-expanded="false">
+    <button id="mobile-menu-btn" type="button" aria-label="Toggle mobile menu" aria-expanded="false">
       <svg class="icon-menu" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
       <svg class="icon-close" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>
     </button>
@@ -1450,7 +1480,7 @@ body::after{
 
   <div class="inner hero-content" style="width:100%;">
     <div class="hero-eyebrow" id="hero-eyebrow">
-      Mon–Sat 8am–8pm · Off First Bridge Road, Mataheko-Afienya · Greater Accra
+      Mon–Sat 8am–8pm · Off Tema-Akosombo Highway, Afienya-Mataheko · Greater Accra
     </div>
 
     <h1 class="hero-title" id="hero-title" aria-label="Your Health. Our Purpose.">
@@ -1466,7 +1496,7 @@ body::after{
 
     <p class="hero-sub" id="hero-sub">
       Compassionate, modern healthcare for every family in the Afienya community. 
-      From routine consultations to emergency care — Oasis Medical Clinic is your trusted partner in health.
+      From routine consultations to emergency care — Grace Yard Hospital is your trusted partner in health.
     </p>
 
     <div class="hero-cta-row" id="hero-cta">
@@ -1481,7 +1511,7 @@ body::after{
     <div class="hero-data-strip" id="hero-stats">
       <div class="hero-data-item">
         <span class="data-label">Services</span>
-        <span class="data-value">7+</span>
+        <span class="data-value">10+</span>
       </div>
       <div class="hero-data-item">
         <span class="data-label">Mon–Sat</span>
@@ -1551,7 +1581,7 @@ body::after{
           Healthcare<br/><span class="title-accent">Built for</span><br/>Afienya
         </h2>
         <p class="section-body">
-          Oasis Medical Clinic is a trusted healthcare facility located off First Bridge Road, Mataheko-Afienya, Greater Accra. We combine modern clinical standards with genuine, compassionate care — offering everything from general consultations to specialist clinics.
+          Grace Yard Hospital is a trusted healthcare facility located off the Tema-Akosombo Highway, at EMEFS Estate Police Station, Afienya-Mataheko, Greater Accra. We combine modern clinical standards with genuine, compassionate care — offering everything from general consultations to specialist clinics.
         </p>
         <p class="section-body" style="margin-top:1rem;">
           Rated "Very Serene Medical Environment" by our patients — we believe that healing begins in the atmosphere. Our skilled team is committed to your wellbeing, Monday through Saturday, 8 AM to 8 PM, with an after-hours line always available.
@@ -1587,15 +1617,15 @@ body::after{
         <div class="scroll-card" id="scroll-card">
           <div class="scroll-card-inner">
             <img
-              src="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=1400&q=80"
-              alt="Modern medical clinic interior — Oasis Medical Clinic"
+              src="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=1400&amp;q=80"
+              alt="Modern hospital interior — Grace Yard Hospital"
               loading="lazy"
             />
             <div class="scroll-card-badge">Mataheko-Afienya · Greater Accra</div>
             <div class="scroll-card-overlay">
               <div class="scroll-card-stats">
                 <div class="scroll-stat">
-                  <span class="scroll-stat-num">7+</span>
+                  <span class="scroll-stat-num">10+</span>
                   <span class="scroll-stat-label">Services</span>
                 </div>
                 <div class="scroll-stat">
@@ -1716,6 +1746,112 @@ body::after{
         <div class="card-glow-line"></div>
       </article>
 
+      <article class="service-card">
+        <div class="card-num">08</div>
+        <div class="card-corner"></div>
+        <div class="card-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#00e6c8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h.01M15 12h.01M8 20l2.5-2.5M16 20l-2.5-2.5"/><path d="M12 2C7 2 4 6 4 10c0 3 1 5 2 6.5C7 18 8 20 12 20s5-2 6-3.5c1-1.5 2-3.5 2-6.5 0-4-3-8-8-8z"/></svg>
+        </div>
+        <h3 class="card-title">Paediatrics</h3>
+        <p class="card-desc">Gentle, dedicated care for infants, children, and adolescents — from routine check-ups and immunisations to management of childhood illnesses.</p>
+        <a href="#contact-section" class="card-link">Book Visit <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></a>
+        <div class="card-glow-line"></div>
+      </article>
+
+      <article class="service-card">
+        <div class="card-num">09</div>
+        <div class="card-corner"></div>
+        <div class="card-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#00e6c8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg>
+        </div>
+        <h3 class="card-title">Ultrasound &amp; X-Ray Imaging</h3>
+        <p class="card-desc">On-site diagnostic imaging — obstetric ultrasound, general ultrasound scans, and X-ray radiography — for fast, accurate results that guide your treatment.</p>
+        <a href="#contact-section" class="card-link">Book Scan <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></a>
+        <div class="card-glow-line"></div>
+      </article>
+
+      <article class="service-card">
+        <div class="card-num">10</div>
+        <div class="card-corner"></div>
+        <div class="card-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#00e6c8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5c-1.5-2-4-3-6-1.5C3 5.5 3 9 5 11c1.5 1.5 5 4.5 7 8 2-3.5 5.5-6.5 7-8 2-2 2-5.5-1-7.5-2-1.5-4.5-.5-6 1.5z"/></svg>
+        </div>
+        <h3 class="card-title">Dental Care</h3>
+        <p class="card-desc">Routine check-ups, cleanings, fillings, and extractions from our dental team — keeping your smile healthy at every stage of life.</p>
+        <a href="#contact-section" class="card-link">Book Visit <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></a>
+        <div class="card-glow-line"></div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── WHY CHOOSE US ──────────────────────────────────────── -->
+<section id="why-section" class="section-wrap">
+  <div class="section-bg-glow" style="width:550px;height:550px;top:10%;right:-150px;background:radial-gradient(circle,rgba(0,230,200,1) 0%,transparent 70%);"></div>
+  <div class="inner">
+    <span class="section-tag">Why Choose Us</span>
+    <h2 class="section-title">
+      Why Families<br/><span class="title-accent">Choose Grace Yard</span>
+    </h2>
+    <p class="section-body">Real reasons patients across Afienya-Mataheko keep coming back.</p>
+
+    <div class="services-grid" id="why-grid">
+
+      <article class="service-card">
+        <div class="card-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#00e6c8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+        </div>
+        <h3 class="card-title">24/7 After-Hours Line</h3>
+        <p class="card-desc">Round-the-clock phone support for urgent concerns, even outside our Mon–Sat clinic hours.</p>
+        <div class="card-glow-line"></div>
+      </article>
+
+      <article class="service-card">
+        <div class="card-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#00e6c8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+        </div>
+        <h3 class="card-title">Qualified Specialists</h3>
+        <p class="card-desc">Experienced physicians and visiting specialists across cardiology, urology, obstetrics, paediatrics and more.</p>
+        <div class="card-glow-line"></div>
+      </article>
+
+      <article class="service-card">
+        <div class="card-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#00e6c8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2V9M9 21H5a2 2 0 01-2-2V9m0 0h18"/></svg>
+        </div>
+        <h3 class="card-title">On-Site Lab &amp; Pharmacy</h3>
+        <p class="card-desc">Skip the extra trip — get tested, diagnosed, and fill your prescription all under one roof.</p>
+        <div class="card-glow-line"></div>
+      </article>
+
+      <article class="service-card">
+        <div class="card-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#00e6c8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+        </div>
+        <h3 class="card-title">Affordable, Transparent Care</h3>
+        <p class="card-desc">Quality healthcare priced fairly for the Afienya-Mataheko community, with no hidden costs.</p>
+        <div class="card-glow-line"></div>
+      </article>
+
+      <article class="service-card">
+        <div class="card-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#00e6c8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg>
+        </div>
+        <h3 class="card-title">Modern Diagnostic Equipment</h3>
+        <p class="card-desc">On-site ultrasound, X-ray, and laboratory equipment for fast, accurate results that guide your treatment.</p>
+        <div class="card-glow-line"></div>
+      </article>
+
+      <article class="service-card">
+        <div class="card-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#00e6c8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
+        <h3 class="card-title">Highly Rated by Patients</h3>
+        <p class="card-desc">Rated 4.3★ by the families who trust us with their care, visit after visit.</p>
+        <div class="card-glow-line"></div>
+      </article>
+
     </div>
   </div>
 </section>
@@ -1744,13 +1880,12 @@ body::after{
     </div>
   </div>
 </div>
-<style>@keyframes pulse-green{0%,100%{box-shadow:0 0 0 4px rgba(74,222,128,.2);}50%{box-shadow:0 0 0 8px rgba(74,222,128,.08);}}</style>
 
 <!-- ── CONTACT ────────────────────────────────────────────── -->
 <section id="contact-section" class="section-wrap">
   <div class="section-bg-glow" style="width:600px;height:600px;bottom:-200px;left:-100px;background:radial-gradient(circle,rgba(0,230,200,1) 0%,transparent 70%);"></div>
   <div class="inner">
-    <span class="section-tag">Find & Contact Us</span>
+    <span class="section-tag">Find &amp; Contact Us</span>
     <h2 class="section-title">
       Visit, Call<br/><span class="title-accent">or Book</span>
     </h2>
@@ -1811,7 +1946,7 @@ body::after{
             </div>
             <div>
               <div class="info-label">Address</div>
-              <div class="info-value" style="font-size:.85rem;">Off First Bridge Road,<br/>Mataheko-Afienya,<br/>Greater Accra</div>
+              <div class="info-value" style="font-size:.85rem;">Off Tema-Akosombo Hwy,<br/>EMEFS Estate Police Stn,<br/>Afienya-Mataheko</div>
             </div>
           </div>
           <div class="info-card" style="flex-direction:column;gap:.75rem;">
@@ -1827,7 +1962,7 @@ body::after{
         </div>
 
         <!-- ── Google Maps link -->
-        <a href="https://maps.google.com/?q=Oasis+Medical+Clinic,Mataheko,Afienya,Ghana" target="_blank" rel="noopener noreferrer" class="info-card info-card-map" style="text-decoration:none;">
+        <a href="https://maps.google.com/?q=EMEFS+Estate+Police+Station,+Tema-Akosombo+Highway,+Afienya-Mataheko,+Ghana" target="_blank" rel="noopener noreferrer" class="info-card info-card-map" style="text-decoration:none;">
           <div class="info-icon">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#00e6c8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
           </div>
@@ -1881,6 +2016,9 @@ body::after{
               <option>Physical Therapy</option>
               <option>Pharmacy</option>
               <option>Laboratory</option>
+              <option>Paediatrics</option>
+              <option>Ultrasound &amp; X-Ray Imaging</option>
+              <option>Dental Care</option>
               <option>Other</option>
             </select>
             <span class="form-err-msg" id="err-service">Please select a service</span>
@@ -1922,7 +2060,7 @@ body::after{
 
     <!-- Brand column -->
     <div>
-      <div class="footer-brand-name">Oasis<span> Medical</span> Clinic</div>
+      <div class="footer-brand-name">Grace Yard<span> Hospital</span></div>
       <p class="footer-brand-tagline">Your health. Our purpose.<br/>Compassionate care, right here in Afienya.</p>
       <div class="footer-brand-contacts">
         <a href="tel:+233208894427" class="fbc-item">
@@ -1939,7 +2077,7 @@ body::after{
         </a>
         <span class="fbc-item">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
-          Off First Bridge Road, Mataheko-Afienya
+          Off Tema-Akosombo Highway, Afienya-Mataheko
         </span>
       </div>
     </div>
@@ -1952,6 +2090,7 @@ body::after{
         <a href="#about-section">About Us</a>
         <a href="#scroll-showcase">Our Clinic</a>
         <a href="#services-section">Services</a>
+        <a href="#why-section">Why Choose Us</a>
         <a href="#contact-section">Contact</a>
         <a href="#contact-section">Book Appointment</a>
       </nav>
@@ -1968,6 +2107,9 @@ body::after{
         <a href="#services-section">Physical Therapy</a>
         <a href="#services-section">Pharmacy</a>
         <a href="#services-section">Laboratory</a>
+        <a href="#services-section">Paediatrics</a>
+        <a href="#services-section">Ultrasound &amp; X-Ray Imaging</a>
+        <a href="#services-section">Dental Care</a>
       </nav>
     </div>
 
@@ -2008,7 +2150,7 @@ body::after{
 
   <!-- Bottom bar -->
   <div class="footer-bottom">
-    <p class="footer-bottom-copy">© <span id="fyear"></span> Oasis Medical Clinic, Afienya, Ghana. All rights reserved.</p>
+    <p class="footer-bottom-copy">© <span id="fyear"></span> Grace Yard Hospital, Afienya, Ghana. All rights reserved.</p>
     <div class="footer-bottom-badge">
       <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
       Trusted Healthcare · Greater Accra
@@ -2342,6 +2484,16 @@ gsap.from('#about-text > *',{
 gsap.from('#services-grid .service-card',{
   scrollTrigger:{
     trigger:'#services-section', start:'top 70%'
+  },
+  y:70, opacity:0, rotateX:12,
+  duration:1, ease:'power3.out', stagger:.12,
+  transformOrigin:'bottom center'
+});
+
+/* Why Choose Us cards */
+gsap.from('#why-grid .service-card',{
+  scrollTrigger:{
+    trigger:'#why-section', start:'top 70%'
   },
   y:70, opacity:0, rotateX:12,
   duration:1, ease:'power3.out', stagger:.12,
